@@ -1,0 +1,7 @@
+package com.seidelsoft.SpringDemo.repository;
+
+import com.seidelsoft.SpringDemo.model.entity.Pais;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PaisRepository extends JpaRepository<Pais, Long> {
+}
