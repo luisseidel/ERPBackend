@@ -61,6 +61,10 @@ public class EnderecoService {
 		if (e == null || e.getId() == null) {
 			ViaCepDTO dto = buscarViaCep(cep);
 
+			if (dto.getCep().contains("-")) {
+				dto.setCep(dto.getCep().replace("-", ""));
+			}
+
 			e = new Endereco(
 					dto.getCep(),
 					dto.getLogradouro(),

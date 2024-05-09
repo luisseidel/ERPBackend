@@ -27,6 +27,6 @@ public class Pais implements Serializable {
 	@Column(name = "nome_pt", nullable = false, length = 300)
 	private String nomePortugues;
 
-	@Column(name = "iso", nullable = false, length = 2)
-	private String iso;
+	@Column(name = "sigla", nullable = false, length = 2)
+	private String sigla;
 }

@@ -16,12 +16,12 @@ public class EnderecoController implements SecuredController {
 	@Autowired
 	private EnderecoService service;
 
-	@GetMapping("/{id}")
+	@GetMapping("/id/{id}")
 	public ResponseEntity getEndereco(@PathVariable Long id) {
 		return service.findById(id);
 	}
 
-	@GetMapping("/{cep}")
+	@GetMapping("/cep/{cep}")
 	public ResponseEntity getEndereco(@PathVariable String cep) {
 		return service.findByCep(cep);
 	}
