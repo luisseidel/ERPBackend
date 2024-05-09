@@ -37,6 +37,6 @@ public class Cidade implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "estado", referencedColumnName = "id")
-	private Estado pais;
+	private Estado estado;
 
 }
