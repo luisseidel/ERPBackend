@@ -78,6 +78,7 @@ create table if not exists public.enderecos
     id               serial primary key,
     cep              varchar(8)   not null,
     logradouro       varchar(200) not null,
+    numero varchar(10) not null,
     bairro           varchar(200) null,
     complemento      varchar(200) null,
     ponto_referencia varchar(200) null,
@@ -91,9 +92,8 @@ create table if not exists public.pessoas
     id               serial primary key,
     cpf              varchar(11)  not null,
     nome             varchar(255) not null,
-    flag_nome_social bool         not null default false,
-    nome_social      varchar(255) null,
     sexo             integer      not null default 0,
+    email varchar(255) null,
     id_endereco      integer      null references public.enderecos (id)
 );
 create sequence if not exists public.seq_pessoas increment 1 start 1 owned by pessoas.id;
