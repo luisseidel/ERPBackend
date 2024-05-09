@@ -8,72 +8,72 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --ROLES
-create table if not exists public.roles
+create table if not exists public.role
 (
     id   serial primary key,
     name varchar(255) not null
 );
-create sequence if not exists public.seq_roles increment 1 start 1 owned by roles.id;
+create sequence if not exists public.seq_role increment 1 start 1 owned by role.id;
 
 
 --USERS
-create table if not exists public.users
+create table if not exists public.user
 (
     id       serial primary key,
     email    varchar(255) not null,
     name     varchar(255) not null,
     password varchar(255) not null
 );
-create sequence if not exists public.seq_users increment 1 start 1 owned by users.id;
+create sequence if not exists public.seq_user increment 1 start 1 owned by "user".id;
 
 
 --USER ROLES
-create table if not exists public.user_roles
+create table if not exists public.user_role
 (
     id      serial primary key,
     user_id integer not null,
     role_id integer not null,
-    CONSTRAINT role_fk FOREIGN KEY (role_id) references roles (id) match simple on update no action on delete no action,
-    CONSTRAINT user_fk FOREIGN KEY (user_id) references users (id) match simple on update no action on delete no action,
+    CONSTRAINT role_fk FOREIGN KEY (role_id) references role (id) match simple on update no action on delete no action,
+    CONSTRAINT user_fk FOREIGN KEY (user_id) references "user" (id) match simple on update no action on delete no action,
     CONSTRAINT unique_role_user UNIQUE (user_id, role_id)
 );
-create sequence if not exists public.seq_user_roles increment 1 start 1 owned by user_roles.id;
+create sequence if not exists public.seq_user_role increment 1 start 1 owned by user_role.id;
 
 --PAISES
-create table if not exists public.paises
+create table if not exists public.pais
 (
     id      serial primary key,
     nome    varchar(255) not null,
     nome_pt varchar(300) not null,
-    iso     varchar(2)   not null
+    sigla varchar(2) null
 );
-create sequence if not exists public.seq_paises increment 1 start 1 owned by paises.id;
+create sequence if not exists public.seq_pais increment 1 start 1 owned by pais.id;
 
 --ESTADOS
-create table if not exists public.estados
+create table if not exists public.estado
 (
     id   serial primary key,
     nome varchar(255) not null,
     uf   varchar(2)   not null,
     ibge integer      not null,
-    pais integer      not null references public.paises (id)
+    pais integer null references public.pais (id)
 );
-create sequence if not exists public.seq_estados increment 1 start 1 owned by estados.id;
+create sequence if not exists public.seq_estado increment 1 start 1 owned by estado.id;
 
 --CIDADES
-create table if not exists public.cidades
+create table if not exists public.cidade
 (
     id        serial primary key,
     nome      varchar(255),
-    estado    integer     not null references public.estados (id),
+    estado integer not null references public.estado (id),
     ibge      varchar(10) not null,
     latitude  double precision,
     longitude double precision
 );
-create sequence if not exists public.seq_cidades increment 1 start 1 owned by cidades.id;
+create sequence if not exists public.seq_cidade increment 1 start 1 owned by cidade.id;
 
 --ENDEREÇOS
-create table if not exists public.enderecos
+create table if not exists public.endereco
 (
     id               serial primary key,
     cep              varchar(8)   not null,
@@ -82,18 +82,18 @@ create table if not exists public.enderecos
     bairro           varchar(200) null,
     complemento      varchar(200) null,
     ponto_referencia varchar(200) null,
-    cidade           integer      not null references public.cidades (id)
+    cidade integer not null references public.cidade (id)
 );
-create sequence if not exists public.seq_enderecos increment 1 start 1 owned by enderecos.id;
+create sequence if not exists public.seq_endereco increment 1 start 1 owned by endereco.id;
 
 --PESSOAS
-create table if not exists public.pessoas
+create table if not exists public.pessoa
 (
     id               serial primary key,
-    cpf              varchar(11)  not null,
+    cpfCnpj     varchar(14) not null,
     nome             varchar(255) not null,
     sexo             integer      not null default 0,
     email varchar(255) null,
-    id_endereco      integer      null references public.enderecos (id)
+    id_endereco integer     null references public.endereco (id)
 );
-create sequence if not exists public.seq_pessoas increment 1 start 1 owned by pessoas.id;
+create sequence if not exists public.seq_pessoa increment 1 start 1 owned by pessoa.id;

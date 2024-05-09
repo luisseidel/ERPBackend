@@ -1,6 +1,6 @@
 # COMMERCE ERP
 * Sistema backend de ERP
-* Permite o cadastro de Usuários e acesso ao sistema.
+* Permite o cadastro de Usuários e Endereços e acesso ao sistema.
 * É uma API Restful, com os métodos GET, POST, PUT e DELETE.
 
 

@@ -17,12 +17,12 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "pessoas")
+@Table(name = "pessoa")
 public class Pessoa implements Serializable {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pessoa_generator")
-	@SequenceGenerator(name = "pessoa_generator", sequenceName = "seq_pessoas", allocationSize = 1)
+    @SequenceGenerator(name = "pessoa_generator", sequenceName = "seq_pessoa", allocationSize = 1)
     private Long id;
 
 	@CpfCnpj

@@ -2,6 +2,7 @@ package com.seidelsoft.ERPBackend.model.annotations;
 
 import com.seidelsoft.ERPBackend.model.Validations.CpfCnpjValidator;
 import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,4 +15,8 @@ import java.lang.annotation.Target;
 public @interface CpfCnpj {
 
     String message() default "CPF / CNPJ inválido!";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }

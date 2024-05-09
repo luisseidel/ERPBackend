@@ -13,12 +13,12 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "paises")
+@Table(name = "pais")
 public class Pais implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pais_generator")
-	@SequenceGenerator(name = "pais_generator", sequenceName = "seq_paises", allocationSize = 1)
+	@SequenceGenerator(name = "pais_generator", sequenceName = "seq_pais", allocationSize = 1)
 	private Long id;
 
 	@Column(name = "nome", nullable = false, length = 255)

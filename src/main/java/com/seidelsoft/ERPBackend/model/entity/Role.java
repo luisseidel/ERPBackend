@@ -12,12 +12,12 @@ import org.springframework.security.core.GrantedAuthority;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="roles")
+@Table(name = "role")
 public class Role implements GrantedAuthority {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_generator")
-	@SequenceGenerator(name = "roles_generator", sequenceName = "seq_roles", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_generator")
+    @SequenceGenerator(name = "role_generator", sequenceName = "seq_role", allocationSize = 1)
 	private Long id;
 
 	@Column(name = "name", length = 255)

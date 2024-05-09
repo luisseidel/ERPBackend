@@ -21,8 +21,8 @@ import java.util.List;
 public class User implements Serializable, UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_generator")
-    @SequenceGenerator(name = "users_generator", sequenceName = "seq_users", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
+    @SequenceGenerator(name = "user_generator", sequenceName = "seq_user", allocationSize = 1)
     private Long id;
 
 	@Column(name = "email", length = 255, nullable = false)
@@ -37,7 +37,7 @@ public class User implements Serializable, UserDetails {
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_roles",
+            name = "user_role",
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}, name = "unique_role_user"),
             joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id", table = "users", unique = false, foreignKey = @ForeignKey(name = "user_fk", value = ConstraintMode.CONSTRAINT)),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", table = "roles", unique = false, foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT))
