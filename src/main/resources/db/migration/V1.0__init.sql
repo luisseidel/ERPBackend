@@ -17,14 +17,14 @@ create sequence if not exists public.seq_role increment 1 start 1 owned by role.
 
 
 --USERS
-create table if not exists public.user
+create table if not exists public.usuario
 (
     id       serial primary key,
     email    varchar(255) not null,
     name     varchar(255) not null,
     password varchar(255) not null
 );
-create sequence if not exists public.seq_user increment 1 start 1 owned by "user".id;
+create sequence if not exists public.seq_usuario increment 1 start 1 owned by usuario.id;
 
 
 --USER ROLES
@@ -34,7 +34,7 @@ create table if not exists public.user_role
     user_id integer not null,
     role_id integer not null,
     CONSTRAINT role_fk FOREIGN KEY (role_id) references role (id) match simple on update no action on delete no action,
-    CONSTRAINT user_fk FOREIGN KEY (user_id) references "user" (id) match simple on update no action on delete no action,
+    CONSTRAINT user_fk FOREIGN KEY (user_id) references usuario (id) match simple on update no action on delete no action,
     CONSTRAINT unique_role_user UNIQUE (user_id, role_id)
 );
 create sequence if not exists public.seq_user_role increment 1 start 1 owned by user_role.id;
@@ -78,7 +78,7 @@ create table if not exists public.endereco
     id               serial primary key,
     cep              varchar(8)   not null,
     logradouro       varchar(200) not null,
-    numero varchar(10) not null,
+    numero varchar(10) null,
     bairro           varchar(200) null,
     complemento      varchar(200) null,
     ponto_referencia varchar(200) null,
