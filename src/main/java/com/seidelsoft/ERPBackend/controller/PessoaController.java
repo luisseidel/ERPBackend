@@ -1,6 +1,5 @@
 package com.seidelsoft.ERPBackend.controller;
 
-import com.seidelsoft.ERPBackend.model.dto.in.PessoaDTO;
 import com.seidelsoft.ERPBackend.model.entity.Pessoa;
 import com.seidelsoft.ERPBackend.model.exception.ValidacaoException;
 import com.seidelsoft.ERPBackend.service.PessoaService;
@@ -42,14 +41,20 @@ public class PessoaController implements SecuredController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody PessoaDTO dto) {
-        return service.create(dto);
+    public ResponseEntity create(@RequestBody Pessoa dto) {
+        try {
+            Pessoa p = service.create(dto);
+            return ResponseEntity.ok(p);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable Long id, @RequestBody PessoaDTO dto) {
+    @PutMapping("/{cpf}")
+    public ResponseEntity update(@PathVariable String cpf, @RequestBody Pessoa dto) {
         try {
-            return service.update(id, dto);
+            Pessoa p = service.update(cpf, dto);
+            return ResponseEntity.ok(p);
         } catch (ValidacaoException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

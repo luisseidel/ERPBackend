@@ -90,7 +90,7 @@ create sequence if not exists public.seq_endereco increment 1 start 1 owned by e
 create table if not exists public.pessoa
 (
     id               serial primary key,
-    cpfCnpj     varchar(14) not null,
+    cpf_cnpj varchar(14) not null,
     nome             varchar(255) not null,
     sexo             integer      not null default 0,
     email varchar(255) null,

@@ -14,7 +14,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class EnderecoDTO extends Endereco implements Serializable {
 
-    private String cep;
     private String complemento;
     private String numero;
     private String pontoReferencia;

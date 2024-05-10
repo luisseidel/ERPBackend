@@ -1,6 +1,7 @@
 package com.seidelsoft.ERPBackend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,9 +22,11 @@ public class Endereco implements Serializable {
 	@SequenceGenerator(name = "endereco_generator", sequenceName = "seq_endereco", allocationSize = 1)
 	private Long id;
 
+	@NotEmpty(message = "Cep é obrigatório e não pode estar em branco.")
 	@Column(name = "cep", length = 8, nullable = false)
 	private String cep;
 
+	@NotEmpty(message = "Logradouro é obrigatório e não pode estar em branco.")
 	@Column(name = "logradouro", length = 200, nullable = false)
 	private String logradouro;
 
