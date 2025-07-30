@@ -40,6 +40,9 @@ public class PessoaService {
 		} else if (StringUtils.isEmpty(cpf) && StringUtils.isNotEmpty(nome)) {
 			pessoas.addAll(repository.findByNome(nome));
 
+		} else if (StringUtils.isNotEmpty(cpf) && StringUtils.isNotEmpty(nome)) {
+			pessoas.add(repository.findByCpfCnpj(cpf));
+
 		} else {
 			throw new ValidacaoException("Nenhum nome ou cpf fornecidos para buscar");
 		}

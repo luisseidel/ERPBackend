@@ -1,8 +1,10 @@
 package com.seidelsoft.ERPBackend.controller;
 
+import com.seidelsoft.ERPBackend.model.dto.in.PessoaFind;
 import com.seidelsoft.ERPBackend.model.entity.Pessoa;
 import com.seidelsoft.ERPBackend.model.exception.ValidacaoException;
 import com.seidelsoft.ERPBackend.service.PessoaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +19,7 @@ public class PessoaController implements SecuredController {
     @Autowired
     private PessoaService service;
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity getPessoaById(@PathVariable Long id) {
         Optional<Pessoa> pessoa = service.getPessoaById(id);
         if (pessoa.isPresent()) {
@@ -26,10 +28,10 @@ public class PessoaController implements SecuredController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/")
-    public ResponseEntity getPessoaBy(@RequestParam String nome, @RequestParam String cpf) {
+    @GetMapping("/dados")
+    public ResponseEntity getPessoaBy(@Valid @RequestBody PessoaFind pessoaFind) {
         try {
-            List<Pessoa> list = service.getPessoaBy(nome, cpf);
+            List<Pessoa> list = service.getPessoaBy(pessoaFind.getNome(), pessoaFind.getCpf());
             if (list.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
