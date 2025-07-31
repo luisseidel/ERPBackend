@@ -1,5 +1,6 @@
 package com.seidelsoft.ERPBackend.model.dto.in;
 
+import com.seidelsoft.ERPBackend.model.annotations.CpfCnpj;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import lombok.Setter;
 public class PessoaFind {
 
     @NotEmpty
+    @CpfCnpj
     private String cpf;
     @NotEmpty
     private String nome;

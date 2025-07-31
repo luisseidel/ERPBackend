@@ -1,4 +1,4 @@
-package com.seidelsoft.ERPBackend.model.dto.in;
+package com.seidelsoft.ERPBackend.buscacep.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

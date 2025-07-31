@@ -1,14 +1,15 @@
 package com.seidelsoft.ERPBackend.service;
 
-import com.seidelsoft.ERPBackend.model.dto.in.ViaCepDTO;
+import com.seidelsoft.ERPBackend.model.exception.ValidacaoException;
+import com.seidelsoft.ERPBackend.buscacep.model.BrasilApiCepDTO;
+import com.seidelsoft.ERPBackend.buscacep.model.ViaCepDTO;
 import com.seidelsoft.ERPBackend.model.entity.Endereco;
 import com.seidelsoft.ERPBackend.repository.CidadeRepository;
 import com.seidelsoft.ERPBackend.repository.EnderecoRepository;
+import com.seidelsoft.ERPBackend.buscacep.service.BuscaCepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
@@ -19,6 +20,8 @@ public class EnderecoService {
 	private EnderecoRepository enderecoRepository;
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	@Autowired
+	private BuscaCepService buscaCepService;
 
 	public ResponseEntity findById(Long id) {
 		try {
@@ -33,18 +36,6 @@ public class EnderecoService {
 		}
 	}
 
-	private ViaCepDTO buscarViaCep(String cep) {
-		RestTemplate restTemplate = new RestTemplate();
-		try {
-			ResponseEntity<ViaCepDTO> response = restTemplate.getForEntity(
-					String.format("https://viacep.com.br/ws/%s/json", cep),
-					ViaCepDTO.class);
-			return response.getBody();
-		} catch (HttpClientErrorException e) {
-			throw new RuntimeException("CEP invalido!" + e.getMessage());
-		}
-	}
-
 	public ResponseEntity findByCep(String cep) {
 		try {
 			Endereco e = buscaByCep(cep);
@@ -55,11 +46,14 @@ public class EnderecoService {
 		}
 	}
 
-	public Endereco buscaByCep(String cep) {
+	public Endereco buscaByCep(String cep) throws ValidacaoException {
 		Endereco e = enderecoRepository.findByCep(cep);
 
+		BrasilApiCepDTO bdto = buscaCepService.buscarBrasilApi(cep);
+
+		System.out.println(bdto.toString());
 		if (e == null || e.getId() == null) {
-			ViaCepDTO dto = buscarViaCep(cep);
+			ViaCepDTO dto = buscaCepService.buscarViaCep(cep);
 
 			if (dto.getCep().contains("-")) {
 				dto.setCep(dto.getCep().replace("-", ""));
