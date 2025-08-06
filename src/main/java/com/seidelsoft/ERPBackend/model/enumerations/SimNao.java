@@ -1,24 +1,22 @@
 package com.seidelsoft.ERPBackend.model.enumerations;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
-public enum Sexo implements IEnum {
-	NENHUM(0L, "Nenhuma"),
-    MASCULINO(1L, "Masculino"),
-    FEMININO(2L, "Feminino")
-    ;
+@RequiredArgsConstructor
+public enum SimNao implements IEnum {
+    NAO(0L, "Não"),
+    SIM(1L, "Sim");
 
     private final Long value;
     private final String descricao;
 
     @Override
-    public Sexo valueOf(Long value) {
-        for (Sexo s : Sexo.values()) {
-            if (valueEquals(s.getValue(), value)) {
-                return s;
+    public SimNao valueOf(Long value) {
+        for (SimNao tf : SimNao.values()) {
+            if (valueEquals(tf.getValue(), value)) {
+                return tf;
             }
         }
         return null;

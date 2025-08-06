@@ -7,19 +7,19 @@ import com.seidelsoft.ERPBackend.model.entity.Endereco;
 import com.seidelsoft.ERPBackend.repository.CidadeRepository;
 import com.seidelsoft.ERPBackend.repository.EnderecoRepository;
 import com.seidelsoft.ERPBackend.buscacep.service.BuscaCepService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class EnderecoService {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
-	@Autowired
-	private CidadeRepository cidadeRepository;
 	@Autowired
 	private BuscaCepService buscaCepService;
 
@@ -47,27 +47,10 @@ public class EnderecoService {
 	}
 
 	public Endereco buscaByCep(String cep) throws ValidacaoException {
-		Endereco e = enderecoRepository.findByCep(cep);
+		Endereco e = null; //enderecoRepository.findByCep(cep);
 
-		BrasilApiCepDTO bdto = buscaCepService.buscarBrasilApi(cep);
-
-		System.out.println(bdto.toString());
 		if (e == null || e.getId() == null) {
-			ViaCepDTO dto = buscaCepService.buscarViaCep(cep);
-
-			if (dto.getCep().contains("-")) {
-				dto.setCep(dto.getCep().replace("-", ""));
-			}
-
-			e = new Endereco(
-					dto.getCep(),
-					dto.getLogradouro(),
-					dto.getComplemento(),
-					cidadeRepository.findByIbge(dto.getIbge()),
-					dto.getBairro()
-			);
-
-			e = enderecoRepository.save(e);
+			e = buscaCepService.buscar(cep);
 		}
 
 		return e;

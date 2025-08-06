@@ -1,2 +1,4 @@
 /target/
-/.idea/
+.idea/
+.logs/
+/logs/app.log
