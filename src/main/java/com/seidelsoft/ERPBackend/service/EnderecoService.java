@@ -44,7 +44,7 @@ public class EnderecoService {
 	}
 
 	public Endereco buscaByCep(String cep) throws ValidacaoException {
-		Endereco e = null; //enderecoRepository.findByCep(cep);
+		Endereco e = enderecoRepository.findByCep(cep);
 
 		if (e == null || e.getId() == null) {
 			e = buscaCepService.buscar(cep);

@@ -1,0 +1,21 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Document</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+    </tr>
+    <tr th:each="cidade : ${cidades}">
+        <td th:text="${cidade.id}">1</td>
+        <td th:text="${cidade.nome}">Nome da cidade</td>
+    </tr>
+</table>
+
+</body>
+</html>
