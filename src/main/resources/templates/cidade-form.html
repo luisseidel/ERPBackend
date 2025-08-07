@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${cidade.id != null} ? 'Editar Cidade' : 'Nova Cidade'">Formulário</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1 th:text="${cidade.id != null} ? 'Editar Cidade' : 'Nova Cidade'">Formulário</h1>
+
+<form method="post"
+      th:action="@{${cidade.id} != null ? '/pages/cidades/update/' + ${cidade.id} : '/pages/cidades/add'}" th:object="${cidade}">
+    <input th:field="*{id}" th:if="${cidade.id}" type="hidden"/>
+
+    <div>
+        <label for="nome">Nome:</label>
+        <input id="nome" required th:field="*{nome}" type="text"/>
+    </div>
+
+    <div>
+        <label for="estado">Estado:</label>
+        <input id="estado" required th:field="*{estado}" type="text"/>
+    </div>
+
+    <div>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/pages/cidades/}">Cancelar</a>
+    </div>
+</form>
+</body>
+</html>

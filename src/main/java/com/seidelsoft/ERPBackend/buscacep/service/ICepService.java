@@ -1,7 +1,7 @@
 package com.seidelsoft.ERPBackend.buscacep.service;
 
-import com.seidelsoft.ERPBackend.model.entity.Endereco;
-import com.seidelsoft.ERPBackend.model.exception.ValidacaoException;
+import com.seidelsoft.ERPBackend.endereco.model.Endereco;
+import com.seidelsoft.ERPBackend.system.exception.ValidacaoException;
 
 public interface ICepService {
     Object buscarCep(String cep) throws ValidacaoException;

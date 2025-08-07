@@ -1,10 +1,10 @@
 package com.seidelsoft.ERPBackend.buscacep.service;
 
+import com.seidelsoft.ERPBackend.auth.model.enumerations.TrueFalse;
 import com.seidelsoft.ERPBackend.buscacep.model.BrasilApiCepDTO;
-import com.seidelsoft.ERPBackend.model.entity.Endereco;
-import com.seidelsoft.ERPBackend.model.enumerations.TrueFalse;
-import com.seidelsoft.ERPBackend.model.exception.ValidacaoException;
-import com.seidelsoft.ERPBackend.repository.CidadeRepository;
+import com.seidelsoft.ERPBackend.endereco.model.Endereco;
+import com.seidelsoft.ERPBackend.endereco.repository.CidadeRepository;
+import com.seidelsoft.ERPBackend.system.exception.ValidacaoException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

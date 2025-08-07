@@ -1,8 +1,8 @@
 package com.seidelsoft.ERPBackend.buscacep.service;
 
-import com.seidelsoft.ERPBackend.model.entity.Endereco;
-import com.seidelsoft.ERPBackend.model.exception.ValidacaoException;
-import com.seidelsoft.ERPBackend.repository.EnderecoRepository;
+import com.seidelsoft.ERPBackend.endereco.model.Endereco;
+import com.seidelsoft.ERPBackend.endereco.repository.EnderecoRepository;
+import com.seidelsoft.ERPBackend.system.exception.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
