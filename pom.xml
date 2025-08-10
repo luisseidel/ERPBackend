@@ -21,6 +21,7 @@
 		<lombok.version>1.18.38</lombok.version>
 		<spring.doc.version>2.8.9</spring.doc.version>
 		<spring.thymeleaf.version>3.5.4</spring.thymeleaf.version>
+		<thymeleaf.layout.dilect.version>3.4.0</thymeleaf.layout.dilect.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -98,6 +99,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 			<version>${spring.thymeleaf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+			<version>${thymeleaf.layout.dilect.version}</version>
 		</dependency>
 	</dependencies>
 

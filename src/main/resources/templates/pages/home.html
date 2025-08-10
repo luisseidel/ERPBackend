@@ -6,5 +6,10 @@
 </head>
 <body>
 <h1 th:text="${mensagem}">Texto padrão se não passar variável</h1>
+
+<form method="post" th:action="@{/logout}">
+    <br/>
+    <button type="submit">Sair</button>
+</form>
 </body>
 </html>
