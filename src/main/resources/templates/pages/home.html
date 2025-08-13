@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layouts/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Exemplo</title>
-    <meta charset="UTF-8">
+    <title>Home</title>
 </head>
 <body>
-<h1 th:text="${mensagem}">Texto padrão se não passar variável</h1>
 
-<form method="post" th:action="@{/logout}">
-    <br/>
-    <button type="submit">Sair</button>
-</form>
+<div layout:fragment="content">
+    <h2>Bem-vindo à página inicial!</h2>
+    <p>Conteúdo exclusivo da home aqui.</p>
+
+    <a th:href="@{/pages/consulta/cidades}">Cidades</a>
+
+    <form method="post" th:action="@{/logout}">
+        <br/>
+        <button type="submit">Sair</button>
+    </form>
+</div>
+
 </body>
 </html>

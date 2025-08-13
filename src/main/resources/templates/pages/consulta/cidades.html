@@ -1,36 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layouts/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Lista de Cidades</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <title>Cidades</title>
 </head>
 <body>
-<h1>Lista de Cidades</h1>
+<div layout:fragment="content">
+    <h1>Lista de Cidades</h1>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Estado</th>
-        <th>Ações</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="cidade : ${cidades}">
-        <td th:text="${cidade.id}">1</td>
-        <td th:text="${cidade.nome}">Exemplo</td>
-        <td th:text="${cidade.estado}">SP</td>
-        <td>
-            <a th:href="@{'/pages/cidades/edit/' + ${cidade.id}}">Editar</a>
-            <a onclick="return confirm('Tem certeza que deseja excluir?')"
-               th:href="@{'/pages/cidades/delete/' + ${cidade.id}}">Excluir</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Estado</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cidade : ${cidades}">
+            <td th:text="${cidade.id}">1</td>
+            <td th:text="${cidade.nome}">Exemplo</td>
+            <td th:text="${cidade.estado}">SP</td>
+            <td>
+                <a th:href="@{'/pages/cidades/edit/' + ${cidade.id}}">Editar</a>
+                <a onclick="return confirm('Tem certeza que deseja excluir?')"
+                   th:href="@{'/pages/cidades/delete/' + ${cidade.id}}">Excluir</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<p><a th:href="@{/pages/cidades/add}">Nova Cidade</a></p>
+    <p><a th:href="@{/pages/cidades/add}">Nova Cidade</a></p>
+</div>
 </body>
 </html>

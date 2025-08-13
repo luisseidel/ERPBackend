@@ -3,7 +3,7 @@ package com.seidelsoft.ERPBackend.endereco.controller.pages;
 import com.seidelsoft.ERPBackend.endereco.model.Cidade;
 import com.seidelsoft.ERPBackend.endereco.service.CidadeService;
 import com.seidelsoft.ERPBackend.system.annotations.PagePrefix;
-import com.seidelsoft.ERPBackend.system.pages.BasePageController;
+import com.seidelsoft.ERPBackend.system.pages.BaseConsultaPageController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,16 +12,21 @@ import java.util.List;
 
 @Controller
 @PagePrefix("cidades")
-public class CidadePageController extends BasePageController<Cidade> {
+public class CidadePageCadastroController extends BaseConsultaPageController<Cidade> {
 
     @Autowired
     private CidadeService cidadeService;
 
     @Override
-    public String list(Model model) {
+    protected String getPrefix() {
+        return "cidades";
+    }
+
+    @Override
+    protected String listPage(Model model) {
         List<Cidade> cidades = cidadeService.findAll();
         model.addAttribute("cidades", cidades);
-        return "cidades";
+        return "pages/consulta/cidades";
     }
 
     @Override

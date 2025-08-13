@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title layout:title-pattern="${title} :: Meu App"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script defer th:src="@{/js/scripts.js}"></script>
+</head>
+<body>
+
+<header>
+    <h1>Meu Sistema</h1>
+    <!-- menu ou header fixo -->
+</header>
+
+<div layout:fragment="content">
+    <!-- Aqui o conteúdo das páginas será inserido -->
+</div>
+
+<footer>
+    <p>Rodapé do sistema © 2025</p>
+</footer>
+
+</body>
+</html>

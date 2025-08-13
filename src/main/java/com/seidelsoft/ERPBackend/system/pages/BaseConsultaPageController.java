@@ -1,6 +1,5 @@
 package com.seidelsoft.ERPBackend.system.pages;
 
-import com.seidelsoft.ERPBackend.system.annotations.PagePrefix;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,24 +8,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/pages")
-public abstract class BasePageController<T> {
+@RequestMapping("/pages/consulta")
+public abstract class BaseConsultaPageController<T> {
 
-    private String getPrefix() {
-        PagePrefix annotation = this.getClass().getAnnotation(PagePrefix.class);
-        if (annotation != null) {
-            return annotation.value();
+    protected abstract String getPrefix();
+
+    @GetMapping("")
+    public String redirectToConsultaPath() {
+        return "redirect:/pages/consulta/" + getPrefix() + "/";
+    }
+
+    @GetMapping("/{prefix}/")
+    public String list(@PathVariable String prefix, Model model) {
+        if (!prefix.equals(getPrefix())) {
+            throw new IllegalArgumentException("Prefix mismatch");
         }
-        throw new IllegalStateException("Missing @PagePrefix annotation");
+        return listPage(model);
     }
 
-    @GetMapping
-    public String redirectToPrefixedPath() {
-        return "redirect:/pages/" + getPrefix() + "/";
-    }
+    protected abstract String listPage(Model model);
 
-    @GetMapping(path = "/{prefix}/")
-    public abstract String list(Model model);
 
     @GetMapping(path = "/{prefix}/add")
     public abstract String showAddForm(T item);
