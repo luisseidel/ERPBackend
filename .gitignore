@@ -1,4 +1,3 @@
 /target/
 .idea/
-.logs/
-/logs/app.log
+logs/*.log
