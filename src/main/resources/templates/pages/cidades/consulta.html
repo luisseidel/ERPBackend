@@ -22,9 +22,9 @@
         <tr th:each="cidade : ${cidades}">
             <td th:text="${cidade.id}">1</td>
             <td th:text="${cidade.nome}">Exemplo</td>
-            <td th:text="${cidade.estado}">SP</td>
+            <td th:text="${cidade.estado.nome}">SP</td>
             <td>
-                <a th:href="@{'/pages/cidades/edit/' + ${cidade.id}}">Editar</a>
+                <a th:href="@{'/pages/cidades/editar/' + ${cidade.id}}">Editar</a>
                 <a onclick="return confirm('Tem certeza que deseja excluir?')"
                    th:href="@{'/pages/cidades/delete/' + ${cidade.id}}">Excluir</a>
             </td>

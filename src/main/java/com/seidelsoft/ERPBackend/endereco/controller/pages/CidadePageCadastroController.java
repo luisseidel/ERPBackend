@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @PagePrefix("cidades")
@@ -26,25 +27,24 @@ public class CidadePageCadastroController extends BaseConsultaPageController<Cid
     protected String listPage(Model model) {
         List<Cidade> cidades = cidadeService.findAll();
         model.addAttribute("cidades", cidades);
-        return "pages/consulta/cidades";
-    }
-
-    @Override
-    public String showAddForm(Cidade item) {
-        return "cidade-form";
-    }
-
-    @Override
-    public String showUpdateForm(long id, Model model) {
-        Cidade c = cidadeService.getById(id).orElseThrow(() -> new IllegalArgumentException("Inválido"));
-        model.addAttribute("cidade", c);
-        return "cidade-form";
+        return "pages/cidades/consulta"; 
     }
 
     @Override
     public String add(Cidade item) {
         cidadeService.save(item);
         return "redirect:/pages/cidades";
+    }
+
+    @Override
+    public String edit(long id, Model model) {
+        Optional<Cidade> cidade = cidadeService.getById(id);
+        if (cidade.isPresent()) {
+            model.addAttribute("cidade", cidade.get());
+            return "/pages/cidades/editar";
+        } else {
+            return "redirect:/pages/cidades";
+        }
     }
 
     @Override

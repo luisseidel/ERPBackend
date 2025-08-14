@@ -8,17 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/pages/consulta")
+@RequestMapping("/pages/{prefix}")
 public abstract class BaseConsultaPageController<T> {
 
     protected abstract String getPrefix();
 
-    @GetMapping("")
-    public String redirectToConsultaPath() {
-        return "redirect:/pages/consulta/" + getPrefix() + "/";
-    }
-
-    @GetMapping("/{prefix}")
+    @GetMapping("/consulta")
     public String list(@PathVariable String prefix, Model model) {
         if (!prefix.equals(getPrefix())) {
             throw new IllegalArgumentException("Prefix mismatch");
@@ -28,19 +23,15 @@ public abstract class BaseConsultaPageController<T> {
 
     protected abstract String listPage(Model model);
 
-
-    @GetMapping(path = "/{prefix}/add")
-    public abstract String showAddForm(T item);
-
-    @GetMapping(path = "/{prefix}/edit/{id}")
-    public abstract String showUpdateForm(@PathVariable("id") long id, Model model);
-
-    @PostMapping(path = "/{prefix}/add")
+    @PostMapping(path = "/add")
     public abstract String add(T item);
 
-    @PostMapping(path = "/{prefix}/update/{id}")
+    @GetMapping(path = "/editar/{id}")
+    public abstract String edit(@PathVariable("id") long id, Model model);
+
+    @PostMapping(path = "/update/{id}")
     public abstract String update(@PathVariable("id") long id, T item);
 
-    @GetMapping(path = "/{prefix}/delete/{id}")
+    @GetMapping(path = "/delete/{id}")
     public abstract String delete(@PathVariable("id") long id);
 }
