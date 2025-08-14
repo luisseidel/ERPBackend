@@ -4,6 +4,8 @@ import com.seidelsoft.ERPBackend.endereco.model.Cidade;
 import com.seidelsoft.ERPBackend.endereco.repository.CidadeRepository;
 import com.seidelsoft.ERPBackend.system.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +23,8 @@ public class CidadeService extends BaseService<Cidade> {
     }
 
     @Override
-    public List<Cidade> findAll() {
-        return cidadeRepository.findAll();
+    public Page<Cidade> findAll(Pageable pageable) {
+        return cidadeRepository.findAll(pageable);
     }
 
     @Override

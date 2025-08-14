@@ -5,15 +5,18 @@ import com.seidelsoft.ERPBackend.endereco.service.CidadeService;
 import com.seidelsoft.ERPBackend.system.annotations.PagePrefix;
 import com.seidelsoft.ERPBackend.system.pages.BaseConsultaPageController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @PagePrefix("cidades")
-public class CidadePageCadastroController extends BaseConsultaPageController<Cidade> {
+public class CidadePageController extends BaseConsultaPageController<Cidade> {
 
     @Autowired
     private CidadeService cidadeService;
@@ -24,8 +27,9 @@ public class CidadePageCadastroController extends BaseConsultaPageController<Cid
     }
 
     @Override
-    protected String listPage(Model model) {
-        List<Cidade> cidades = cidadeService.findAll();
+    protected String listPage(Model model, int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        Page<Cidade> cidades = cidadeService.findAll(pageable);
         model.addAttribute("cidades", cidades);
         return "pages/cidades/consulta"; 
     }

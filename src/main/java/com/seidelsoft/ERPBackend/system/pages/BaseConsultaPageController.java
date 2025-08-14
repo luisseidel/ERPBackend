@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/pages/{prefix}")
@@ -14,14 +15,19 @@ public abstract class BaseConsultaPageController<T> {
     protected abstract String getPrefix();
 
     @GetMapping("/consulta")
-    public String list(@PathVariable String prefix, Model model) {
+    public String list(
+        @PathVariable String prefix, 
+        Model model,
+        @RequestParam(required = false, defaultValue = "0") int page, 
+        @RequestParam(required = false, defaultValue = "10") int size
+    ) {
         if (!prefix.equals(getPrefix())) {
             throw new IllegalArgumentException("Prefix mismatch");
         }
-        return listPage(model);
+        return listPage(model, page, size);
     }
 
-    protected abstract String listPage(Model model);
+    protected abstract String listPage(Model model, int page, int size);
 
     @PostMapping(path = "/add")
     public abstract String add(T item);
