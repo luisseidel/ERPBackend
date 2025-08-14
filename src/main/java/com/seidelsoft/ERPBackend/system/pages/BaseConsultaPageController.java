@@ -18,7 +18,7 @@ public abstract class BaseConsultaPageController<T> {
         return "redirect:/pages/consulta/" + getPrefix() + "/";
     }
 
-    @GetMapping("/{prefix}/")
+    @GetMapping("/{prefix}")
     public String list(@PathVariable String prefix, Model model) {
         if (!prefix.equals(getPrefix())) {
             throw new IllegalArgumentException("Prefix mismatch");
