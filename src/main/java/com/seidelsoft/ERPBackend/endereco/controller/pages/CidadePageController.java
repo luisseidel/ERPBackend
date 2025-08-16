@@ -4,14 +4,12 @@ import com.seidelsoft.ERPBackend.endereco.model.Cidade;
 import com.seidelsoft.ERPBackend.endereco.service.CidadeService;
 import com.seidelsoft.ERPBackend.system.annotations.PagePrefix;
 import com.seidelsoft.ERPBackend.system.pages.BaseConsultaPageController;
+import com.seidelsoft.ERPBackend.system.service.BaseService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,42 +25,68 @@ public class CidadePageController extends BaseConsultaPageController<Cidade> {
     }
 
     @Override
-    protected String listPage(Model model, int page, int size) {
-        Pageable pageable = Pageable.ofSize(size).withPage(page);
-        Page<Cidade> cidades = cidadeService.findAll(pageable);
-        model.addAttribute("cidades", cidades);
-        return "pages/cidades/consulta"; 
+    public String showAddPage(Cidade item) {
+        return "/pages/cidades/adicionar";
     }
 
     @Override
     public String add(Cidade item) {
         cidadeService.save(item);
-        return "redirect:/pages/cidades";
+        return "redirect:/pages/cidades/consulta";
     }
 
     @Override
-    public String edit(long id, Model model) {
+    public String showEditPage(long id, Model model) {
         Optional<Cidade> cidade = cidadeService.getById(id);
         if (cidade.isPresent()) {
             model.addAttribute("cidade", cidade.get());
             return "/pages/cidades/editar";
         } else {
-            return "redirect:/pages/cidades";
+            return "redirect:/pages/cidades/consulta";
         }
     }
 
+
     @Override
     public String update(long id, Cidade item) {
-        item.setId(id);
-        cidadeService.save(item);
-        return "redirect:/pages/cidades";
+        Cidade existente = cidadeService.getById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Cidade inválida"));
+
+        existente.setNome(item.getNome());
+        cidadeService.save(existente);
+        return "redirect:/pages/cidades/consulta";
     }
 
     @Override
     public String delete(long id) {
         Cidade c = cidadeService.getById(id).orElseThrow(() -> new IllegalArgumentException("Inválido"));
         cidadeService.delete(id);
-        return "redirect:/pages/cidades";
+        return "redirect:/pages/cidades/consulta";
+    }
+
+    @Override
+    public BaseService<Cidade> getService() {
+        return cidadeService;
+    }
+
+    @Override
+    public String getTitulo() {
+        return "Consulta de Cidades";
+    }
+
+    @Override
+    public String getUrl() {
+        return "/pages/cidades";
+    }
+
+    @Override
+    public String getCabecalhoFragment() {
+        return "pages/cidades/_cabecalho";
+    }
+
+    @Override
+    public String getLinhaFragment() {
+        return "pages/cidades/_linha";
     }
 }
 

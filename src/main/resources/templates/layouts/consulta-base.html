@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:text="${titulo}">Consulta</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h2 th:text="${titulo}">Consulta</h2>
+        <table border="1">
+            <thead th:replace="~{${cabecalhoFragment} :: cabecalho}"></thead>
+            <tbody>
+                <th:block th:each="item : ${items.content}">
+                    <tr th:replace="~{${linhaFragment} :: linha(item=${item})}"></tr>
+                </th:block>
+
+                <tr th:if="${items.content.isEmpty()}">
+                    <td colspan="4">Nenhum item encontrado.</td>
+                </tr>
+            </tbody>
+        </table>
+        <div th:if="${items.totalPages > 1}">
+            <span>Página <span th:text="${items.number + 1}"></span> de <span th:text="${items.totalPages}"></span></span>
+            <a th:if="${items.hasPrevious()}" th:href="@{__${url}__/consulta(page=${0},size=${items.size})}">Primeira</a>
+            <a th:if="${items.hasPrevious()}" th:href="@{__${url}__/consulta(page=${items.number - 1},size=${items.size})}">Anterior</a>
+            <a th:if="${items.hasNext()}" th:href="@{__${url}__/consulta(page=${items.number + 1},size=${items.size})}">Próxima</a>
+            <a th:if="${items.hasNext()}" th:href="@{__${url}__/consulta(page=${items.totalPages - 1},size=${items.size})}">Última</a>
+        </div>
+        <p>
+            <a th:href="@{__${url}__/add}">Novo</a>
+        </p>
+    </div>
+</body>
+</html>

@@ -13,14 +13,36 @@
     <input th:field="*{id}" th:if="${cidade.id}" type="hidden"/>
 
     <div>
+        <label for="ibge">Ibge:</label>
+        <input id="ibge" required disabled th:field="*{ibge}" type="text"/>
+    </div>
+
+    <div>
         <label for="nome">Nome:</label>
         <input id="nome" required th:field="*{nome}" type="text"/>
     </div>
 
     <div>
         <label for="estado">Estado:</label>
-        <input id="estado" required th:field="*{estado}" type="text"/>
+        <input id="estado" required disabled th:field="*{estado}" type="text"/>
     </div>
+
+        <div>
+        <label for="estadoNome">Estado nome:</label>
+        <input id="estadoNome" required disabled th:field="*{estado.nome}" type="text"/>
+    </div>
+
+    <div>
+        <label for="latitude">Latitude:</label>
+        <input id="latitude" required disabled th:field="*{latitude}" type="text"/>
+    </div>
+
+
+    <div>
+        <label for="longitude">Longitude:</label>
+        <input id="longitude" required disabled th:field="*{longitude}" type="text"/>
+    </div>
+
 
     <div>
         <button type="submit">Salvar</button>
