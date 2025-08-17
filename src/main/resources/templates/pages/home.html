@@ -1,23 +1,16 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layouts/base}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Home</title>
-</head>
-<body>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/base}">
+    <head>
+        <title>Home</title>
+    </head>
+    <body>
 
-<div layout:fragment="content">
-    <h2>Bem-vindo à página inicial!</h2>
-    <p>Conteúdo exclusivo da home aqui.</p>
+        <div layout:fragment="content">
+            <h2>Bem-vindo à página inicial!</h2>
+            <p>Conteúdo exclusivo da home aqui.</p>
+        </div>
 
-    <a th:href="@{/pages/cidades/consulta}">Cidades</a>
-
-    <form method="post" th:action="@{/logout}">
-        <br/>
-        <button type="submit">Sair</button>
-    </form>
-</div>
-
-</body>
+    </body>
 </html>

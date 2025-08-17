@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title layout:title-pattern="${title} :: Meu App"></title>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <script defer th:src="@{/js/scripts.js}"></script>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8"/>
+        <title layout:title-pattern="${title} :: Meu App"></title>
+        <link rel="stylesheet" th:href="@{/css/style.css}"/>
+        <script defer th:src="@{/js/scripts.js}"></script>
+    </head>
+    <body>
 
-<header>
-    <h1>Meu Sistema</h1>
-    <!-- menu ou header fixo -->
-</header>
+        <header>
+            <h1>Sistema ERP</h1>
+            <nav>
+                <a th:href="@{/}">Início</a> |
+                <a th:href="@{/pages/cidades/consulta}">Cidades</a> |
+                <a th:href="@{/pages/estados/consulta}">Estados</a>
+                <form method="post" th:action="@{/logout}">
+                    <button type="submit">Sair</button>
+                </form>
+            </nav>
+            <hr/>
+        </header>
 
-<div layout:fragment="content">
-    <!-- Aqui o conteúdo das páginas será inserido -->
-</div>
+        <main layout:fragment="content"></main>
 
-<footer>
-    <p>Rodapé do sistema © 2025</p>
-</footer>
+        <footer>
+            <hr/>
+            <p>&copy; 2025 - SeidelSoft</p>
+        </footer>
 
-</body>
+    </body>
 </html>

@@ -43,13 +43,13 @@ public class CidadePageController extends BasePageController<Cidade> {
 
     @Override
     public String showEditPage(long id, Model model) {
-        Optional<Cidade> cidade = cidadeService.getById(id);
-        if (cidade.isPresent()) {
-            model.addAttribute("cidade", cidade.get());
-            return "/pages/cidades/editar";
-        } else {
-            return "redirect:/pages/cidades/consulta";
-        }
+        Cidade cidade = cidadeService.getById(id).orElseThrow();
+        model.addAttribute("titulo", "Editar Cidade");
+        model.addAttribute("formAction", "/pages/cidades/update/" + id);
+        model.addAttribute("item", cidade);
+        model.addAttribute("url", "/pages/cidades");
+        model.addAttribute("camposFragment", "pages/cidades/cidade-campos");
+        return "layouts/editar-base";
     }
 
     @Override
