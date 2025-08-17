@@ -1,16 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="'Nova Cidade'">Formulário</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
-</head>
-    <body>
-        <h1 th:text="'Nova Cidade'">Formulário</h1>
-
-        <form method="post"
-            th:action="@{'/pages/cidades/add'}" th:object="${cidade}">
-            <input th:field="*{id}" th:if="${cidade.id}" type="hidden"/>
+<body>
+    <div th:fragment="campos(item)">
 
             <div>
                 <label for="ibge">Ibge:</label>
@@ -44,11 +35,5 @@
                 <input id="longitude" required th:field="*{longitude}" type="text"/>
             </div>
 
-
-            <div>
-                <button type="submit">Salvar</button>
-                <a th:href="@{/pages/cidades/consulta}">Cancelar</a>
-            </div>
-        </form>
     </body>
 </html>

@@ -30,9 +30,13 @@ public class CidadePageController extends BasePageController<Cidade> {
 
     @Override
     public String showAddPage(Model model) {
-        model.addAttribute("cidade", new Cidade());
         model.addAttribute("estados", estadoService.findAll(Sort.by("nome")));
-        return "/pages/cidades/adicionar";
+        model.addAttribute("titulo", "Adcionar Cidade");
+        model.addAttribute("formAction", "/pages/cidades/add");
+        model.addAttribute("item", new Cidade());
+        model.addAttribute("url", "/pages/cidades");
+        model.addAttribute("camposFragment", "pages/cidades/adicionar-campos");
+        return "layouts/adicionar-base";
     }
 
     @Override
@@ -48,7 +52,7 @@ public class CidadePageController extends BasePageController<Cidade> {
         model.addAttribute("formAction", "/pages/cidades/update/" + id);
         model.addAttribute("item", cidade);
         model.addAttribute("url", "/pages/cidades");
-        model.addAttribute("camposFragment", "pages/cidades/cidade-campos");
+        model.addAttribute("camposFragment", "pages/cidades/editar-campos");
         return "layouts/editar-base";
     }
 
