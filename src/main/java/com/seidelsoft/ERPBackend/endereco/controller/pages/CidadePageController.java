@@ -2,11 +2,13 @@ package com.seidelsoft.ERPBackend.endereco.controller.pages;
 
 import com.seidelsoft.ERPBackend.endereco.model.Cidade;
 import com.seidelsoft.ERPBackend.endereco.service.CidadeService;
+import com.seidelsoft.ERPBackend.endereco.service.EstadoService;
 import com.seidelsoft.ERPBackend.system.annotations.PagePrefix;
-import com.seidelsoft.ERPBackend.system.pages.BaseConsultaPageController;
+import com.seidelsoft.ERPBackend.system.pages.BasePageController;
 import com.seidelsoft.ERPBackend.system.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -14,10 +16,12 @@ import java.util.Optional;
 
 @Controller
 @PagePrefix("cidades")
-public class CidadePageController extends BaseConsultaPageController<Cidade> {
+public class CidadePageController extends BasePageController<Cidade> {
 
     @Autowired
     private CidadeService cidadeService;
+    @Autowired
+    private EstadoService estadoService;
 
     @Override
     protected String getPrefix() {
@@ -25,7 +29,9 @@ public class CidadePageController extends BaseConsultaPageController<Cidade> {
     }
 
     @Override
-    public String showAddPage(Cidade item) {
+    public String showAddPage(Model model) {
+        model.addAttribute("cidade", new Cidade());
+        model.addAttribute("estados", estadoService.findAll(Sort.by("nome")));
         return "/pages/cidades/adicionar";
     }
 
@@ -46,7 +52,6 @@ public class CidadePageController extends BaseConsultaPageController<Cidade> {
         }
     }
 
-
     @Override
     public String update(long id, Cidade item) {
         Cidade existente = cidadeService.getById(id)
@@ -59,7 +64,6 @@ public class CidadePageController extends BaseConsultaPageController<Cidade> {
 
     @Override
     public String delete(long id) {
-        Cidade c = cidadeService.getById(id).orElseThrow(() -> new IllegalArgumentException("Inválido"));
         cidadeService.delete(id);
         return "redirect:/pages/cidades/consulta";
     }

@@ -27,7 +27,7 @@
             <a th:if="${items.hasNext()}" th:href="@{__${url}__/consulta(page=${items.totalPages - 1},size=${items.size})}">Última</a>
         </div>
         <p>
-            <a th:href="@{__${url}__/add}">Novo</a>
+            <a th:href="@{__${url}__/adicionar}">Novo</a>
         </p>
     </div>
 </body>

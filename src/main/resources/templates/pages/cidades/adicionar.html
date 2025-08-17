@@ -2,19 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Editar Cidade'">Formulário</title>
+    <title th:text="'Nova Cidade'">Formulário</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
     <body>
-        <h1 th:text="'Editar Cidade'">Formulário</h1>
+        <h1 th:text="'Nova Cidade'">Formulário</h1>
 
         <form method="post"
-            th:action="@{'/pages/cidades/update/' + ${cidade.id}}" th:object="${cidade}">
+            th:action="@{'/pages/cidades/add'}" th:object="${cidade}">
             <input th:field="*{id}" th:if="${cidade.id}" type="hidden"/>
 
             <div>
                 <label for="ibge">Ibge:</label>
-                <input id="ibge" required disabled th:field="*{ibge}" type="text"/>
+                <input id="ibge" required th:field="*{ibge}" type="text"/>
             </div>
 
             <div>
@@ -24,23 +24,24 @@
 
             <div>
                 <label for="estado">Estado:</label>
-                <input id="estado" required disabled th:field="*{estado}" type="text"/>
-            </div>
-
-                <div>
-                <label for="estadoNome">Estado nome:</label>
-                <input id="estadoNome" required disabled th:field="*{estado.nome}" type="text"/>
+                <select id="estado" required th:field="*{estado}">
+                    <option value="" disabled selected>-- selecione --</option>
+                    <option th:each="estado : ${estados}" 
+                            th:value="${estado.id}" 
+                            th:text="${estado.nome}">
+                    </option>
+                </select>
             </div>
 
             <div>
                 <label for="latitude">Latitude:</label>
-                <input id="latitude" required disabled th:field="*{latitude}" type="text"/>
+                <input id="latitude" required th:field="*{latitude}" type="text"/>
             </div>
 
 
             <div>
                 <label for="longitude">Longitude:</label>
-                <input id="longitude" required disabled th:field="*{longitude}" type="text"/>
+                <input id="longitude" required th:field="*{longitude}" type="text"/>
             </div>
 
 

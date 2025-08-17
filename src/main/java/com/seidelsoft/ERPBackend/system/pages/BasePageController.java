@@ -16,7 +16,7 @@ import com.seidelsoft.ERPBackend.system.service.BaseService;
 
 @Controller
 @RequestMapping("/pages/{prefix}")
-public abstract class BaseConsultaPageController<T> {
+public abstract class BasePageController<T> {
 
     private Page<T> items;
 
@@ -37,7 +37,7 @@ public abstract class BaseConsultaPageController<T> {
 
     protected String listPage(Model model, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        items = getService().findAll(pageable);
+        items = getService().findAllPaged(pageable);
         model.addAttribute("items", items);
         model.addAttribute("titulo", getTitulo());
         model.addAttribute("url", getUrl());
@@ -46,8 +46,8 @@ public abstract class BaseConsultaPageController<T> {
         return "layouts/consulta-base";
     }
 
-    @PostMapping(path = "/adicionar")
-    public abstract String showAddPage(T item);
+    @GetMapping(path = "/adicionar")
+    public abstract String showAddPage(Model model);
 
     @PostMapping(path = "/add")
     public abstract String add(T item);
