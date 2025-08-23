@@ -13,7 +13,7 @@
 
         <input th:if="*{id}" th:field="*{id}" type="hidden"/>
 
-        <div th:replace="~{${addFieldsFragment} :: campos(item=${item})}"></div>
+        <div th:replace="~{${addFieldsFragment} :: addFields(item=${item})}"></div>
 
         <div>
             <button type="submit">Salvar</button>

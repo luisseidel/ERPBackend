@@ -12,7 +12,7 @@
                 <thead th:replace="~{${tableHeaderFragment} :: tableHeaderFragment}"></thead>
                 <tbody>
                     <th:block th:each="item : ${items.content}">
-                        <tr th:replace="~{${tableLineFragment} :: tableLineFragment(item=${item})}"></tr>
+                        <tr th:replace="~{${tableLineFragment} :: tableLine(item=${item})}"></tr>
                     </th:block>
 
                     <tr th:if="${items.content.isEmpty()}">
