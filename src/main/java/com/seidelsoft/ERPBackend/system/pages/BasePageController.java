@@ -45,7 +45,7 @@ public abstract class BasePageController<T> {
         model.addAttribute("url", getUrl());
         model.addAttribute("tableHeaderFragment", getTableHeaderFragment());
         model.addAttribute("tableLineFragment", getTableLineFragment());
-        return "layouts/consulta-base";
+        return "layouts/baseListPage";
     }
 
     @GetMapping(path = "/adicionar")
@@ -55,7 +55,7 @@ public abstract class BasePageController<T> {
         model.addAttribute("item", new Cidade());
         model.addAttribute("url", getUrl());
         model.addAttribute("addFieldsFragment", getAddFieldsFragment());
-        return "layouts/adicionar-base";
+        return "layouts/baseAddPage";
     }
 
     @PostMapping(path = "/add")
@@ -69,7 +69,7 @@ public abstract class BasePageController<T> {
         model.addAttribute("item", item);
         model.addAttribute("url", getUrl());
         model.addAttribute("editFieldFragment", getEditFieldsFragment());
-        return "layouts/editar-base";
+        return "layouts/baseEditPage";
     }
 
     @PostMapping(path = "/update/{id}")
