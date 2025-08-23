@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.seidelsoft.ERPBackend.endereco.model.Cidade;
 import com.seidelsoft.ERPBackend.system.service.BaseService;
 
 @Controller
@@ -19,6 +20,7 @@ import com.seidelsoft.ERPBackend.system.service.BaseService;
 public abstract class BasePageController<T> {
 
     private Page<T> items;
+    private T item;
 
     protected abstract String getPrefix();
 
@@ -39,21 +41,36 @@ public abstract class BasePageController<T> {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         items = getService().findAllPaged(pageable);
         model.addAttribute("items", items);
-        model.addAttribute("titulo", getTitulo());
+        model.addAttribute("title", getListPageTitle());
         model.addAttribute("url", getUrl());
-        model.addAttribute("cabecalhoFragment", getCabecalhoFragment());
-        model.addAttribute("linhaFragment", getLinhaFragment());
+        model.addAttribute("tableHeaderFragment", getTableHeaderFragment());
+        model.addAttribute("tableLineFragment", getTableLineFragment());
         return "layouts/consulta-base";
     }
 
     @GetMapping(path = "/adicionar")
-    public abstract String showAddPage(Model model);
+    public String showAddPage(Model model) {
+        model.addAttribute("title", getAddPageTitle());
+        model.addAttribute("addFormAction", getAddFormAction());
+        model.addAttribute("item", new Cidade());
+        model.addAttribute("url", getUrl());
+        model.addAttribute("addFieldsFragment", getAddFieldsFragment());
+        return "layouts/adicionar-base";
+    }
 
     @PostMapping(path = "/add")
     public abstract String add(T item);
 
     @GetMapping(path = "/editar/{id}")
-    public abstract String showEditPage(@PathVariable("id") long id, Model model);
+    public String showEditPage(@PathVariable("id") long id, Model model) {
+        item = getService().getById(id).orElseThrow();
+        model.addAttribute("title", getEditPageTitle());
+        model.addAttribute("formAction", getUpdateFormAction().replace("{id}", String.valueOf(id)));
+        model.addAttribute("item", item);
+        model.addAttribute("url", getUrl());
+        model.addAttribute("editFieldFragment", getEditFieldsFragment());
+        return "layouts/editar-base";
+    }
 
     @PostMapping(path = "/update/{id}")
     public abstract String update(@PathVariable("id") long id, T item);
@@ -62,8 +79,14 @@ public abstract class BasePageController<T> {
     public abstract String delete(@PathVariable("id") long id);
 
     public abstract BaseService<T> getService();
-    public abstract String getTitulo();
+    public abstract String getListPageTitle();
+    public abstract String getEditPageTitle();
+    public abstract String getAddPageTitle();
     public abstract String getUrl();
-    public abstract String getCabecalhoFragment();
-    public abstract String getLinhaFragment();
+    public abstract String getTableHeaderFragment();
+    public abstract String getTableLineFragment();
+    public abstract String getAddFieldsFragment();
+    public abstract String getEditFieldsFragment();
+    public abstract String getAddFormAction();
+    public abstract String getUpdateFormAction();
 }

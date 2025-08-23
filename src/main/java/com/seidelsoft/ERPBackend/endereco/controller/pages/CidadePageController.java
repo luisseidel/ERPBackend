@@ -31,29 +31,13 @@ public class CidadePageController extends BasePageController<Cidade> {
     @Override
     public String showAddPage(Model model) {
         model.addAttribute("estados", estadoService.findAll(Sort.by("nome")));
-        model.addAttribute("titulo", "Adcionar Cidade");
-        model.addAttribute("formAction", "/pages/cidades/add");
-        model.addAttribute("item", new Cidade());
-        model.addAttribute("url", "/pages/cidades");
-        model.addAttribute("camposFragment", "pages/cidades/adicionar-campos");
-        return "layouts/adicionar-base";
+        return super.showAddPage(model);
     }
 
     @Override
     public String add(Cidade item) {
         cidadeService.save(item);
         return "redirect:/pages/cidades/consulta";
-    }
-
-    @Override
-    public String showEditPage(long id, Model model) {
-        Cidade cidade = cidadeService.getById(id).orElseThrow();
-        model.addAttribute("titulo", "Editar Cidade");
-        model.addAttribute("formAction", "/pages/cidades/update/" + id);
-        model.addAttribute("item", cidade);
-        model.addAttribute("url", "/pages/cidades");
-        model.addAttribute("camposFragment", "pages/cidades/editar-campos");
-        return "layouts/editar-base";
     }
 
     @Override
@@ -78,8 +62,18 @@ public class CidadePageController extends BasePageController<Cidade> {
     }
 
     @Override
-    public String getTitulo() {
+    public String getListPageTitle() {
         return "Consulta de Cidades";
+    }
+
+    @Override
+    public String getEditPageTitle() {
+        return "Editar Cidade";
+    }
+
+    @Override
+    public String getAddPageTitle() {
+        return "Adicionar Cidade";
     }
 
     @Override
@@ -88,13 +82,33 @@ public class CidadePageController extends BasePageController<Cidade> {
     }
 
     @Override
-    public String getCabecalhoFragment() {
-        return "pages/cidades/_cabecalho";
+    public String getTableHeaderFragment() {
+        return "pages/cidades/_tableHeaderFragment";
     }
 
     @Override
-    public String getLinhaFragment() {
-        return "pages/cidades/_linha";
+    public String getTableLineFragment() {
+        return "pages/cidades/_tableLineFragment";
+    }
+
+    @Override
+    public String getAddFieldsFragment() {
+        return "pages/cidades/_addFieldsFragment";
+    }
+
+    @Override
+    public String getEditFieldsFragment() {
+        return "pages/cidades/_editFieldsFragment";
+    }
+
+    @Override
+    public String getAddFormAction() {
+        return "/pages/cidades/add";
+    }
+
+    @Override
+    public String getUpdateFormAction() {
+        return "/pages/cidades/update/{id}";
     }
 }
 
