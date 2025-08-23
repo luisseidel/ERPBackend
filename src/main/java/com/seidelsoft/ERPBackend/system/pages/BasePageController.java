@@ -83,10 +83,32 @@ public abstract class BasePageController<T> {
     public abstract String getEditPageTitle();
     public abstract String getAddPageTitle();
     public abstract String getUrl();
-    public abstract String getTableHeaderFragment();
-    public abstract String getTableLineFragment();
-    public abstract String getAddFieldsFragment();
-    public abstract String getEditFieldsFragment();
-    public abstract String getAddFormAction();
-    public abstract String getUpdateFormAction();
+
+    public String getTableHeaderFragment() {
+        return getUrl() + "/_tableHeaderFragment";
+    }
+
+    public String getTableLineFragment() {
+        return getUrl() + "/_tableLineFragment";
+    }
+
+    public String getAddFieldsFragment() {
+        return getUrl() + "/_addFieldsFragment";
+    }
+
+    public String getEditFieldsFragment() {
+        return getUrl() + "/_editFieldsFragment";
+    }
+
+    public String getAddFormAction() {
+        return getUrl() + "/add";
+    }
+
+    public String getUpdateFormAction() {
+        return getUrl() + "/update/{id}";
+    }
+
+    public String getUrlPageConsulta() {
+        return "redirect:"+getUrl()+"/consulta";
+    }
 }

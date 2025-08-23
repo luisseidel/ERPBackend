@@ -37,7 +37,7 @@ public class CidadePageController extends BasePageController<Cidade> {
     @Override
     public String add(Cidade item) {
         cidadeService.save(item);
-        return "redirect:/pages/cidades/consulta";
+        return getUrlPageConsulta();
     }
 
     @Override
@@ -47,13 +47,13 @@ public class CidadePageController extends BasePageController<Cidade> {
 
         existente.setNome(item.getNome());
         cidadeService.save(existente);
-        return "redirect:/pages/cidades/consulta";
+        return getUrlPageConsulta();
     }
 
     @Override
     public String delete(long id) {
         cidadeService.delete(id);
-        return "redirect:/pages/cidades/consulta";
+        return getUrlPageConsulta();
     }
 
     @Override
@@ -81,34 +81,5 @@ public class CidadePageController extends BasePageController<Cidade> {
         return "/pages/cidades";
     }
 
-    @Override
-    public String getTableHeaderFragment() {
-        return "pages/cidades/_tableHeaderFragment";
-    }
-
-    @Override
-    public String getTableLineFragment() {
-        return "pages/cidades/_tableLineFragment";
-    }
-
-    @Override
-    public String getAddFieldsFragment() {
-        return "pages/cidades/_addFieldsFragment";
-    }
-
-    @Override
-    public String getEditFieldsFragment() {
-        return "pages/cidades/_editFieldsFragment";
-    }
-
-    @Override
-    public String getAddFormAction() {
-        return "/pages/cidades/add";
-    }
-
-    @Override
-    public String getUpdateFormAction() {
-        return "/pages/cidades/update/{id}";
-    }
 }
 
