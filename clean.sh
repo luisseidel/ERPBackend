@@ -3,3 +3,6 @@
 docker stop $(docker ps -a -q);
 docker rm $(docker ps -a -q);
 docker volume prune;
+
+rm -rf ./target;
+rm -rf ./logs;

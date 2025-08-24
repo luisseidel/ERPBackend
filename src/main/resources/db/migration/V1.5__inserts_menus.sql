@@ -39,4 +39,4 @@ VALUES
 
 -- Mover Cidades e Estados para submenu Cadastros
 UPDATE public.menu SET parent_id = (SELECT id FROM public.menu WHERE name = 'Cadastros') 
-WHERE name IN ('Cidades', 'Estados');
+WHERE name IN ('Cidades', 'Estados', 'Menus');
