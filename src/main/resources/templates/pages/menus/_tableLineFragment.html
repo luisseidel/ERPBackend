@@ -1,0 +1,26 @@
+<th:block th:fragment="tableLine(item)">
+    <tr>
+        <td th:text="${item.id}">1</td>
+        <td>
+            <span th:if="${item.parent != null}" th:text="'└─ '"></span>
+            <span th:text="${item.name}">Nome do Menu</span>
+            <span th:if="${item.homePage}" class="home-indicator" title="Página Inicial">🏠</span>
+        </td>
+        <td th:text="${item.url}">URL</td>
+        <td th:text="${item.parent != null ? item.parent.name : '-'}">Menu Pai</td>
+        <td th:text="${item.orderPosition}">0</td>
+        <td>
+            <span th:if="${item.active}" style="color: green;">✓ Ativo</span>
+            <span th:unless="${item.active}" style="color: red;">✗ Inativo</span>
+        </td>
+        <td>
+            <span th:if="${item.homePage}" style="color: blue;">✓ Sim</span>
+            <span th:unless="${item.homePage}">-</span>
+        </td>
+        <td>
+            <a th:href="@{__${url}__/editar/{id}(id=${item.id})}">Editar</a>
+            <a onclick="return confirm('Tem certeza que deseja excluir este menu?')"
+               th:href="@{__${url}__/delete/{id}(id=${item.id})}">Excluir</a>
+        </td>
+    </tr>
+</th:block>

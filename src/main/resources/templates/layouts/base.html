@@ -6,16 +6,57 @@
         <title layout:title-pattern="${title} :: Meu App"></title>
         <link rel="stylesheet" th:href="@{/css/style.css}"/>
         <script defer th:src="@{/js/scripts.js}"></script>
+
+        <!-- Estilos para menu dropdown -->
+        <style>
+            .dropdown:hover .dropdown-content {
+                display: block !important;
+            }
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            .home-menu {
+                font-weight: bold;
+                color: #007bff !important;
+            }
+        </style>
     </head>
     <body>
 
         <header>
             <h1>Sistema ERP</h1>
             <nav>
-                <a th:href="@{/pages/home}">Início</a> |
-                <a th:href="@{/pages/cidades/consulta}">Cidades</a> |
-                <a th:href="@{/pages/estados/consulta}">Estados</a>
-                <form method="post" th:action="@{/logout}">
+                <!-- Menu dinâmico hierárquico carregado do banco de dados -->
+                <th:block th:each="menuItem, iterStat : ${menuItems}">
+                    <!-- Menu sem filhos -->
+                    <th:block th:if="!${menuItem.hasChildren()}">
+                        <a th:href="@{${menuItem.url}}"
+                           th:text="${menuItem.name}"
+                           th:class="${menuItem.homePage ? 'home-menu' : ''}">Menu Item</a>
+                    </th:block>
+
+                    <!-- Menu com filhos (dropdown) -->
+                    <th:block th:if="${menuItem.hasChildren()}">
+                        <div class="dropdown" style="display: inline-block; position: relative;">
+                            <span th:text="${menuItem.name}" class="dropdown-toggle"
+                                  style="cursor: pointer; padding: 5px;">Menu com Filhos</span>
+                            <div class="dropdown-content" style="display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;">
+                                <th:block th:each="child : ${menuItem.activeChildren}">
+                                    <a th:href="@{${child.url}}"
+                                       th:text="${child.name}"
+                                       th:class="${child.homePage ? 'home-menu' : ''}"
+                                       style="color: black; padding: 12px 16px; text-decoration: none; display: block;">Submenu</a>
+                                </th:block>
+                            </div>
+                        </div>
+                    </th:block>
+
+                    <span th:if="!${iterStat.last}"> | </span>
+                </th:block>
+
+                <!-- Botão de logout sempre presente -->
+                <span th:if="${!#lists.isEmpty(menuItems)}"> | </span>
+                <form method="post" th:action="@{/logout}" style="display: inline;">
                     <button type="submit">Sair</button>
                 </form>
             </nav>

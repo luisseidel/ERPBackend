@@ -105,6 +105,10 @@
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 			<version>${thymeleaf.layout.dilect.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

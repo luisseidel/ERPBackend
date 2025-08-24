@@ -3,7 +3,6 @@ package com.seidelsoft.ERPBackend.endereco.controller.pages;
 import com.seidelsoft.ERPBackend.endereco.model.Cidade;
 import com.seidelsoft.ERPBackend.endereco.service.CidadeService;
 import com.seidelsoft.ERPBackend.endereco.service.EstadoService;
-import com.seidelsoft.ERPBackend.system.annotations.PagePrefix;
 import com.seidelsoft.ERPBackend.system.pages.BasePageController;
 import com.seidelsoft.ERPBackend.system.service.BaseService;
 
@@ -11,11 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Optional;
+
 
 @Controller
-@PagePrefix("cidades")
+@RequestMapping("/pages/cidades")
 public class CidadePageController extends BasePageController<Cidade> {
 
     @Autowired
@@ -23,10 +23,7 @@ public class CidadePageController extends BasePageController<Cidade> {
     @Autowired
     private EstadoService estadoService;
 
-    @Override
-    protected String getPrefix() {
-        return "cidades";
-    }
+
 
     @Override
     public String showAddPage(Model model) {
@@ -79,6 +76,11 @@ public class CidadePageController extends BasePageController<Cidade> {
     @Override
     public String getUrl() {
         return "/pages/cidades";
+    }
+
+    @Override
+    public Cidade getItem() {
+        return new Cidade();
     }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,24 +16,17 @@ import com.seidelsoft.ERPBackend.endereco.model.Cidade;
 import com.seidelsoft.ERPBackend.system.service.BaseService;
 
 @Controller
-@RequestMapping("/pages/{prefix}")
 public abstract class BasePageController<T> {
 
     private Page<T> items;
     private T item;
 
-    protected abstract String getPrefix();
-
     @GetMapping("/consulta")
     public String list(
-        @PathVariable String prefix, 
         Model model,
-        @RequestParam(required = false, defaultValue = "0") int page, 
+        @RequestParam(required = false, defaultValue = "0") int page,
         @RequestParam(required = false, defaultValue = "10") int size
     ) {
-        if (!prefix.equals(getPrefix())) {
-            throw new IllegalArgumentException("Prefix mismatch");
-        }
         return listPage(model, page, size);
     }
 
@@ -52,7 +45,7 @@ public abstract class BasePageController<T> {
     public String showAddPage(Model model) {
         model.addAttribute("title", getAddPageTitle());
         model.addAttribute("addFormAction", getAddFormAction());
-        model.addAttribute("item", new Cidade());
+        model.addAttribute("item", getItem());
         model.addAttribute("url", getUrl());
         model.addAttribute("addFieldsFragment", getAddFieldsFragment());
         return "layouts/baseAddPage";
@@ -83,6 +76,7 @@ public abstract class BasePageController<T> {
     public abstract String getEditPageTitle();
     public abstract String getAddPageTitle();
     public abstract String getUrl();
+    public abstract T getItem();
 
     public String getTableHeaderFragment() {
         return getUrl() + "/_tableHeaderFragment";

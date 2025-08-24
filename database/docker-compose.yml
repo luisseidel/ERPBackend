@@ -1,6 +1,3 @@
-# Use postgres/example user/password credentials
-version: '3.1'
-
 services:
 
   flyway:
@@ -11,7 +8,8 @@ services:
     volumes:
       - ../src/main/resources/db/migration:/flyway/sql
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   postgres:
     image: postgres
@@ -21,10 +19,10 @@ services:
     ports:
       - "1023:5432"
     healthcheck:
-      test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} ${POSTGRES_DB}'" ]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h localhost"]
       interval: 10s
-      timeout: 3s
-      retries: 3
+      timeout: 5s
+      retries: 5
 
   adminer:
     image: adminer

@@ -13,7 +13,7 @@ public class HomeController {
     @GetMapping("/home")
     public String home(Model model) {
         model.addAttribute("mensagem", "Bem-vindo ao Spring com Thymeleaf!");
-        return "/pages/home"; // Vai procurar o arquivo "home.html" em /templates
+        return "/pages/home";
     }
 
     @PostMapping("/logout")
