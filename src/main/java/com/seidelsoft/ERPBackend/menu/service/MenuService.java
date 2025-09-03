@@ -3,7 +3,6 @@ package com.seidelsoft.ERPBackend.menu.service;
 import com.seidelsoft.ERPBackend.menu.model.Menu;
 import com.seidelsoft.ERPBackend.menu.repository.MenuRepository;
 import com.seidelsoft.ERPBackend.system.service.BaseService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,9 +19,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MenuService extends BaseService<Menu> {
-
-    private final MenuRepository menuRepository;
+public class MenuService extends BaseService<Menu, MenuRepository> {
 
     /**
      * Busca todos os itens do menu ativos ordenados por posição
@@ -32,7 +29,7 @@ public class MenuService extends BaseService<Menu> {
     @Cacheable("menuItems")
     public List<Menu> findAllMenuItems() {
         log.debug("Buscando todos os itens do menu no banco de dados");
-        return menuRepository.findAllActiveOrderByPosition();
+        return repository.findAllActiveOrderByPosition();
     }
 
     /**
@@ -43,7 +40,7 @@ public class MenuService extends BaseService<Menu> {
     @Cacheable("menuHierarchy")
     public List<Menu> findRootMenus() {
         log.debug("Buscando menus raiz no banco de dados");
-        return menuRepository.findRootMenusActive();
+        return repository.findRootMenusActive();
     }
 
     /**
@@ -53,7 +50,7 @@ public class MenuService extends BaseService<Menu> {
     @Cacheable("menuHierarchy")
     public List<Menu> findRootMenusWithChildren() {
         log.debug("Buscando menus raiz com filhos no banco de dados");
-        return menuRepository.findRootMenusWithChildren();
+        return repository.findRootMenusWithChildren();
     }
 
     /**
@@ -62,7 +59,7 @@ public class MenuService extends BaseService<Menu> {
      */
     @Cacheable("menuItems")
     public Optional<Menu> findHomePageMenu() {
-        return menuRepository.findHomePageMenu();
+        return repository.findHomePageMenu();
     }
 
     /**
@@ -71,7 +68,7 @@ public class MenuService extends BaseService<Menu> {
      * @return Página de menus
      */
     public Page<Menu> findAllPaged(Pageable pageable) {
-        return menuRepository.findAll(pageable);
+        return repository.findAll(pageable);
     }
 
     /**
@@ -80,7 +77,7 @@ public class MenuService extends BaseService<Menu> {
      * @return Lista de menus ordenada
      */
     public List<Menu> findAll(Sort sort) {
-        return menuRepository.findAll(sort);
+        return repository.findAll(sort);
     }
 
     /**
@@ -95,15 +92,15 @@ public class MenuService extends BaseService<Menu> {
 
         // Se este menu está sendo marcado como home page, desmarcar outros
         if (Boolean.TRUE.equals(menu.getHomePage())) {
-            menuRepository.findHomePageMenu().ifPresent(existingHome -> {
+            repository.findHomePageMenu().ifPresent(existingHome -> {
                 if (!existingHome.getId().equals(menu.getId())) {
                     existingHome.setHomePage(false);
-                    menuRepository.save(existingHome);
+                    repository.save(existingHome);
                 }
             });
         }
 
-        menuRepository.save(menu);
+        repository.save(menu);
     }
 
     /**
@@ -116,7 +113,7 @@ public class MenuService extends BaseService<Menu> {
 
     @Override
     public Optional<Menu> getById(Long id) {
-        return menuRepository.findById(id);
+        return repository.findById(id);
     }
 
     @Override
@@ -124,7 +121,7 @@ public class MenuService extends BaseService<Menu> {
     @CacheEvict(value = {"menuItems", "menuHierarchy"}, allEntries = true)
     public void delete(Long id) {
         log.debug("Removendo menu com ID: {}", id);
-        menuRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Override

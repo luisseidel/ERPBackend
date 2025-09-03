@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="editFields(item)">
+
+    <div>
+        <label for="nome">Nome:</label>
+        <input id="nome" required th:field="*{nome}" type="text"/>
+    </div>
+
+    <div>
+        <label for="pais">Pais:</label>
+        <input disabled id="pais" required th:field="*{pais}" type="text"/>
+    </div>
+
+    <div>
+        <label for="paisNome">Pais nome:</label>
+        <input disabled id="paisNome" required th:field="*{pais.nome}" type="text"/>
+    </div>
+
+    <div>
+        <label for="uf">uf:</label>
+        <input id="uf" required th:field="*{uf}" type="text"/>
+    </div>
+
+    <div>
+        <label for="ibge">Ibge:</label>
+        <input id="ibge" required th:field="*{ibge}" type="text"/>
+    </div>
+</div>
+</body>
+</html>

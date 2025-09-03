@@ -55,4 +55,4 @@ VALUES (27, 'Tocantins', 'TO', 17, 1);
 INSERT INTO public.estado(id, nome, uf, ibge, pais)
 VALUES (99, 'Exterior', 'EX', 99, NULL);
 
-ALTER SEQUENCE seq_estado RESTART 99;
+ALTER SEQUENCE seq_estado RESTART 100;

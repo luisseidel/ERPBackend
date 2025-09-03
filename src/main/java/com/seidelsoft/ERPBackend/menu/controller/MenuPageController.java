@@ -3,9 +3,6 @@ package com.seidelsoft.ERPBackend.menu.controller;
 import com.seidelsoft.ERPBackend.menu.model.Menu;
 import com.seidelsoft.ERPBackend.menu.service.MenuService;
 import com.seidelsoft.ERPBackend.system.pages.BasePageController;
-import com.seidelsoft.ERPBackend.system.service.BaseService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,22 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/pages/menus")
-public class MenuPageController extends BasePageController<Menu> {
-
-    @Autowired
-    private MenuService menuService;
+public class MenuPageController extends BasePageController<Menu, MenuService> {
 
     @Override
     public String showAddPage(Model model) {
         // Adiciona lista de menus para seleção de pai
-        model.addAttribute("parentMenus", menuService.findAll(Sort.by("orderPosition", "name")));
+        model.addAttribute("parentMenus", service.findAll(Sort.by("orderPosition", "name")));
         return super.showAddPage(model);
     }
 
     @Override
     public String showEditPage(long id, Model model) {
         // Adiciona lista de menus para seleção de pai (excluindo o próprio menu e seus filhos)
-        model.addAttribute("parentMenus", menuService.findAll(Sort.by("orderPosition", "name"))
+        model.addAttribute("parentMenus", service.findAll(Sort.by("orderPosition", "name"))
                 .stream()
                 .filter(menu -> !menu.getId().equals(id) && !isDescendant(menu, id))
                 .toList());
@@ -47,14 +41,14 @@ public class MenuPageController extends BasePageController<Menu> {
         if (item.getHomePage() == null) {
             item.setHomePage(false);
         }
-        
-        menuService.save(item);
+
+        service.save(item);
         return getUrlPageConsulta();
     }
 
     @Override
     public String update(long id, Menu item) {
-        Menu existente = menuService.getById(id)
+        Menu existente = service.getById(id)
             .orElseThrow(() -> new IllegalArgumentException("Menu inválido"));
 
         // Atualiza os campos
@@ -66,20 +60,20 @@ public class MenuPageController extends BasePageController<Menu> {
         existente.setHomePage(item.getHomePage());
         existente.setIcon(item.getIcon());
         existente.setDescription(item.getDescription());
-        
-        menuService.save(existente);
+
+        service.save(existente);
         return getUrlPageConsulta();
     }
 
     @Override
     public String delete(long id) {
-        menuService.delete(id);
+        service.delete(id);
         return getUrlPageConsulta();
     }
 
     @Override
-    public BaseService<Menu> getService() {
-        return menuService;
+    public MenuService getService() {
+        return service;
     }
 
     @Override
