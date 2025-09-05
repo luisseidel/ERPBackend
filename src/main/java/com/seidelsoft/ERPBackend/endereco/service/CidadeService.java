@@ -3,50 +3,12 @@ package com.seidelsoft.ERPBackend.endereco.service;
 import com.seidelsoft.ERPBackend.endereco.model.Cidade;
 import com.seidelsoft.ERPBackend.endereco.repository.CidadeRepository;
 import com.seidelsoft.ERPBackend.system.service.BaseService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CidadeService extends BaseService<Cidade, CidadeRepository> {
-
-    @Override
-    public Optional<Cidade> getById(Long id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public List<Cidade> findAll(Sort sort) {
-        if (sort != null) {
-            return repository.findAll(sort);
-        }
-        return null;
-    }
-
-    @Override
-    public Page<Cidade> findAllPaged(Pageable pageable) {
-        return repository.findAll(pageable);
-    }
-
-    @Override
-    public void save(Cidade entity) {
-        if (!validar(entity)) {
-            throw new IllegalArgumentException("Dados inválidos para a cidade");
-        }
-        repository.save(entity);
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (id == null || !repository.existsById(id)) {
-            throw new IllegalArgumentException("Estado não encontrado");
-        }
-        repository.deleteById(id);
-    }
 
     @Override
     public boolean validar(Cidade entity) {
@@ -60,11 +22,30 @@ public class CidadeService extends BaseService<Cidade, CidadeRepository> {
     }
 
     public Cidade getByIBGE(String ibge) {
-        return repository.findByIbge(ibge);
+        return getSpecificRepository().findByIbge(ibge);
     }
 
     public Cidade findByNomeAndUF(String nome, String uf) {
-        return repository.findByNomeAndEstado_Uf(nome, uf);
+        return getSpecificRepository().findByNomeAndEstado_Uf(nome, uf);
     }
 
+    @Override
+    public void beforeSave(Cidade item) {
+
+    }
+
+    @Override
+    public void afterSave(Cidade savedItem) {
+
+    }
+
+    @Override
+    public void beforeDelete(Optional<Cidade> item) {
+
+    }
+
+    @Override
+    public void afterDelete() {
+
+    }
 }

@@ -15,10 +15,9 @@ public interface IService<T> {
 
     Page<T> findAllPaged(Pageable pageable);
 
-    void save(T entity);
+    T save(T entity);
 
     void delete(Long id);
 
     boolean validar(T entity);
-
 }

@@ -26,24 +26,12 @@ public class CidadePageController extends BasePageController<Cidade, CidadeServi
     }
 
     @Override
-    public String add(Cidade item) {
-        service.save(item);
-        return getUrlPageConsulta();
-    }
-
-    @Override
     public String update(long id, Cidade item) {
         Cidade existente = service.getById(id)
             .orElseThrow(() -> new IllegalArgumentException("Cidade inválida"));
 
         existente.setNome(item.getNome());
         service.save(existente);
-        return getUrlPageConsulta();
-    }
-
-    @Override
-    public String delete(long id) {
-        service.delete(id);
         return getUrlPageConsulta();
     }
 

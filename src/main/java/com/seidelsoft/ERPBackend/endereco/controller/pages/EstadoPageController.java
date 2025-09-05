@@ -24,12 +24,6 @@ public class EstadoPageController extends BasePageController<Estado, EstadoServi
     }
 
     @Override
-    public String add(Estado item) {
-        service.save(item);
-        return getUrlPageConsulta();
-    }
-
-    @Override
     public String update(long id, Estado item) {
         Estado existente = service.getById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Estado inválida"));
@@ -39,13 +33,6 @@ public class EstadoPageController extends BasePageController<Estado, EstadoServi
         return getUrlPageConsulta();
     }
 
-    @Override
-    public String delete(long id) {
-        service.delete(id);
-        return getUrlPageConsulta();
-    }
-
-    @Override
     public EstadoService getService() {
         return service;
     }

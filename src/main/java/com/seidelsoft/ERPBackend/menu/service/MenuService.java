@@ -29,7 +29,7 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
     @Cacheable("menuItems")
     public List<Menu> findAllMenuItems() {
         log.debug("Buscando todos os itens do menu no banco de dados");
-        return repository.findAllActiveOrderByPosition();
+        return getSpecificRepository().findAllActiveOrderByPosition();
     }
 
     /**
@@ -40,7 +40,7 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
     @Cacheable("menuHierarchy")
     public List<Menu> findRootMenus() {
         log.debug("Buscando menus raiz no banco de dados");
-        return repository.findRootMenusActive();
+        return getSpecificRepository().findRootMenusActive();
     }
 
     /**
@@ -50,7 +50,7 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
     @Cacheable("menuHierarchy")
     public List<Menu> findRootMenusWithChildren() {
         log.debug("Buscando menus raiz com filhos no banco de dados");
-        return repository.findRootMenusWithChildren();
+        return getSpecificRepository().findRootMenusWithChildren();
     }
 
     /**
@@ -59,7 +59,7 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
      */
     @Cacheable("menuItems")
     public Optional<Menu> findHomePageMenu() {
-        return repository.findHomePageMenu();
+        return getSpecificRepository().findHomePageMenu();
     }
 
     /**
@@ -85,14 +85,13 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
      * @param menu Item do menu a ser salvo
      * @return Menu salvo
      */
+    @Override
     @Transactional
     @CacheEvict(value = {"menuItems", "menuHierarchy"}, allEntries = true)
-    public void save(Menu menu) {
-        log.debug("Salvando menu: {}", menu.getName());
-
+    public Menu save(Menu menu) {
         // Se este menu está sendo marcado como home page, desmarcar outros
         if (Boolean.TRUE.equals(menu.getHomePage())) {
-            repository.findHomePageMenu().ifPresent(existingHome -> {
+            getSpecificRepository().findHomePageMenu().ifPresent(existingHome -> {
                 if (!existingHome.getId().equals(menu.getId())) {
                     existingHome.setHomePage(false);
                     repository.save(existingHome);
@@ -100,7 +99,7 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
             });
         }
 
-        repository.save(menu);
+        return repository.save(menu);
     }
 
     /**
@@ -120,7 +119,6 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
     @Transactional
     @CacheEvict(value = {"menuItems", "menuHierarchy"}, allEntries = true)
     public void delete(Long id) {
-        log.debug("Removendo menu com ID: {}", id);
         repository.deleteById(id);
     }
 
@@ -128,5 +126,33 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
     public boolean validar(Menu entity) {
         return entity.getName() != null && !entity.getName().trim().isEmpty() &&
                        entity.getUrl() != null && !entity.getUrl().trim().isEmpty();
+    }
+
+    @Override
+    public void beforeSave(Menu item) {
+        if (item.getOrderPosition() == null) {
+            item.setOrderPosition(0);
+        }
+        if (item.getActive() == null) {
+            item.setActive(true);
+        }
+        if (item.getHomePage() == null) {
+            item.setHomePage(false);
+        }
+    }
+
+    @Override
+    public void afterSave(Menu savedItem) {
+
+    }
+
+    @Override
+    public void beforeDelete(Optional<Menu> item) {
+
+    }
+
+    @Override
+    public void afterDelete() {
+
     }
 }

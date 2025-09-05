@@ -51,9 +51,6 @@ public abstract class BasePageController<T, K> {
         return "layouts/baseAddPage";
     }
 
-    @PostMapping(path = "/add")
-    public abstract String add(T item);
-
     @GetMapping(path = "/editar/{id}")
     public String showEditPage(@PathVariable("id") long id, Model model) {
         item = getService().getById(id).orElseThrow();
@@ -65,11 +62,23 @@ public abstract class BasePageController<T, K> {
         return "layouts/baseEditPage";
     }
 
+    @PostMapping(path = "/add")
+    public String add(T item) {
+        getService().save(item);
+        return getUrlPageConsulta();
+    }
+
     @PostMapping(path = "/update/{id}")
-    public abstract String update(@PathVariable("id") long id, T item);
+    public String update(@PathVariable("id") long id, T item) {
+        getService().save(item);
+        return getUrlPageConsulta();
+    }
 
     @GetMapping(path = "/delete/{id}")
-    public abstract String delete(@PathVariable("id") long id);
+    public String delete(@PathVariable("id") long id) {
+        getService().delete(id);
+        return getUrlPageConsulta();
+    }
 
     public abstract IService<T> getService();
     public abstract String getListPageTitle();
@@ -81,27 +90,21 @@ public abstract class BasePageController<T, K> {
     public String getTableHeaderFragment() {
         return getUrl() + "/_tableHeaderFragment";
     }
-
     public String getTableLineFragment() {
         return getUrl() + "/_tableLineFragment";
     }
-
     public String getAddFieldsFragment() {
         return getUrl() + "/_addFieldsFragment";
     }
-
     public String getEditFieldsFragment() {
         return getUrl() + "/_editFieldsFragment";
     }
-
     public String getAddFormAction() {
         return getUrl() + "/add";
     }
-
     public String getUpdateFormAction() {
         return getUrl() + "/update/{id}";
     }
-
     public String getUrlPageConsulta() {
         return "redirect:"+getUrl()+"/consulta";
     }

@@ -14,14 +14,12 @@ public class MenuPageController extends BasePageController<Menu, MenuService> {
 
     @Override
     public String showAddPage(Model model) {
-        // Adiciona lista de menus para seleção de pai
         model.addAttribute("parentMenus", service.findAll(Sort.by("orderPosition", "name")));
         return super.showAddPage(model);
     }
 
     @Override
     public String showEditPage(long id, Model model) {
-        // Adiciona lista de menus para seleção de pai (excluindo o próprio menu e seus filhos)
         model.addAttribute("parentMenus", service.findAll(Sort.by("orderPosition", "name"))
                 .stream()
                 .filter(menu -> !menu.getId().equals(id) && !isDescendant(menu, id))
@@ -30,28 +28,10 @@ public class MenuPageController extends BasePageController<Menu, MenuService> {
     }
 
     @Override
-    public String add(Menu item) {
-        // Define valores padrão se não informados
-        if (item.getOrderPosition() == null) {
-            item.setOrderPosition(0);
-        }
-        if (item.getActive() == null) {
-            item.setActive(true);
-        }
-        if (item.getHomePage() == null) {
-            item.setHomePage(false);
-        }
-
-        service.save(item);
-        return getUrlPageConsulta();
-    }
-
-    @Override
     public String update(long id, Menu item) {
         Menu existente = service.getById(id)
             .orElseThrow(() -> new IllegalArgumentException("Menu inválido"));
 
-        // Atualiza os campos
         existente.setName(item.getName());
         existente.setUrl(item.getUrl());
         existente.setParent(item.getParent());
@@ -62,12 +42,6 @@ public class MenuPageController extends BasePageController<Menu, MenuService> {
         existente.setDescription(item.getDescription());
 
         service.save(existente);
-        return getUrlPageConsulta();
-    }
-
-    @Override
-    public String delete(long id) {
-        service.delete(id);
         return getUrlPageConsulta();
     }
 

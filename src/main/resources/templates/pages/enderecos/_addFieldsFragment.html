@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="addFields(item)">
+
+    <div>
+        <label for="cep">Cep:</label>
+        <input id="cep" required th:field="*{cep}" type="text"/>
+    </div>
+
+    <div>
+        <label for="logradouro">Logradouro:</label>
+        <input id="logradouro" required th:field="*{logradouro}" type="text"/>
+    </div>
+
+    <div>
+        <label for="numero">Numero:</label>
+        <input id="numero" required th:field="*{numero}" type="text"/>
+    </div>
+
+    <div>
+        <label for="bairro">Bairro:</label>
+        <input id="bairro" required th:field="*{bairro}" type="text"/>
+    </div>
+
+    <div>
+        <label for="complemento">Complemento:</label>
+        <input id="complemento" required th:field="*{complemento}" type="text"/>
+    </div>
+
+    <div>
+        <label for="pontoReferencia">Ponto de Referencia:</label>
+        <input id="pontoReferencia" required th:field="*{pontoReferencia}" type="text"/>
+    </div>
+
+    <div>
+        <label for="cidade">Cidade:</label>
+        <select id="cidade" required th:field="*{cidade}">
+            <option disabled selected value="">-- selecione --</option>
+            <option th:each="cidade : ${cidades}"
+                    th:text="${cidade.nome}"
+                    th:value="${cidade.id}">
+            </option>
+        </select>
+    </div>
+
+</body>
+</html>

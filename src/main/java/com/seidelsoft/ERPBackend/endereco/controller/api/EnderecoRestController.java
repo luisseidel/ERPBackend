@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/enderecos")
 public class EnderecoRestController implements SecuredController {
 
-
 	@Autowired
 	private EnderecoService service;
 
 	@GetMapping("/id/{id}")
 	public ResponseEntity getEndereco(@PathVariable Long id) {
-		return service.findById(id);
+        try {
+            return ResponseEntity.ok(service.getById(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 	}
 
 	@GetMapping("/cep/{cep}")
