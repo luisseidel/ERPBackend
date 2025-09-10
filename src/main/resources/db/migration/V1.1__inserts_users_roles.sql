@@ -9,3 +9,5 @@ VALUES (nextval('seq_usuario'), 'luis.seidel@example.com', 'Luis Seidel',
 
 INSERT INTO public.user_role(id, user_id, role_id)
 VALUES (nextval('seq_user_role'), 1, 1);
+
+ALTER SEQUENCE seq_user_role RESTART 2;

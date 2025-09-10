@@ -18,25 +18,21 @@ CREATE INDEX idx_menu_active ON public.menu(active);
 CREATE INDEX idx_menu_order ON public.menu(order_position);
 CREATE INDEX idx_menu_home_page ON public.menu(home_page);
 
-insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
-values (nextval('seq_menu'), 'Home', '/pages/home', null, 0, true, true, 'Página inicial do sistema');
-insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
-values (nextval('seq_menu'), 'Cidades', '/pages/cidades/consulta', null, 1, true, false, 'Gerenciamento de cidades');
-insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
-values (nextval('seq_menu'), 'Estados', '/pages/estados/consulta', null, 2, true, false, 'Gerenciamento de estados');
+INSERT INTO public.menu(id, name, url, parent_id, order_position, active, home_page, description)
+VALUES
+(nextval('seq_menu'), 'Cadastros', '#', NULL, 1, TRUE, FALSE, 'Menu de cadastros gerais'),
+(nextval('seq_menu'), 'Relatórios', '#', NULL, 2, TRUE, FALSE, 'Menu de relatórios');
 
 -- Inserir menu para gerenciar menus
 INSERT INTO public.menu(id, name, url, parent_id, order_position, active, home_page, description)
-VALUES (nextval('seq_menu'), 'Menus', '/pages/menus/consulta', 
+VALUES (nextval('seq_menu'), 'Menus', '/pages/menus/consulta',
         (SELECT id FROM public.menu WHERE name = 'Cadastros'), 1, TRUE, FALSE, 'Gerenciamento de menus do sistema');
 
-
--- Inserir alguns submenus de exemplo
-INSERT INTO public.menu(id, name, url, parent_id, order_position, active, home_page, description)
-VALUES 
-(nextval('seq_menu'), 'Cadastros', '#', NULL, 4, TRUE, FALSE, 'Menu de cadastros gerais'),
-(nextval('seq_menu'), 'Relatórios', '#', NULL, 5, TRUE, FALSE, 'Menu de relatórios');
-
--- Mover Cidades e Estados para submenu Cadastros
-UPDATE public.menu SET parent_id = (SELECT id FROM public.menu WHERE name = 'Cadastros') 
-WHERE name IN ('Cidades', 'Estados', 'Menus');
+insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
+values (nextval('seq_menu'), 'Home', '/pages/home', null, 0, true, true, 'Página inicial do sistema');
+insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
+values (nextval('seq_menu'), 'Cidades', '/pages/cidades/consulta', (select id from public.menu where name = 'Cadastros'), 1, true, false, 'Gerenciamento de cidades');
+insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
+values (nextval('seq_menu'), 'Estados', '/pages/estados/consulta', (select id from public.menu where name = 'Cadastros'), 2, true, false, 'Gerenciamento de estados');
+insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
+values (nextval('seq_menu'), 'Usuários', '/pages/usuarios/consulta', (select id from public.menu where name = 'Cadastros'), 4, true, false, 'Gerenciamento de Usuarios');

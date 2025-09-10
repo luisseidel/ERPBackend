@@ -1,7 +1,7 @@
 package com.seidelsoft.ERPBackend.system.config;
 
 import com.seidelsoft.ERPBackend.auth.service.JwtService;
-import com.seidelsoft.ERPBackend.auth.service.UserDetailService;
+import com.seidelsoft.ERPBackend.auth.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailService userDetailService;
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(
@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String userEmail = jwtService.extractUsername(jwt);
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailService.loadUserByUsername(userEmail);
+            UserDetails userDetails = this.userService.loadUserByUsername(userEmail);
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

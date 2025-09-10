@@ -1,11 +1,13 @@
 # COMMERCE ERP
-* Sistema backend de ERP
+
+* Sistema CRUD básico, feito com Spring e Thymeleaf
 * Permite o cadastro de Usuários e Endereços e acesso ao sistema.
-* É uma API Restful, com os métodos GET, POST, PUT e DELETE.
+* Também possui uma API Restful, com os métodos GET, POST, PUT e DELETE.
 
 
 ## Tecnologias utilizadas
-* Java 17
+
+* Java 24
 * Spring Web
 * Spring Data
 * Spring Security
@@ -13,10 +15,20 @@
 * Flyway
 * Postgre SQL
 * Swagger UI
+* Thymeleaf
 
 
 ## Swagger Docs:
 http://localhost:8080/swagger-ui/index.html
 
-## Pré Requisitos:
-1. Criar banco de dados com nome: local_spring
+## To-do
+
+- [x] Criar CRUD Paises
+- [x] Criar CRUD Estados
+- [x] Criar CRUD Menus
+- [x] Criar cache para menus
+- [x] Criar CRUD Cidades
+- [] Criar tratamento e exibição padrão de erros
+- [x] Criar CRUD Usuarios
+- [] Criar CRUD Permissões
+- [] Criar Testes Unitários

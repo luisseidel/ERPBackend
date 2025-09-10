@@ -1,5 +1,6 @@
 package com.seidelsoft.ERPBackend.system.pages;
 
+import com.seidelsoft.ERPBackend.system.service.BaseService;
 import com.seidelsoft.ERPBackend.system.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public abstract class BasePageController<T, K> {
+public abstract class BasePageController<T, K extends BaseService> {
 
     private Page<T> items;
     private T item;

@@ -63,13 +63,17 @@ public abstract class BaseService<T, K> implements IService<T> {
         afterDelete();
     }
 
-    public abstract void beforeSave(T item);
+    public void beforeSave(T item) {
+    }
 
-    public abstract void afterSave(T savedItem);
+    public void afterSave(T savedItem) {
+    }
 
-    public abstract void beforeDelete(Optional<T> item);
+    public void beforeDelete(Optional<T> item) {
+    }
 
-    public abstract void afterDelete();
+    public void afterDelete() {
+    }
 
 
 }
