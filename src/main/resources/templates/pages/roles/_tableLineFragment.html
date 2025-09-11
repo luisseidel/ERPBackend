@@ -1,0 +1,12 @@
+<th:block th:fragment="tableLine(item)">
+    <tr>
+        <td th:text="${item.id}">1</td>
+        <td th:text="${item.name}">Exemplo</td>
+        <td th:text="${item.active}">Sim</td>
+        <td>
+            <a th:href="@{__${url}__/editar/{id}(id=${item.id})}">Editar</a>
+            <a onclick="return confirm('Tem certeza que deseja excluir?')"
+               th:href="@{__${url}__/delete/{id}(id=${item.id})}">Excluir</a>
+        </td>
+    </tr>
+</th:block>

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Role implements IEnum {
+public enum RoleEnum implements IEnum {
 	ADMIN(1L, "Administrador"),
 	USER(2L, "Usuário");
 
@@ -13,8 +13,8 @@ public enum Role implements IEnum {
 	private final String descricao;
 
 	@Override
-	public Role valueOf(Long value) {
-		for (Role r : Role.values()) {
+    public RoleEnum valueOf(Long value) {
+        for (RoleEnum r : RoleEnum.values()) {
 			if (valueEquals(r.getValue(), value)) {
 				return r;
 			}

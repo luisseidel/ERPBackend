@@ -31,8 +31,10 @@ VALUES (nextval('seq_menu'), 'Menus', '/pages/menus/consulta',
 insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
 values (nextval('seq_menu'), 'Home', '/pages/home', null, 0, true, true, 'Página inicial do sistema');
 insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
-values (nextval('seq_menu'), 'Cidades', '/pages/cidades/consulta', (select id from public.menu where name = 'Cadastros'), 1, true, false, 'Gerenciamento de cidades');
+values (nextval('seq_menu'), 'Cidades', '/pages/cidades/consulta', (select id from public.menu where name = 'Cadastros'), 1, true, false, 'Gerenciamento de Cidades');
 insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
-values (nextval('seq_menu'), 'Estados', '/pages/estados/consulta', (select id from public.menu where name = 'Cadastros'), 2, true, false, 'Gerenciamento de estados');
+values (nextval('seq_menu'), 'Estados', '/pages/estados/consulta', (select id from public.menu where name = 'Cadastros'), 2, true, false, 'Gerenciamento de Estados');
 insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
-values (nextval('seq_menu'), 'Usuários', '/pages/usuarios/consulta', (select id from public.menu where name = 'Cadastros'), 4, true, false, 'Gerenciamento de Usuarios');
+values (nextval('seq_menu'), 'Usuários', '/pages/usuarios/consulta', (select id from public.menu where name = 'Cadastros'), 4, true, false, 'Gerenciamento de Usuários');
+insert into public.menu(id, name, url, parent_id, order_position, active, home_page, description)
+values (nextval('seq_menu'), 'Roles', '/pages/roles/consulta', (select id from public.menu where name = 'Cadastros'), 5, true, false, 'Gerenciamento de Roles de Usuários');

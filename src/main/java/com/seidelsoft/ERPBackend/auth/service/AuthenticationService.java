@@ -4,7 +4,7 @@ import com.seidelsoft.ERPBackend.auth.model.dto.AuthenticationRequestDTO;
 import com.seidelsoft.ERPBackend.auth.model.dto.AuthenticationResponseDTO;
 import com.seidelsoft.ERPBackend.auth.model.dto.RegisterRequestDTO;
 import com.seidelsoft.ERPBackend.auth.model.entity.User;
-import com.seidelsoft.ERPBackend.auth.model.enumerations.Role;
+import com.seidelsoft.ERPBackend.auth.model.enumerations.RoleEnum;
 import com.seidelsoft.ERPBackend.auth.repository.RoleRepository;
 import com.seidelsoft.ERPBackend.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class AuthenticationService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(List.of(roleRepository.findById(Role.USER.getValue()).get()))
+                .roles(List.of(roleRepository.findById(RoleEnum.USER.getValue()).get()))
                 .build();
 
         userRepository.save(user);

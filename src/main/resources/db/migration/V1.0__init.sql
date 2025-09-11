@@ -11,7 +11,8 @@ SET row_security = off;
 create table if not exists public.role
 (
     id   serial primary key,
-    name varchar(255) not null
+    name varchar(255) not null,
+    active boolean default true
 );
 create sequence if not exists public.seq_role increment 1 start 1 owned by role.id;
 
