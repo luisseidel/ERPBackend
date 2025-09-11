@@ -509,4 +509,4 @@ VALUES (262, 'Saint Martin', 'São Martinho, Ilha de (Parte Holandesa)', 'SM');
 INSERT INTO "pais" (id, nome, nome_pt, sigla)
 VALUES (263, 'Terres Australes et Antarctiques Françaises', 'Terras Austrais e Antárcticas Francesas', 'TF');
 
-ALTER SEQUENCE public.seq_pais RESTART 999;
+ALTER SEQUENCE public.seq_pais RESTART 264;

@@ -28,7 +28,6 @@ public class EnderecoPageController extends BasePageController<Endereco, Enderec
         Endereco existente = service.getById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Endereco inválida"));
 
-
         existente.setCep(item.getCep());
         existente.setBairro(item.getBairro());
         existente.setNumero(item.getNumero());

@@ -1,42 +1,42 @@
 package com.seidelsoft.ERPBackend.auth.controller.pages;
 
-import com.seidelsoft.ERPBackend.auth.model.entity.Role;
-import com.seidelsoft.ERPBackend.auth.service.RoleService;
+import com.seidelsoft.ERPBackend.auth.model.entity.Permission;
+import com.seidelsoft.ERPBackend.auth.service.PermissionService;
 import com.seidelsoft.ERPBackend.system.pages.BasePageController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/pages/roles")
-public class RolePageController extends BasePageController<Role, RoleService> {
+@RequestMapping("/pages/permissoes")
+public class PermissionPageController extends BasePageController<Permission, PermissionService> {
 
     @Override
-    public RoleService getService() {
+    public PermissionService getService() {
         return service;
     }
 
     @Override
     public String getListPageTitle() {
-        return "Consulta Roles de Usuários";
+        return "Consulta Permissões";
     }
 
     @Override
     public String getEditPageTitle() {
-        return "Editar Roles de Usuários";
+        return "Editar Permissão";
     }
 
     @Override
     public String getAddPageTitle() {
-        return "Adicionar Role de Usuário";
+        return "Adicionar Permissão";
     }
 
     @Override
     public String getUrl() {
-        return "/pages/roles";
+        return "/pages/permissoes";
     }
 
     @Override
-    public Role getItem() {
-        return new Role();
+    public Permission getItem() {
+        return new Permission();
     }
 }

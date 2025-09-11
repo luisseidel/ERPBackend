@@ -44,6 +44,27 @@ create table if not exists public.user_role
 );
 create sequence if not exists public.seq_user_role increment 1 start 1 owned by user_role.id;
 
+--PERMISSIONS
+create table if not exists public.permission(
+    id  bigserial primary key,
+    name varchar not null unique,
+    description varchar(255) null
+);
+create sequence if not exists public.seq_permission increment 1 start 1 owned by permission.id;
+
+create table if not exists public.role_permission(
+    id  bigserial not null primary key,
+    role_id bigint not null references role(id),
+    permission_id bigint not null references permission(id),
+    primary key(role_id, permission_id),
+    consultar boolean default false,
+    adicionar boolean default false,
+    editar boolean default false,
+    excluir boolean default false
+);
+create sequence if not exists public.seq_role_permission increment 1 start 1 owned by role_permission.id;
+
+
 --PAISES
 create table if not exists public.pais
 (

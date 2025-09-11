@@ -13,7 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class AuthenticationService {
@@ -34,7 +34,7 @@ public class AuthenticationService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(List.of(roleRepository.findById(RoleEnum.USER.getValue()).get()))
+                .roles(Set.of(roleRepository.findById(RoleEnum.USER.getValue()).get()))
                 .build();
 
         userRepository.save(user);
@@ -50,7 +50,7 @@ public class AuthenticationService {
                 request.getPassword())
         );
 
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var user = userRepository.findByEmailWithPermissions(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponseDTO.builder().token(jwtToken).build();
