@@ -15,11 +15,11 @@ public class RoleService extends BaseService<Role, RoleRepository> {
             if (RoleEnum.ADMIN.getValue().compareTo(entity.getId()) == 0) {
                 msgValidacao.append("Não é possível excluir a Role de Admin");
             }
-            if (RoleEnum.USER.getValue().compareTo(entity.getId()) != 0) {
+            if (RoleEnum.USER.getValue().compareTo(entity.getId()) == 0) {
                 msgValidacao.append("Não é possível excluir a Role User");
             }
         }
-        return true;
+        return msgValidacao.isEmpty();
     }
 
 }

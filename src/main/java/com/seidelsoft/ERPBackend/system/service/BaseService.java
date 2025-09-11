@@ -63,7 +63,7 @@ public abstract class BaseService<T, K> implements IService<T> {
     public void beforeSave(T item) {
         StringBuilder msgValidacao = new StringBuilder();
         if (!validar(item, msgValidacao)) {
-            throw new IllegalArgumentException("Dados inválidos!" + msgValidacao);
+            throw new IllegalArgumentException("Dados inválidos! " + msgValidacao);
         }
     }
 
