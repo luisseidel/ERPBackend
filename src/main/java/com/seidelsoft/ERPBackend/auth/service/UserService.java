@@ -25,14 +25,17 @@ public class UserService extends BaseService<User, UserRepository> implements Us
     }
 
     @Override
-    public boolean validar(User entity) {
+    public boolean validar(User entity, StringBuilder msgValidacao) {
         if (StringUtils.isEmpty(entity.getName())) {
             return false;
         }
         if (StringUtils.isEmpty(entity.getEmail())) {
             return false;
         }
-        return !StringUtils.isEmpty(entity.getPassword());
+        if (StringUtils.isEmpty(entity.getPassword())) {
+            return false;
+        }
+        return msgValidacao.isEmpty();
     }
 
     @Override

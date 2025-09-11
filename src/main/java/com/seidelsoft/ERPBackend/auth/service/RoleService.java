@@ -10,10 +10,16 @@ import org.springframework.stereotype.Service;
 public class RoleService extends BaseService<Role, RoleRepository> {
 
     @Override
-    public boolean validar(Role entity) {
-        if (RoleEnum.ADMIN.getValue().compareTo(entity.getId()) == 0) {
-            return false;
+    public boolean validar(Role entity, StringBuilder msgValidacao) {
+        if (entity != null) {
+            if (RoleEnum.ADMIN.getValue().compareTo(entity.getId()) == 0) {
+                msgValidacao.append("Não é possível excluir a Role de Admin");
+            }
+            if (RoleEnum.USER.getValue().compareTo(entity.getId()) != 0) {
+                msgValidacao.append("Não é possível excluir a Role User");
+            }
         }
-        return RoleEnum.USER.getValue().compareTo(entity.getId()) != 0;
+        return true;
     }
+
 }

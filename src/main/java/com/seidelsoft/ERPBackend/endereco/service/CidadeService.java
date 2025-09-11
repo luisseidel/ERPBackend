@@ -9,14 +9,17 @@ import org.springframework.stereotype.Service;
 public class CidadeService extends BaseService<Cidade, CidadeRepository> {
 
     @Override
-    public boolean validar(Cidade entity) {
+    public boolean validar(Cidade entity, StringBuilder msgValidacao) {
         if (entity.getNome() == null || entity.getNome().isEmpty()) {
             return false;
         }
         if (entity.getEstado() == null || entity.getEstado().getUf() == null || entity.getEstado().getUf().isEmpty()) {
             return false;
         }
-        return entity.getIbge() != null && !entity.getIbge().isEmpty();
+        if (entity.getIbge() == null || entity.getIbge().isEmpty()) {
+            return false;
+        }
+        return msgValidacao.isEmpty();
     }
 
     public Cidade getByIBGE(String ibge) {

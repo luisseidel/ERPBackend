@@ -19,5 +19,5 @@ public interface IService<T> {
 
     void delete(Long id);
 
-    boolean validar(T entity);
+    boolean validar(T entity, StringBuilder msgValidacao);
 }

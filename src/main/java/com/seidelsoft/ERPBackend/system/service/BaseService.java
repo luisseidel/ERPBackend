@@ -44,9 +44,6 @@ public abstract class BaseService<T, K> implements IService<T> {
 
     @Override
     public T save(T entity) {
-        if (!validar(entity)) {
-            throw new IllegalArgumentException("Dados inválidos!");
-        }
         beforeSave(entity);
         T saved = repository.save(entity);
         afterSave(saved);
@@ -64,16 +61,14 @@ public abstract class BaseService<T, K> implements IService<T> {
     }
 
     public void beforeSave(T item) {
+        StringBuilder msgValidacao = new StringBuilder();
+        if (!validar(item, msgValidacao)) {
+            throw new IllegalArgumentException("Dados inválidos!" + msgValidacao);
+        }
     }
 
-    public void afterSave(T savedItem) {
-    }
-
-    public void beforeDelete(Optional<T> item) {
-    }
-
-    public void afterDelete() {
-    }
-
+    public void afterSave(T savedItem) {}
+    public void beforeDelete(Optional<T> item) {}
+    public void afterDelete() {}
 
 }

@@ -123,9 +123,14 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
     }
 
     @Override
-    public boolean validar(Menu entity) {
-        return entity.getName() != null && !entity.getName().trim().isEmpty() &&
-                       entity.getUrl() != null && !entity.getUrl().trim().isEmpty();
+    public boolean validar(Menu entity, StringBuilder msgValidacao) {
+        if (entity.getName() == null || entity.getName().trim().isEmpty()) {
+            return false;
+        }
+        if (entity.getUrl() == null || entity.getUrl().trim().isEmpty()) {
+            return false;
+        }
+        return msgValidacao.isEmpty();
     }
 
     @Override
@@ -141,18 +146,4 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
         }
     }
 
-    @Override
-    public void afterSave(Menu savedItem) {
-
-    }
-
-    @Override
-    public void beforeDelete(Optional<Menu> item) {
-
-    }
-
-    @Override
-    public void afterDelete() {
-
-    }
 }

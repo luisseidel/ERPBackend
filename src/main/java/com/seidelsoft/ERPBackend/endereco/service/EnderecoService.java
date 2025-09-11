@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 public class EnderecoService extends BaseService<Endereco, EnderecoRepository> {
@@ -20,8 +18,8 @@ public class EnderecoService extends BaseService<Endereco, EnderecoRepository> {
 	private BuscaCepService buscaCepService;
 
     @Override
-    public boolean validar(Endereco entity) {
-        return true;
+    public boolean validar(Endereco entity, StringBuilder msgValidacao) {
+        return msgValidacao.isEmpty();
     }
 
 	public ResponseEntity findByCep(String cep) {
@@ -43,24 +41,4 @@ public class EnderecoService extends BaseService<Endereco, EnderecoRepository> {
 
 		return e;
 	}
-
-    @Override
-    public void beforeSave(Endereco item) {
-
-    }
-
-    @Override
-    public void afterSave(Endereco savedItem) {
-
-    }
-
-    @Override
-    public void beforeDelete(Optional<Endereco> item) {
-
-    }
-
-    @Override
-    public void afterDelete() {
-
-    }
 }
