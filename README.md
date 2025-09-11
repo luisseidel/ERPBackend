@@ -32,3 +32,5 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Criar CRUD Usuarios
 - [] Criar CRUD Permissões
 - [] Criar Testes Unitários
+- [] Usar RabbitMQ
+- [] Criar pipeline CI/CD

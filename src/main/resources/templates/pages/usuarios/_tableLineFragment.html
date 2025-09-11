@@ -3,6 +3,7 @@
         <td th:text="${item.id}">1</td>
         <td th:text="${item.name}">Exemplo</td>
         <td th:text="${item.email}">asd@asd.com</td>
+        <td th:text="${item.enabled}">Sim</td>
         <td>
             <a th:href="@{__${url}__/editar/{id}(id=${item.id})}">Editar</a>
             <a onclick="return confirm('Tem certeza que deseja excluir?')"

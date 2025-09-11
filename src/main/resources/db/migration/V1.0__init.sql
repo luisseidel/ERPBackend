@@ -22,7 +22,11 @@ create table if not exists public.usuario
     id       serial primary key,
     email    varchar(255) not null,
     name     varchar(255) not null,
-    password varchar(255) not null
+    password varchar(255) not null,
+    enabled  boolean not null default true,
+    account_expired     boolean not null default false,
+    account_locked      boolean not null default false,
+    credentials_expired boolean not null default false,
 );
 create sequence if not exists public.seq_usuario increment 1 start 1 owned by usuario.id;
 

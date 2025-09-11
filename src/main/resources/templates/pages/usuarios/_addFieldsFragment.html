@@ -18,14 +18,34 @@
     </div>
 
     <div>
-        <label for="permissao">Permissão:</label>
-        <select id="permissao" required th:field="*{roles}">
+        <label for="papel">Papel:</label>
+        <select id="papel" required th:field="*{roles}">
             <option disabled selected value="">-- selecione --</option>
             <option th:each="role : ${roles}"
                     th:text="${role.name}"
                     th:value="${role.id}">
             </option>
         </select>
+    </div>
+
+    <div>
+        <label for="enabled">Ativo:</label>
+        <input id="enabled" th:field="*{enabled}" type="checkbox">
+    </div>
+
+    <div>
+        <label for="accountExpired">Conta Expirada:</label>
+        <input id="accountExpired" th:field="*{accountExpired}" type="checkbox">
+    </div>
+
+    <div>
+        <label for="accountLocked">Conta Trancada:</label>
+        <input id="accountLocked" th:field="*{accountLocked}" type="checkbox">
+    </div>
+
+    <div>
+        <label for="credentialsExpired">Credenciais Expiradas:</label>
+        <input id="credentialsExpired" th:field="*{credentialsExpired}" type="checkbox">
     </div>
 </div>
 </body>

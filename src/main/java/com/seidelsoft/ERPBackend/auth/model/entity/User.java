@@ -33,6 +33,18 @@ public class User implements UserDetails {
 	@Column(name = "password", length = 255, nullable = false)
 	private String password;
 
+    @Column(name = "enabled", nullable = false)
+    private Boolean enabled;
+
+    @Column(name = "account_expired", nullable = false)
+    private Boolean accountExpired;
+
+    @Column(name = "account_locked", nullable = false)
+    private Boolean accountLocked;
+
+    @Column(name = "credentials_expired", nullable = false)
+    private Boolean credentialsExpired;
+
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
@@ -59,21 +71,33 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
+        if (accountExpired != null) {
+            return Boolean.FALSE.compareTo(accountExpired) == 0;
+        }
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
+        if (accountLocked != null) {
+            return Boolean.FALSE.compareTo(accountLocked) == 0;
+        }
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
+        if (credentialsExpired != null) {
+            return Boolean.FALSE.compareTo(credentialsExpired) == 0;
+        }
         return true;
     }
 
     @Override
     public boolean isEnabled() {
+        if (enabled != null) {
+            return Boolean.TRUE.compareTo(enabled) == 0;
+        }
         return true;
     }
 }
