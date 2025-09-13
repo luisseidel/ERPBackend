@@ -27,7 +27,7 @@ create table if not exists public.usuario
     enabled  boolean not null default true,
     account_expired     boolean not null default false,
     account_locked      boolean not null default false,
-    credentials_expired boolean not null default false,
+    credentials_expired boolean not null default false
 );
 create sequence if not exists public.seq_usuario increment 1 start 1 owned by usuario.id;
 
@@ -56,7 +56,6 @@ create table if not exists public.role_permission(
     id  bigserial not null primary key,
     role_id bigint not null references role(id),
     permission_id bigint not null references permission(id),
-    primary key(role_id, permission_id),
     consultar boolean default false,
     adicionar boolean default false,
     editar boolean default false,

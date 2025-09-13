@@ -25,10 +25,10 @@ insert into public.permission(id, name, description) values
 (nextval('seq_permission'), 'MENU', 'Permissões relacionadas a Menus'),
 (nextval('seq_permission'), 'USUARIO', 'Permissões relacionadas a Usuários'),
 (nextval('seq_permission'), 'ROLE', 'Permissões relacionadas a Roles'),
-(nextval('seq_permission'), 'PERMISSION', 'Permissões relacionadas a Permissões');
+(nextval('seq_permission'), 'PERMISSION', 'Permissões relacionadas a Permissões'),
 (nextval('seq_permission'), 'ESTADO', 'Permissões relacionadas a Estados'),
 (nextval('seq_permission'), 'CIDADE', 'Permissões relacionadas a Cidades'),
-(nextval('seq_permission'), 'ENDERECO', 'Permissões relacionadas a Endereços'),
+(nextval('seq_permission'), 'ENDERECO', 'Permissões relacionadas a Endereços');
 
 -- ATRIBUINDO PERMISSIONS A ROLES (role_permission)
 -- Admin recebe todas as permissões
@@ -36,10 +36,10 @@ insert into public.role_permission(id, role_id, permission_id, consultar, adicio
 (nextval('seq_role_permission'), 1, 1, true, true, true, true),  -- MENU
 (nextval('seq_role_permission'), 1, 2, true, true, true, true),  -- USUARIO
 (nextval('seq_role_permission'), 1, 3, true, true, true, true),  -- ROLE
-(nextval('seq_role_permission'), 1, 4, true, true, true, true);  -- PERMISSION
+(nextval('seq_role_permission'), 1, 4, true, true, true, true),  -- PERMISSION
 (nextval('seq_role_permission'), 1, 5, true, true, true, true),  -- ESTADO
 (nextval('seq_role_permission'), 1, 6, true, true, true, true),  -- CIDADE
-(nextval('seq_role_permission'), 1, 7, true, true, true, true),  -- ENDERECO
+(nextval('seq_role_permission'), 1, 7, true, true, true, true);  -- ENDERECO
 
 -- Usuário padrão (USER) com permissões apenas de consulta e edição em cidades e estados
 insert into public.role_permission(id, role_id, permission_id, consultar, adicionar, editar, excluir) values
