@@ -2,7 +2,6 @@ package com.seidelsoft.ERPBackend.menu.controller;
 
 import com.seidelsoft.ERPBackend.menu.model.Menu;
 import com.seidelsoft.ERPBackend.menu.service.MenuService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,8 +30,7 @@ public class MenuControllerAdvice {
     @ModelAttribute("menuItems")
     public List<Menu> addMenuItems() {
         try {
-            List<Menu> menuItems = menuService.findRootMenusWithChildren();
-            return menuItems;
+            return menuService.findRootMenusWithChildrenByUser();
         } catch (Exception e) {
             log.error("Erro ao carregar itens do menu: {}", e.getMessage());
             return List.of(); // Retorna lista vazia em caso de erro

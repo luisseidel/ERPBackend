@@ -1,0 +1,5 @@
+<th:block th:fragment="newRecordButton(url, canAdicionar)">
+    <p>
+        <a th:if="${canAdicionar}" th:href="@{__${url}__/adicionar}">Novo</a>
+    </p>
+</th:block>

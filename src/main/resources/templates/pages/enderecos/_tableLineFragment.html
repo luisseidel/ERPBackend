@@ -8,10 +8,12 @@
         <td th:text="${item.complemento}">Complemento</td>
         <td th:text="${item.pontoReferencia}">PontoReferencia</td>
         <td th:text="${(item.cidade != null && item.cidade.nome != null) ? item.cidade.nome : ''}">SP</td>
-        <td>
-            <a th:href="@{__${url}__/editar/{id}(id=${item.id})}">Editar</a>
-            <a onclick="return confirm('Tem certeza que deseja excluir?')"
-               th:href="@{__${url}__/delete/{id}(id=${item.id})}">Excluir</a>
-        </td>
+
+        <th:block th:replace="~{fragments/_actionButtonsFragment :: actionButtons(
+            item=${item},
+            url=${url},
+            canEditar=${canEditar},
+            canExcluir=${canExcluir})}">
+        </th:block>
     </tr>
 </th:block>

@@ -32,60 +32,78 @@ public abstract class BasePageController<T, K extends BaseService> {
         @RequestParam(required = false, defaultValue = "0") int page,
         @RequestParam(required = false, defaultValue = "10") int size
     ) {
-        addPermissionsToModel(model, getResourceName());
         return listPage(model, page, size);
     }
 
     protected String listPage(Model model, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        items = getService().findAllPaged(pageable);
-        model.addAttribute("items", items);
-        model.addAttribute("title", getListPageTitle());
-        model.addAttribute("url", getUrl());
-        model.addAttribute("tableHeaderFragment", getTableHeaderFragment());
-        model.addAttribute("tableLineFragment", getTableLineFragment());
-        return "layouts/baseListPage";
+        if (canConsultar(getResourceName())) {
+            addPermissionsToModel(model, getResourceName());
+            Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+            items = getService().findAllPaged(pageable);
+            model.addAttribute("items", items);
+            model.addAttribute("title", getListPageTitle());
+            model.addAttribute("url", getUrl());
+            model.addAttribute("tableHeaderFragment", getTableHeaderFragment());
+            model.addAttribute("tableLineFragment", getTableLineFragment());
+            return "layouts/baseListPage";
+        }
+        return getUrlHomePage();
     }
 
     @GetMapping(path = "/adicionar")
     public String showAddPage(Model model) {
-        addPermissionsToModel(model, getResourceName());
-        model.addAttribute("title", getAddPageTitle());
-        model.addAttribute("addFormAction", getAddFormAction());
-        model.addAttribute("item", getItem());
-        model.addAttribute("url", getUrl());
-        model.addAttribute("addFieldsFragment", getAddFieldsFragment());
-        return "layouts/baseAddPage";
+        if (canAdicionar(getResourceName())) {
+            addPermissionsToModel(model, getResourceName());
+            model.addAttribute("title", getAddPageTitle());
+            model.addAttribute("addFormAction", getAddFormAction());
+            model.addAttribute("item", getItem());
+            model.addAttribute("url", getUrl());
+            model.addAttribute("addFieldsFragment", getAddFieldsFragment());
+            return "layouts/baseAddPage";
+        }
+        return getUrlHomePage();
     }
 
     @GetMapping(path = "/editar/{id}")
     public String showEditPage(@PathVariable("id") long id, Model model) {
-        addPermissionsToModel(model, getResourceName());
-        item = getService().getById(id).orElseThrow();
-        model.addAttribute("title", getEditPageTitle());
-        model.addAttribute("formAction", getUpdateFormAction().replace("{id}", String.valueOf(id)));
-        model.addAttribute("item", item);
-        model.addAttribute("url", getUrl());
-        model.addAttribute("editFieldFragment", getEditFieldsFragment());
-        return "layouts/baseEditPage";
+        if (canEditar(getResourceName())) {
+            addPermissionsToModel(model, getResourceName());
+            item = getService().getById(id).orElseThrow();
+            model.addAttribute("title", getEditPageTitle());
+            model.addAttribute("formAction", getUpdateFormAction().replace("{id}", String.valueOf(id)));
+            model.addAttribute("item", item);
+            model.addAttribute("url", getUrl());
+            model.addAttribute("editFieldFragment", getEditFieldsFragment());
+            return "layouts/baseEditPage";
+        }
+        return getUrlHomePage();
     }
 
     @PostMapping(path = "/add")
     public String add(T item) {
-        getService().save(item);
-        return getUrlPageConsulta();
+        if (canAdicionar(getResourceName())) {
+            getService().save(item);
+            return getUrlPageConsulta();
+        }
+        return getUrlHomePage();
     }
 
     @PostMapping(path = "/update/{id}")
     public String update(@PathVariable("id") long id, T item) {
-        getService().save(item);
-        return getUrlPageConsulta();
+        if (canEditar(getResourceName())) {
+            getService().save(item);
+            return getUrlPageConsulta();
+        }
+        return getUrlHomePage();
     }
 
     @GetMapping(path = "/delete/{id}")
     public String delete(@PathVariable("id") long id) {
-        getService().delete(id);
-        return getUrlPageConsulta();
+        if (canExcluir(getResourceName())) {
+            getService().delete(id);
+            return getUrlPageConsulta();
+        }
+        return getUrlHomePage();
     }
 
     protected String getResourceName() {
@@ -121,6 +139,9 @@ public abstract class BasePageController<T, K extends BaseService> {
     }
     public String getUrlPageConsulta() {
         return "redirect:"+getUrl()+"/consulta";
+    }
+    public String getUrlHomePage() {
+        return "/pages/home";
     }
 
     protected void addPermissionsToModel(Model model, String resourceName) {

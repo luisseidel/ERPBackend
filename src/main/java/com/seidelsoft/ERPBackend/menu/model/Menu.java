@@ -1,11 +1,8 @@
 package com.seidelsoft.ERPBackend.menu.model;
 
+import com.seidelsoft.ERPBackend.auth.model.entity.Permission;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,6 +54,10 @@ public class Menu implements Serializable {
 
     @Column(name = "description", length = 500)
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "permission_id")
+    private Permission permission;
 
     /**
      * Verifica se este menu tem filhos

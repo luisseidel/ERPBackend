@@ -17,10 +17,12 @@
             <span th:if="${item.homePage}" style="color: blue;">✓ Sim</span>
             <span th:unless="${item.homePage}">-</span>
         </td>
-        <td>
-            <a th:href="@{__${url}__/editar/{id}(id=${item.id})}">Editar</a>
-            <a onclick="return confirm('Tem certeza que deseja excluir este menu?')"
-               th:href="@{__${url}__/delete/{id}(id=${item.id})}">Excluir</a>
-        </td>
+
+        <th:block th:replace="~{fragments/_actionButtonsFragment :: actionButtons(
+            item=${item},
+            url=${url},
+            canEditar=${canEditar},
+            canExcluir=${canExcluir})}">
+        </th:block>
     </tr>
 </th:block>

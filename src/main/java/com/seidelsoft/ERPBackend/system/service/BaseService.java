@@ -1,11 +1,15 @@
 package com.seidelsoft.ERPBackend.system.service;
 
+import com.seidelsoft.ERPBackend.auth.model.entity.User;
+import com.seidelsoft.ERPBackend.auth.repository.UserRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +21,8 @@ public abstract class BaseService<T, K> implements IService<T> {
     @Getter
     @Autowired
     protected K specificRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public Optional<T> getById(Long id) {
@@ -65,6 +71,16 @@ public abstract class BaseService<T, K> implements IService<T> {
         if (!validar(item, msgValidacao)) {
             throw new IllegalArgumentException("Dados inválidos! " + msgValidacao);
         }
+    }
+
+    public User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return null;
+        }
+        String email = auth.getName(); // ou username
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + email));
     }
 
     public void afterSave(T savedItem) {}

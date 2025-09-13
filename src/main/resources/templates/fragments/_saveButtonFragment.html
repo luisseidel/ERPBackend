@@ -1,0 +1,4 @@
+<th:block th:fragment="saveButton(url, canAdicionar, canEditar)">
+    <button th:if="${canAdicionar or canEditar}" type="submit">Salvar</button>
+</th:block>
+

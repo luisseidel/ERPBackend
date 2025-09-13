@@ -1,5 +1,6 @@
 package com.seidelsoft.ERPBackend.menu.service;
 
+import com.seidelsoft.ERPBackend.auth.model.entity.User;
 import com.seidelsoft.ERPBackend.menu.model.Menu;
 import com.seidelsoft.ERPBackend.menu.repository.MenuRepository;
 import com.seidelsoft.ERPBackend.system.service.BaseService;
@@ -28,7 +29,6 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
      */
     @Cacheable("menuItems")
     public List<Menu> findAllMenuItems() {
-        log.debug("Buscando todos os itens do menu no banco de dados");
         return getSpecificRepository().findAllActiveOrderByPosition();
     }
 
@@ -39,7 +39,6 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
      */
     @Cacheable("menuHierarchy")
     public List<Menu> findRootMenus() {
-        log.debug("Buscando menus raiz no banco de dados");
         return getSpecificRepository().findRootMenusActive();
     }
 
@@ -49,7 +48,6 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
      */
     @Cacheable("menuHierarchy")
     public List<Menu> findRootMenusWithChildren() {
-        log.debug("Buscando menus raiz com filhos no banco de dados");
         return getSpecificRepository().findRootMenusWithChildren();
     }
 
@@ -79,6 +77,46 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
     public List<Menu> findAll(Sort sort) {
         return repository.findAll(sort);
     }
+
+    @Cacheable("menuHierarchy")
+    public List<Menu> findRootMenusWithChildrenByUser() {
+        User usuarioLogado = getCurrentUser();
+        List<Menu> rootMenus = getSpecificRepository().findAllRootMenusWithChildren();
+
+        // Filtra recursivamente menus e filhos
+        return rootMenus.stream()
+                .map(menu -> filterMenuRecursively(usuarioLogado, menu))
+                .filter(menu -> menu != null)
+                .toList();
+    }
+
+    private Menu filterMenuRecursively(User usuario, Menu menu) {
+        // Se o menu exige permissão e o usuário não tem, retorna null
+        if (menu.getPermission() != null && !usuarioTemAcesso(usuario, menu)) {
+            return null;
+        }
+
+        // Se tiver filhos, aplica o filtro recursivo
+        if (menu.getChildren() != null && !menu.getChildren().isEmpty()) {
+            List<Menu> filteredChildren = menu.getChildren().stream()
+                    .map(child -> filterMenuRecursively(usuario, child))
+                    .filter(child -> child != null)
+                    .toList();
+            menu.setChildren(filteredChildren); // substitui os filhos pelos filtrados
+        }
+
+        return menu;
+    }
+
+    private boolean usuarioTemAcesso(User usuario, Menu menu) {
+        return usuario.getRoles().stream()
+                .flatMap(role -> role.getRolePermissions().stream())
+                .anyMatch(rp ->
+                        rp.getPermission().equals(menu.getPermission()) &&
+                                (rp.isConsultar() || rp.isAdicionar() || rp.isEditar() || rp.isExcluir())
+                );
+    }
+
 
     /**
      * Salva um item do menu e limpa o cache
