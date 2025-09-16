@@ -1,7 +1,7 @@
 package com.seidelsoft.ERPBackend.system.service;
 
-import com.seidelsoft.ERPBackend.auth.model.entity.User;
-import com.seidelsoft.ERPBackend.auth.repository.UserRepository;
+import com.seidelsoft.ERPBackend.authorization.entity.User;
+import com.seidelsoft.ERPBackend.authorization.repository.UserRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

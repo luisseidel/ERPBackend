@@ -13,7 +13,7 @@
 * Spring Security
 * JWT
 * Flyway
-* Postgre SQL
+* Postgres SQL
 * Swagger UI
 * Thymeleaf
 

@@ -1,6 +1,6 @@
 package com.seidelsoft.ERPBackend.menu.model;
 
-import com.seidelsoft.ERPBackend.auth.model.entity.Permission;
+import com.seidelsoft.ERPBackend.authorization.entity.Permission;
 import jakarta.persistence.*;
 import lombok.*;
 

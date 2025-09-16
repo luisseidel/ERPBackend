@@ -1,6 +1,6 @@
 package com.seidelsoft.ERPBackend.menu.service;
 
-import com.seidelsoft.ERPBackend.auth.model.entity.User;
+import com.seidelsoft.ERPBackend.authorization.entity.User;
 import com.seidelsoft.ERPBackend.menu.model.Menu;
 import com.seidelsoft.ERPBackend.menu.repository.MenuRepository;
 import com.seidelsoft.ERPBackend.system.service.BaseService;

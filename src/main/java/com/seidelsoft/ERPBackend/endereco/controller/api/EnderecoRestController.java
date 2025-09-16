@@ -1,6 +1,6 @@
 package com.seidelsoft.ERPBackend.endereco.controller.api;
 
-import com.seidelsoft.ERPBackend.auth.controller.api.SecuredController;
+import com.seidelsoft.ERPBackend.authentication.controller.api.SecuredController;
 import com.seidelsoft.ERPBackend.endereco.service.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

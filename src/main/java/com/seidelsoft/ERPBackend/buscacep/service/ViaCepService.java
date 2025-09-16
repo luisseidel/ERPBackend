@@ -1,6 +1,6 @@
 package com.seidelsoft.ERPBackend.buscacep.service;
 
-import com.seidelsoft.ERPBackend.auth.model.enumerations.TrueFalse;
+import com.seidelsoft.ERPBackend.authentication.model.enumerations.TrueFalse;
 import com.seidelsoft.ERPBackend.buscacep.model.ViaCepDTO;
 import com.seidelsoft.ERPBackend.endereco.model.Endereco;
 import com.seidelsoft.ERPBackend.endereco.repository.CidadeRepository;

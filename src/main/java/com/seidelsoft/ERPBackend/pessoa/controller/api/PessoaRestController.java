@@ -1,6 +1,6 @@
 package com.seidelsoft.ERPBackend.pessoa.controller.api;
 
-import com.seidelsoft.ERPBackend.auth.controller.api.SecuredController;
+import com.seidelsoft.ERPBackend.authentication.controller.api.SecuredController;
 import com.seidelsoft.ERPBackend.pessoa.model.Pessoa;
 import com.seidelsoft.ERPBackend.pessoa.model.dto.PessoaFindDTO;
 import com.seidelsoft.ERPBackend.pessoa.service.PessoaService;

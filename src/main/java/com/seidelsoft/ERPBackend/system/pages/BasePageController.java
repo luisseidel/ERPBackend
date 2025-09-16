@@ -1,6 +1,6 @@
 package com.seidelsoft.ERPBackend.system.pages;
 
-import com.seidelsoft.ERPBackend.auth.model.entity.User;
+import com.seidelsoft.ERPBackend.authorization.entity.User;
 import com.seidelsoft.ERPBackend.system.service.BaseService;
 import com.seidelsoft.ERPBackend.system.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;

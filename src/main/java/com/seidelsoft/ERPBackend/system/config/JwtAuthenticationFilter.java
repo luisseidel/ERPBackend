@@ -1,7 +1,7 @@
 package com.seidelsoft.ERPBackend.system.config;
 
-import com.seidelsoft.ERPBackend.auth.service.JwtService;
-import com.seidelsoft.ERPBackend.auth.service.UserService;
+import com.seidelsoft.ERPBackend.authentication.service.JwtService;
+import com.seidelsoft.ERPBackend.authorization.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
