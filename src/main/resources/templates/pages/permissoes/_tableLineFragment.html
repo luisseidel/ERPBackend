@@ -1,0 +1,14 @@
+<th:block th:fragment="tableLine(item)">
+    <tr>
+        <td th:text="${item.id}">1</td>
+        <td th:text="${item.name}">Exemplo</td>
+        <td th:text="${item.email}">asd@asd.com</td>
+        <td th:text="${item.enabled}">Sim</td>
+        <th:block th:replace="~{fragments/_actionButtonsFragment :: actionButtons(
+            item=${item},
+            url=${url},
+            canEditar=${canEditar},
+            canExcluir=${canExcluir})}">
+        </th:block>
+    </tr>
+</th:block>
