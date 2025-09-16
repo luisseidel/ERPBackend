@@ -174,12 +174,13 @@ public abstract class BasePageController<T, K extends BaseService> {
         return user.getRoles().stream()
                 .flatMap(role -> role.getRolePermissions().stream())
                 .filter(rp -> rp.getPermission().getName().equalsIgnoreCase(resourceName))
-                .anyMatch(rp -> switch (action.toLowerCase()) {
-                    case "consultar" -> rp.isConsultar();
-                    case "adicionar" -> rp.isAdicionar();
-                    case "editar" -> rp.isEditar();
-                    case "excluir" -> rp.isExcluir();
-                    default -> false;
+                .anyMatch(rp ->
+                    switch (action.toLowerCase()) {
+                        case "consultar" -> rp.isConsultar();
+                        case "adicionar" -> rp.isAdicionar();
+                        case "editar" -> rp.isEditar();
+                        case "excluir" -> rp.isExcluir();
+                        default -> false;
                 });
     }
 

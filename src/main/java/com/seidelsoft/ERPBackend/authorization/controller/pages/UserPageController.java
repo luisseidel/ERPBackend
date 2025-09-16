@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/pages/usuarios")
-public class UsuarioPageController extends BasePageController<User, UserService> {
+public class UserPageController extends BasePageController<User, UserService> {
 
     @Autowired
     private RoleService roleService;
