@@ -16,11 +16,8 @@ import lombok.*;
 public class Cidade extends BaseEntity {
 
     @Id
-    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cidade_generator")
-    public Long getId(){
-        return super.getId();
-    }
+    private Long id;
 
 	@Column(name = "nome", length = 255, nullable = false)
 	@NotNull(message = "Nome não pode ser null")

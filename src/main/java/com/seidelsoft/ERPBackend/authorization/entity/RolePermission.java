@@ -16,11 +16,8 @@ import org.springframework.security.core.GrantedAuthority;
 public class RolePermission extends BaseEntity implements GrantedAuthority {
 
     @Id
-    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_permission_generator")
-    public Long getId(){
-        return super.getId();
-    }
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false, foreignKey = @ForeignKey(name = "role_fk"))

@@ -19,11 +19,8 @@ import java.util.List;
 public class Menu extends BaseEntity {
 
     @Id
-    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menu_generator")
-    public Long getId() {
-        return super.getId();
-    }
+    private Long id;
 
     @Column(name = "name", length = 255, nullable = false)
     private String name;

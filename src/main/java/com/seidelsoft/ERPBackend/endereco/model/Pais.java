@@ -15,11 +15,8 @@ import lombok.*;
 public class Pais extends BaseEntity {
 
     @Id
-    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pais_generator")
-    public Long getId(){
-        return super.getId();
-    }
+    private Long id;
 
 	@Column(name = "nome", nullable = false, length = 255)
 	private String nome;

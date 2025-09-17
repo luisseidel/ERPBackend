@@ -21,11 +21,8 @@ import java.util.Set;
 public class User extends BaseEntity implements UserDetails {
 
     @Id
-    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_generator")
-    public Long getId(){
-        return super.getId();
-    }
+    private Long id;
 
 	@Column(name = "email", length = 255, nullable = false)
     private String email;

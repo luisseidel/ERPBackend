@@ -16,11 +16,8 @@ import lombok.*;
 public class Endereco extends BaseEntity {
 
     @Id
-    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "endereco_generator")
-    public Long getId(){
-        return super.getId();
-    }
+    private Long id;
 
 	@NotEmpty(message = "Cep é obrigatório e não pode estar em branco.")
 	@Column(name = "cep", length = 8, nullable = false)

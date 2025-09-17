@@ -19,11 +19,8 @@ import java.util.Set;
 public class Role extends BaseEntity implements GrantedAuthority {
 
 	@Id
-    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_generator")
-	public Long getId(){
-        return super.getId();
-    }
+    private Long id;
 
 	@Column(name = "name", length = 255)
 	private String name;

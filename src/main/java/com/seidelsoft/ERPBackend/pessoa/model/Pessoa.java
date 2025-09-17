@@ -20,11 +20,8 @@ import lombok.*;
 public class Pessoa extends BaseEntity {
 
     @Id
-    @Override
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pessoa_generator")
-    public Long getId() {
-        return super.getId();
-    }
+    private Long id;
 
 	@CpfCnpj
 	@Column(name = "cpf_cnpj", length = 14, nullable = false)

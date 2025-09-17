@@ -17,11 +17,8 @@ import lombok.NoArgsConstructor;
 public class Estado extends BaseEntity {
 
     @Id
-    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "estado_generator")
-    public Long getId(){
-        return super.getId();
-    }
+    private Long id;
 
 	@Column(name = "nome", length = 255, nullable = false)
 	private String nome;

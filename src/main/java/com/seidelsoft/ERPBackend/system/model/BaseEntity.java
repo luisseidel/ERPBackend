@@ -1,32 +1,25 @@
 package com.seidelsoft.ERPBackend.system.model;
 
-import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Getter
-@Setter
 @MappedSuperclass
-public class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable {
 
-    @Id
-    private Long id;
+    public abstract Long getId();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BaseEntity)) return false;
-        BaseEntity that = (BaseEntity) o;
-        return id != null && id.equals(that.id);
+        if (!(o instanceof BaseEntity that)) return false;
+        return getId() != null && getId().equals(that.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
 }

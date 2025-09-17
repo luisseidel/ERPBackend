@@ -16,11 +16,8 @@ import org.springframework.security.core.GrantedAuthority;
 public class Permission extends BaseEntity implements GrantedAuthority {
 
     @Id
-    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "permission_generator")
-    public Long getId() {
-        return super.getId();
-    }
+    private Long id;
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
