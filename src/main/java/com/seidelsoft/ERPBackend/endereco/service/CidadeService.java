@@ -29,4 +29,9 @@ public class CidadeService extends BaseService<Cidade, CidadeRepository> {
     public Cidade findByNomeAndUF(String nome, String uf) {
         return getSpecificRepository().findByNomeAndEstado_Uf(nome, uf);
     }
+
+    @Override
+    protected String getCacheName() {
+        return "cidade";
+    }
 }

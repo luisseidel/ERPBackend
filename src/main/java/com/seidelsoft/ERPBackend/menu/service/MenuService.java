@@ -78,10 +78,9 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
         return repository.findAll(sort);
     }
 
-    @Cacheable("menuHierarchy")
     public List<Menu> findRootMenusWithChildrenByUser() {
         User usuarioLogado = getCurrentUser();
-        List<Menu> rootMenus = getSpecificRepository().findAllRootMenusWithChildren();
+        List<Menu> rootMenus = findRootMenusWithChildren();
 
         // Filtra recursivamente menus e filhos
         return rootMenus.stream()
@@ -102,7 +101,7 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
                     .map(child -> filterMenuRecursively(usuario, child))
                     .filter(child -> child != null)
                     .toList();
-            menu.setChildren(filteredChildren); // substitui os filhos pelos filtrados
+            menu.setChildren(filteredChildren);
         }
 
         return menu;
@@ -149,11 +148,6 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
     }
 
     @Override
-    public Optional<Menu> getById(Long id) {
-        return repository.findById(id);
-    }
-
-    @Override
     @Transactional
     @CacheEvict(value = {"menuItems", "menuHierarchy"}, allEntries = true)
     public void delete(Long id) {
@@ -184,4 +178,8 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
         }
     }
 
+    @Override
+    protected String getCacheName() {
+        return "menuItems";
+    }
 }

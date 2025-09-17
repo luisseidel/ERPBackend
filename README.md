@@ -31,7 +31,8 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Criar CRUD Usuarios
 - [x] Criar CRUD Roles
 - [x] Criar CRUD Permissões
-- [] Criar CRUD de Permissões para Usuários
+- [x] Criar CRUD de Permissões para Usuários
+- [] Criar cache genérico e distribuído com Redis para itens comumente acessados
 - [] Criar tratamento de erros padrão
 - [] Criar exibição padrão de erros
 - [] Criar Testes Unitários

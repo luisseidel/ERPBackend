@@ -42,4 +42,5 @@ public class UserService extends BaseService<User, UserRepository> implements Us
     public void beforeSave(User item) {
         item.setPassword(passwordEncoder.encode(item.getPassword()));
     }
+
 }

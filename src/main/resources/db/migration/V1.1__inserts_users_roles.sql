@@ -25,8 +25,9 @@ insert into public.permission(id, name, description) values
 (nextval('seq_permission'), 'ESTADO', 'Permissões relacionadas a Estados'),
 (nextval('seq_permission'), 'ENDERECO', 'Permissões relacionadas a Endereços'),
 (nextval('seq_permission'), 'PERMISSION', 'Permissões relacionadas a Permissões'),
+(nextval('seq_permission'), 'ROLEPERMISSION', 'Permissões relacionadas a Permissões x Roles')
 ;
-ALTER SEQUENCE seq_permission RESTART 8;
+ALTER SEQUENCE seq_permission RESTART 9;
 
 -- ATRIBUINDO PERMISSIONS A ROLES (role_permission)
 -- Admin recebe todas as permissões

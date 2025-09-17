@@ -37,4 +37,9 @@ public class RolePermissionService extends BaseService<RolePermission, RolePermi
     public Collection<Permission> findAllPermission() {
         return permissionService.findAll(Sort.by("name"));
     }
+
+    @Override
+    protected String getCacheName() {
+        return "rolePermissions";
+    }
 }

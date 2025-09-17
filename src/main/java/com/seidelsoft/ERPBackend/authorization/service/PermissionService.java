@@ -12,4 +12,8 @@ public class PermissionService extends BaseService<Permission, PermissionReposit
         return false;
     }
 
+    @Override
+    protected String getCacheName() {
+        return "permissions";
+    }
 }

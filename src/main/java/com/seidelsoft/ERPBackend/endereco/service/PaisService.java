@@ -22,4 +22,8 @@ public class PaisService extends BaseService<Pais, PaisRepository> {
         return msgValidacao.isEmpty();
     }
 
+    @Override
+    protected String getCacheName() {
+        return "pais";
+    }
 }

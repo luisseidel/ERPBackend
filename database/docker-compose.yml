@@ -1,5 +1,17 @@
 services:
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PASSWORD: myStrongPassword  # Senha opcional
+    command: [ "redis-server", "--requirepass", "myStrongPassword" ]
+    volumes:
+      - redis-data:/data
+    restart: always
+
   flyway:
     image: flyway/flyway
     container_name: flyway

@@ -22,4 +22,8 @@ public class RoleService extends BaseService<Role, RoleRepository> {
         return msgValidacao.isEmpty();
     }
 
+    @Override
+    protected String getCacheName() {
+        return "roles";
+    }
 }

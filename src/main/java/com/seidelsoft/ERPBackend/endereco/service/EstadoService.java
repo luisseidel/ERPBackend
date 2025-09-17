@@ -22,4 +22,8 @@ public class EstadoService extends BaseService<Estado, EstadoRepository> {
         return msgValidacao.isEmpty();
     }
 
+    @Override
+    protected String getCacheName() {
+        return "estado";
+    }
 }

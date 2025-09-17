@@ -28,7 +28,7 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     private UserRepository userRepository;
 
     @Override
-    @Cacheable(cacheNames = "#{T(this).getCacheName()}", key = "#id")
+    @Cacheable(cacheNames = "#{T(this).getCacheName()}", condition = "#{T(this).getCacheName() != null}", key = "#id")
     public Optional<T> getById(Long id) {
         if (id != null) {
             return repository.findById(id);
@@ -37,7 +37,7 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     }
 
     @Override
-    @Cacheable(cacheNames = "#{T(this).getCacheName()}", key = "'all'")
+    @Cacheable(cacheNames = "#{T(this).getCacheName()}", condition = "#{T(this).getCacheName() != null}", key = "'all'")
     public Collection<T> findAll(Sort sort) {
         return (sort != null) ? repository.findAll(sort) : repository.findAll();
     }
@@ -51,8 +51,7 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     }
 
     @Override
-    @CacheEvict(cacheNames = "#{T(this).getCacheName()}", allEntries = true)
-    public T save(T entity) {
+    @CacheEvict(cacheNames = "#{T(this).getCacheName()}", allEntries = true, condition = "#{T(this).getCacheName() != null}")    public T save(T entity) {
         beforeSave(entity);
         T saved = repository.save(entity);
         afterSave(saved);
@@ -60,8 +59,7 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     }
 
     @Override
-    @CacheEvict(cacheNames = "#{T(this).getCacheName()}", allEntries = true)
-    public void delete(Long id) {
+    @CacheEvict(cacheNames = "#{T(this).getCacheName()}", allEntries = true, condition = "#{T(this).getCacheName() != null}")    public void delete(Long id) {
         if (id == null || !repository.existsById(id)) {
             throw new IllegalArgumentException("Entidade não encontrada!");
         }
@@ -90,5 +88,8 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     public void afterSave(T savedItem) {}
     public void beforeDelete(Optional<T> item) {}
     public void afterDelete() {}
+    protected String getCacheName() {
+        return null;
+    }
 
 }
