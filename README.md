@@ -30,8 +30,9 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Criar CRUD Cidades
 - [x] Criar CRUD Usuarios
 - [x] Criar CRUD Roles
-- [] Criar CRUD Permissões
-- [x] Criar tratamento de erros padrão
+- [x] Criar CRUD Permissões
+- [] Criar CRUD de Permissões para Usuários
+- [] Criar tratamento de erros padrão
 - [] Criar exibição padrão de erros
 - [] Criar Testes Unitários
 - [] Usar RabbitMQ

@@ -1,52 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<body>
-<div th:fragment="editFields(item)">
-    <div>
-        <label for="nome">Nome:</label>
-        <input id="nome" required th:field="*{name}" type="text"/>
-    </div>
+    <body>
+        <div th:fragment="editFields(item)">
+            <div>
+                <label for="nome">Nome:</label>
+                <input id="nome" required th:field="*{name}" type="text"/>
+            </div>
 
-    <div>
-        <label for="email">Email:</label>
-        <input id="email" required th:field="*{email}" type="email"/>
-    </div>
-
-    <div>
-        <label for="password">Senha:</label>
-        <input id="password" required th:field="*{password}" type="password"/>
-    </div>
-
-    <div>
-        <label for="papel">Papel:</label>
-        <select id="papel" required th:field="*{roles}">
-            <option disabled selected value="">-- selecione --</option>
-            <option th:each="role : ${roles}"
-                    th:text="${role.name}"
-                    th:value="${role.id}">
-            </option>
-        </select>
-    </div>
-
-    <div>
-        <label for="enabled">Ativo:</label>
-        <input id="enabled" th:field="*{enabled}" type="checkbox">
-    </div>
-
-    <div>
-        <label for="accountExpired">Conta Expirada:</label>
-        <input id="accountExpired" th:field="*{accountExpired}" type="checkbox">
-    </div>
-
-    <div>
-        <label for="accountLocked">Conta Trancada:</label>
-        <input id="accountLocked" th:field="*{accountLocked}" type="checkbox">
-    </div>
-
-    <div>
-        <label for="credentialsExpired">Credenciais Expiradas:</label>
-        <input id="credentialsExpired" th:field="*{credentialsExpired}" type="checkbox">
-    </div>
-</div>
-</body>
+            <div>
+                <label for="description">Descrição:</label>
+                <input id="description" required th:field="*{description}" type="text"/>
+            </div>
+        </div>
+    </body>
 </html>
