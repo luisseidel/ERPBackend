@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div th:fragment="addFields(item)">
+
+            <div>
+                <label for="role">Role:</label>
+                <select id="role" required th:field="*{role}">
+                    <option disabled selected value="">-- selecione --</option>
+                    <option th:each="role : ${roles}"
+                            th:text="${role.name}"
+                            th:value="${role.id}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label for="permission">Permission:</label>
+                <select id="permission" required th:field="*{permission}">
+                    <option disabled selected value="">-- selecione --</option>
+                    <option th:each="permission : ${permissions}"
+                            th:text="${permission.name}"
+                            th:value="${permission.id}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label for="consultar">Consultar:</label>
+                <input id="consultar" th:field="*{consultar}" type="checkbox">
+            </div>
+            <div>
+                <label for="adicionar">Adicionar:</label>
+                <input id="adicionar" th:field="*{adicionar}" type="checkbox">
+            </div>
+            <div>
+                <label for="editar">Editar:</label>
+                <input id="editar" th:field="*{editar}" type="checkbox">
+            </div>
+            <div>
+                <label for="excluir">Excluir:</label>
+                <input id="excluir" th:field="*{excluir}" type="checkbox">
+            </div>
+        </div>
+    </body>
+</html>

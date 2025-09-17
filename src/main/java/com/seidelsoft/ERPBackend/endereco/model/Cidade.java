@@ -1,26 +1,26 @@
 package com.seidelsoft.ERPBackend.endereco.model;
 
+import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.io.Serializable;
-
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "cidade")
-public class Cidade implements Serializable {
+@SequenceGenerator(name = "cidade_generator", sequenceName = "seq_cidade", allocationSize = 1)
+public class Cidade extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cidade_generator")
-	@SequenceGenerator(name = "cidade_generator", sequenceName = "seq_cidade", allocationSize = 1)
-	private Long id;
+    @Id
+    @Override
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cidade_generator")
+    public Long getId(){
+        return super.getId();
+    }
 
 	@Column(name = "nome", length = 255, nullable = false)
 	@NotNull(message = "Nome não pode ser null")

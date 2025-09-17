@@ -1,25 +1,25 @@
 package com.seidelsoft.ERPBackend.endereco.model;
 
+import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.io.Serializable;
-
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "pais")
-public class Pais implements Serializable {
+@SequenceGenerator(name = "pais_generator", sequenceName = "seq_pais", allocationSize = 1)
+public class Pais extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pais_generator")
-	@SequenceGenerator(name = "pais_generator", sequenceName = "seq_pais", allocationSize = 1)
-	private Long id;
+    @Id
+    @Override
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pais_generator")
+    public Long getId(){
+        return super.getId();
+    }
 
 	@Column(name = "nome", nullable = false, length = 255)
 	private String nome;

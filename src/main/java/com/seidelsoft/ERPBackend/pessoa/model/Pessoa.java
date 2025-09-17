@@ -2,29 +2,29 @@ package com.seidelsoft.ERPBackend.pessoa.model;
 
 import com.seidelsoft.ERPBackend.endereco.model.Endereco;
 import com.seidelsoft.ERPBackend.pessoa.model.annotations.CpfCnpj;
+import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.io.Serializable;
-
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "pessoa")
-public class Pessoa implements Serializable {
+@SequenceGenerator(name = "pessoa_generator", sequenceName = "seq_pessoa", allocationSize = 1)
+public class Pessoa extends BaseEntity {
 
     @Id
+    @Override
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pessoa_generator")
-    @SequenceGenerator(name = "pessoa_generator", sequenceName = "seq_pessoa", allocationSize = 1)
-    private Long id;
+    public Long getId() {
+        return super.getId();
+    }
 
 	@CpfCnpj
 	@Column(name = "cpf_cnpj", length = 14, nullable = false)

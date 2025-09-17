@@ -1,23 +1,26 @@
 package com.seidelsoft.ERPBackend.authorization.entity;
 
+import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "role_permission")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class RolePermission implements GrantedAuthority {
+@SequenceGenerator(name = "role_permission_generator", sequenceName = "seq_role_permission", allocationSize = 1)
+public class RolePermission extends BaseEntity implements GrantedAuthority {
 
     @Id
+    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_permission_generator")
-    @SequenceGenerator(name = "role_permission_generator", sequenceName = "seq_role_permission", allocationSize = 1)
-    @EqualsAndHashCode.Include
-    private Long id;
+    public Long getId(){
+        return super.getId();
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false, foreignKey = @ForeignKey(name = "role_fk"))
@@ -32,16 +35,16 @@ public class RolePermission implements GrantedAuthority {
         return permission.getName();
     }
 
-    @Column(nullable = false)
+    @Column(name = "consultar", nullable = false)
     private boolean consultar = false;
 
-    @Column(nullable = false)
+    @Column(name = "adicionar", nullable = false)
     private boolean adicionar = false;
 
-    @Column(nullable = false)
+    @Column(name = "editar", nullable = false)
     private boolean editar = false;
 
-    @Column(nullable = false)
+    @Column(name = "excluir", nullable = false)
     private boolean excluir = false;
 
 }

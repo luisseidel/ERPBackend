@@ -1,26 +1,26 @@
 package com.seidelsoft.ERPBackend.endereco.model;
 
+import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.io.Serializable;
-
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "endereco")
-public class Endereco implements Serializable {
+@SequenceGenerator(name = "endereco_generator", sequenceName = "seq_endereco", allocationSize = 1)
+public class Endereco extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "endereco_generator")
-	@SequenceGenerator(name = "endereco_generator", sequenceName = "seq_endereco", allocationSize = 1)
-	private Long id;
+    @Id
+    @Override
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "endereco_generator")
+    public Long getId(){
+        return super.getId();
+    }
 
 	@NotEmpty(message = "Cep é obrigatório e não pode estar em branco.")
 	@Column(name = "cep", length = 8, nullable = false)

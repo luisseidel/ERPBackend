@@ -1,12 +1,11 @@
 package com.seidelsoft.ERPBackend.endereco.model;
 
+import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Data
 @Entity
@@ -14,12 +13,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "estado")
-public class Estado implements Serializable {
+@SequenceGenerator(name = "estado_generator", sequenceName = "seq_estado", allocationSize = 1)
+public class Estado extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "estado_generator")
-	@SequenceGenerator(name = "estado_generator", sequenceName = "seq_estado", allocationSize = 1)
-	private Long id;
+    @Id
+    @Override
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "estado_generator")
+    public Long getId(){
+        return super.getId();
+    }
 
 	@Column(name = "nome", length = 255, nullable = false)
 	private String nome;

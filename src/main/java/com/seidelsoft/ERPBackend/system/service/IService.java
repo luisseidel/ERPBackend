@@ -4,14 +4,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 public interface IService<T> {
 
     Optional<T> getById(Long id);
 
-    List<T> findAll(Sort sort);
+    Collection<T> findAll(Sort sort);
 
     Page<T> findAllPaged(Pageable pageable);
 

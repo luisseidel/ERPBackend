@@ -1,10 +1,8 @@
 package com.seidelsoft.ERPBackend.authorization.entity;
 
+import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,18 +10,22 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "usuario")
-public class User implements UserDetails {
+@SequenceGenerator(name = "usuario_generator", sequenceName = "seq_usuario", allocationSize = 1)
+public class User extends BaseEntity implements UserDetails {
 
     @Id
+    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_generator")
-    @SequenceGenerator(name = "usuario_generator", sequenceName = "seq_usuario", allocationSize = 1)
-    private Long id;
+    public Long getId(){
+        return super.getId();
+    }
 
 	@Column(name = "email", length = 255, nullable = false)
     private String email;

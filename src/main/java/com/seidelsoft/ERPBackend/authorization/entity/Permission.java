@@ -1,24 +1,26 @@
 package com.seidelsoft.ERPBackend.authorization.entity;
 
+import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "permission")
-public class Permission implements GrantedAuthority {
+@SequenceGenerator(name = "permission_generator", sequenceName = "seq_permission", allocationSize = 1)
+public class Permission extends BaseEntity implements GrantedAuthority {
 
     @Id
+    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "permission_generator")
-    @SequenceGenerator(name = "permission_generator", sequenceName = "seq_permission", allocationSize = 1)
-    private Long id;
+    public Long getId() {
+        return super.getId();
+    }
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;

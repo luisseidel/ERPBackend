@@ -1,5 +1,6 @@
 package com.seidelsoft.ERPBackend.authorization.entity;
 
+import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,20 +8,22 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "role")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Role implements GrantedAuthority {
+@SequenceGenerator(name = "role_generator", sequenceName = "seq_role", allocationSize = 1)
+public class Role extends BaseEntity implements GrantedAuthority {
 
 	@Id
+    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_generator")
-    @SequenceGenerator(name = "role_generator", sequenceName = "seq_role", allocationSize = 1)
-    @EqualsAndHashCode.Include
-	private Long id;
+	public Long getId(){
+        return super.getId();
+    }
 
 	@Column(name = "name", length = 255)
 	private String name;

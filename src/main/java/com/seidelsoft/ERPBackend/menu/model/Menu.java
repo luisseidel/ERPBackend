@@ -1,25 +1,29 @@
 package com.seidelsoft.ERPBackend.menu.model;
 
 import com.seidelsoft.ERPBackend.authorization.entity.Permission;
+import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "menu")
-public class Menu implements Serializable {
+@SequenceGenerator(name = "menu_generator", sequenceName = "seq_menu", allocationSize = 1)
+public class Menu extends BaseEntity {
 
     @Id
+    @Override
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menu_generator")
-    @SequenceGenerator(name = "menu_generator", sequenceName = "seq_menu", allocationSize = 1)
-    private Long id;
+    public Long getId() {
+        return super.getId();
+    }
 
     @Column(name = "name", length = 255, nullable = false)
     private String name;
