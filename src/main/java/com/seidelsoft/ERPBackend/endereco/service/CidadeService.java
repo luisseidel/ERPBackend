@@ -2,11 +2,11 @@ package com.seidelsoft.ERPBackend.endereco.service;
 
 import com.seidelsoft.ERPBackend.endereco.model.Cidade;
 import com.seidelsoft.ERPBackend.endereco.repository.CidadeRepository;
-import com.seidelsoft.ERPBackend.system.service.BaseService;
+import com.seidelsoft.ERPBackend.system.service.CachableService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CidadeService extends BaseService<Cidade, CidadeRepository> {
+public class CidadeService extends CachableService<Cidade, CidadeRepository> {
 
     @Override
     public boolean validar(Cidade entity, StringBuilder msgValidacao) {
@@ -30,8 +30,4 @@ public class CidadeService extends BaseService<Cidade, CidadeRepository> {
         return getSpecificRepository().findByNomeAndEstado_Uf(nome, uf);
     }
 
-    @Override
-    protected String getCacheName() {
-        return "cidade";
-    }
 }

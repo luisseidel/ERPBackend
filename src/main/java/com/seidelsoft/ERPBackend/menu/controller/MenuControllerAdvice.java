@@ -47,6 +47,7 @@ public class MenuControllerAdvice {
         try {
             return menuService.findHomePageMenu().orElse(null);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("Erro ao carregar menu da página inicial: {}", e.getMessage());
             return null;
         }

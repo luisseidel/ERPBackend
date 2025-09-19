@@ -2,11 +2,11 @@ package com.seidelsoft.ERPBackend.endereco.service;
 
 import com.seidelsoft.ERPBackend.endereco.model.Estado;
 import com.seidelsoft.ERPBackend.endereco.repository.EstadoRepository;
-import com.seidelsoft.ERPBackend.system.service.BaseService;
+import com.seidelsoft.ERPBackend.system.service.CachableService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EstadoService extends BaseService<Estado, EstadoRepository> {
+public class EstadoService extends CachableService<Estado, EstadoRepository> {
 
     @Override
     public boolean validar(Estado entity, StringBuilder msgValidacao) {
@@ -22,8 +22,4 @@ public class EstadoService extends BaseService<Estado, EstadoRepository> {
         return msgValidacao.isEmpty();
     }
 
-    @Override
-    protected String getCacheName() {
-        return "estado";
-    }
 }

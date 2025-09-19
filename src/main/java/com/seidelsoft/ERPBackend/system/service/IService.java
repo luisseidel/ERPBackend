@@ -19,5 +19,7 @@ public interface IService<T> {
 
     void delete(Long id);
 
-    boolean validar(T entity, StringBuilder msgValidacao);
+    default boolean validar(T entity, StringBuilder msgValidacao) {
+        return true;
+    }
 }

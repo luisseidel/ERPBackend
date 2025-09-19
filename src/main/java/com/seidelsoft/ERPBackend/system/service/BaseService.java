@@ -5,8 +5,6 @@ import com.seidelsoft.ERPBackend.authorization.repository.UserRepository;
 import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,7 +26,6 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     private UserRepository userRepository;
 
     @Override
-    @Cacheable(cacheNames = "#{T(this).getCacheName()}", condition = "#{T(this).getCacheName() != null}", key = "#id")
     public Optional<T> getById(Long id) {
         if (id != null) {
             return repository.findById(id);
@@ -37,7 +34,6 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     }
 
     @Override
-    @Cacheable(cacheNames = "#{T(this).getCacheName()}", condition = "#{T(this).getCacheName() != null}", key = "'all'")
     public Collection<T> findAll(Sort sort) {
         return (sort != null) ? repository.findAll(sort) : repository.findAll();
     }
@@ -51,7 +47,7 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     }
 
     @Override
-    @CacheEvict(cacheNames = "#{T(this).getCacheName()}", allEntries = true, condition = "#{T(this).getCacheName() != null}")    public T save(T entity) {
+    public T save(T entity) {
         beforeSave(entity);
         T saved = repository.save(entity);
         afterSave(saved);
@@ -59,7 +55,7 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     }
 
     @Override
-    @CacheEvict(cacheNames = "#{T(this).getCacheName()}", allEntries = true, condition = "#{T(this).getCacheName() != null}")    public void delete(Long id) {
+    public void delete(Long id) {
         if (id == null || !repository.existsById(id)) {
             throw new IllegalArgumentException("Entidade não encontrada!");
         }
@@ -88,8 +84,4 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     public void afterSave(T savedItem) {}
     public void beforeDelete(Optional<T> item) {}
     public void afterDelete() {}
-    protected String getCacheName() {
-        return null;
-    }
-
 }

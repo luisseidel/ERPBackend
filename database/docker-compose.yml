@@ -6,11 +6,25 @@ services:
     ports:
       - "6379:6379"
     environment:
-      REDIS_PASSWORD: myStrongPassword  # Senha opcional
-    command: [ "redis-server", "--requirepass", "myStrongPassword" ]
+      REDIS_PASSWORD: myStrongPassword
+    command: >
+      redis-server
+      --requirepass myStrongPassword
+      --databases 16
     volumes:
       - redis-data:/data
     restart: always
+
+
+  redis-insight:
+    image: redislabs/redisinsight:latest
+    container_name: redis-insight
+    ports:
+      - "8001:5540"
+    volumes:
+      - redisinsight-data:/db
+    depends_on:
+      - redis
 
   flyway:
     image: flyway/flyway
@@ -41,6 +55,8 @@ services:
 
 volumes:
   postgres_data:
+  redis-data:
+  redisinsight-data:
 
 #  adminer:
 #    image: adminer
