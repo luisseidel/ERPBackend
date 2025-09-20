@@ -1,6 +1,6 @@
 package com.seidelsoft.ERPBackend.menu.controller;
 
-import com.seidelsoft.ERPBackend.menu.model.Menu;
+import com.seidelsoft.ERPBackend.menu.model.MenuDTO;
 import com.seidelsoft.ERPBackend.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class MenuControllerAdvice {
      * @return Lista de menus raiz com seus filhos
      */
     @ModelAttribute("menuItems")
-    public List<Menu> addMenuItems() {
+    public List<MenuDTO> addMenuItems() {
         try {
             return menuService.findRootMenusWithChildrenByUser();
         } catch (Exception e) {
@@ -43,11 +43,10 @@ public class MenuControllerAdvice {
      * @return Menu da página inicial ou null
      */
     @ModelAttribute("homePageMenu")
-    public Menu addHomePageMenu() {
+    public MenuDTO addHomePageMenu() {
         try {
             return menuService.findHomePageMenu().orElse(null);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("Erro ao carregar menu da página inicial: {}", e.getMessage());
             return null;
         }

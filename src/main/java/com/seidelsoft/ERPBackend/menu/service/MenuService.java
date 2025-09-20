@@ -2,69 +2,79 @@ package com.seidelsoft.ERPBackend.menu.service;
 
 import com.seidelsoft.ERPBackend.authorization.entity.User;
 import com.seidelsoft.ERPBackend.menu.model.Menu;
+import com.seidelsoft.ERPBackend.menu.model.MenuDTO;
 import com.seidelsoft.ERPBackend.menu.repository.MenuRepository;
-import com.seidelsoft.ERPBackend.system.service.CachableService;
+import com.seidelsoft.ERPBackend.system.service.BaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MenuService extends CachableService<Menu, MenuRepository> {
+public class MenuService extends BaseService<Menu, MenuRepository> {
 
-    @Cacheable("menuHierarchy")
-    public List<Menu> findRootMenusWithChildren() {
-        return getSpecificRepository().findRootMenusWithChildren();
+    @Cacheable(cacheNames = "menuHierarchy")
+    public List<MenuDTO> findRootMenusWithChildren() {
+        return getSpecificRepository().findRootMenusWithChildren()
+                .stream()
+                .map(MenuMapper::toDTO)
+                .toList();
     }
 
-    @Cacheable("menuItems")
-    public Optional<Menu> findHomePageMenu() {
-        return getSpecificRepository().findHomePageMenu();
+    @Cacheable(cacheNames = "menuItems")
+    public Optional<MenuDTO> findHomePageMenu() {
+        return getSpecificRepository().findHomePageMenu().map(MenuMapper::toDTO);
+    }
+
+    @Override
+    @Cacheable(cacheNames = "menuItems")
+    public Collection<Menu> findAll(Sort sort) {
+        return super.findAll(sort);
     }
 
     public Page<Menu> findAllPaged(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public List<Menu> findRootMenusWithChildrenByUser() {
+    public List<MenuDTO> findRootMenusWithChildrenByUser() {
         User usuarioLogado = getCurrentUser();
-        List<Menu> rootMenus = findRootMenusWithChildren();
+        List<MenuDTO> rootMenus = findRootMenusWithChildren();
 
-        // Filtra recursivamente menus e filhos
         return rootMenus.stream()
                 .map(menu -> filterMenuRecursively(usuarioLogado, menu))
-                .filter(menu -> menu != null)
+                .filter(Objects::nonNull)
                 .toList();
     }
 
-    private Menu filterMenuRecursively(User usuario, Menu menu) {
-        // Se o menu exige permissão e o usuário não tem, retorna null
+    private MenuDTO filterMenuRecursively(User usuario, MenuDTO menu) {
         if (menu.getPermission() != null && !usuarioTemAcesso(usuario, menu)) {
             return null;
         }
 
-        // Se tiver filhos, aplica o filtro recursivo
         if (menu.getChildren() != null && !menu.getChildren().isEmpty()) {
-            List<Menu> filteredChildren = menu.getChildren().stream()
-                    .map(child -> filterMenuRecursively(usuario, child))
-                    .filter(child -> child != null)
-                    .toList();
-            menu.setChildren(filteredChildren);
+            menu.setChildren(
+                    menu.getChildren().stream()
+                            .map(child -> filterMenuRecursively(usuario, child))
+                            .filter(Objects::nonNull)
+                            .toList()
+            );
         }
-
         return menu;
     }
 
-    private boolean usuarioTemAcesso(User usuario, Menu menu) {
+    private boolean usuarioTemAcesso(User usuario, MenuDTO menu) {
         return usuario.getRoles().stream()
                 .flatMap(role -> role.getRolePermissions().stream())
                 .anyMatch(rp ->
@@ -73,7 +83,6 @@ public class MenuService extends CachableService<Menu, MenuRepository> {
                 );
     }
 
-
     @Override
     @Transactional
     @CacheEvict(value = {"menuItems", "menuHierarchy"}, allEntries = true)
@@ -81,9 +90,6 @@ public class MenuService extends CachableService<Menu, MenuRepository> {
         return super.save(menu);
     }
 
-    /**
-     * Limpa manualmente o cache de menus
-     */
     @CacheEvict(value = {"menuItems", "menuHierarchy"}, allEntries = true)
     public void clearCache() {
         log.debug("Cache de menus limpo manualmente");
@@ -113,7 +119,6 @@ public class MenuService extends CachableService<Menu, MenuRepository> {
             item.setHomePage(false);
         }
 
-        // Se este menu está sendo marcado como home page, desmarcar outros
         if (Boolean.TRUE.equals(item.getHomePage())) {
             getSpecificRepository().findHomePageMenu().ifPresent(existingHome -> {
                 if (!existingHome.getId().equals(item.getId())) {

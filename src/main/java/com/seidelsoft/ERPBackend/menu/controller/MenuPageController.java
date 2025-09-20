@@ -29,7 +29,7 @@ public class MenuPageController extends BasePageController<Menu, MenuService> {
 
     @Override
     public String update(long id, Menu item) {
-        Menu existente = service.getById(id)
+        Menu existente = getService().getById(id)
             .orElseThrow(() -> new IllegalArgumentException("Menu inválido"));
 
         existente.setName(item.getName());
