@@ -37,12 +37,15 @@ insert into public.role_permission(id, role_id, permission_id, consultar, adicio
 (nextval('seq_role_permission'), 1, 3, true, true, true, true),  -- ROLE
 (nextval('seq_role_permission'), 1, 4, true, true, true, true),  -- CIDADE
 (nextval('seq_role_permission'), 1, 5, true, true, true, true),  -- ESTADO
-(nextval('seq_role_permission'), 1, 6, true, true, true, true);  -- ENDERECO
+(nextval('seq_role_permission'), 1, 6, true, true, true, true),  -- ENDERECO
 (nextval('seq_role_permission'), 1, 7, true, true, true, true),  -- PERMISSION
+(nextval('seq_role_permission'), 1, 8, true, true, true, true)  -- ROLEPERMISSION
+;
 
 -- Usuário padrão (USER) com permissões apenas de consulta e edição em cidades e estados
 insert into public.role_permission(id, role_id, permission_id, consultar, adicionar, editar, excluir) values
 (nextval('seq_role_permission'), 2, 6, true, false, true, false),  -- CIDADE
-(nextval('seq_role_permission'), 2, 7, true, false, true, false);  -- ESTADO
+(nextval('seq_role_permission'), 2, 7, true, false, true, false)  -- ESTADO
+;
 
-ALTER SEQUENCE seq_role_permission RESTART 10;
+ALTER SEQUENCE seq_role_permission RESTART 11;

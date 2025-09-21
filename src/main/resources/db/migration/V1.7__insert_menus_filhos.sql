@@ -11,5 +11,4 @@ VALUES
 (nextval('seq_menu'), 'Permissões', '/pages/permissoes/consulta', 2, 7, 7, TRUE, FALSE, NULL, 'Gerenciamento de Permissões'),
 (nextval('seq_menu'), 'Role Permission', '/pages/rolepermission/consulta', 2, 7, 7, TRUE, FALSE, NULL, 'Gerenciamento de Permissões x Consultas')
 ;
--- Ajuste a sequência para não gerar conflito
 ALTER SEQUENCE seq_menu RESTART 12;
