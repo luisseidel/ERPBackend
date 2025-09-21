@@ -30,7 +30,7 @@ public class MenuControllerAdvice {
      *
      * @return Lista de menus raiz com seus filhos
      */
-    @ModelAttribute("menuItems")
+    @ModelAttribute("menuHierarchy")
     public List<MenuDTO> addMenuItems() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
