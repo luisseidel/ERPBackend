@@ -59,4 +59,5 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.children c WHERE m.parent IS NULL AND m.active = true ORDER BY m.orderPosition, m.name")
     List<Menu> findAllRootMenusWithChildren();
 
+    String findNameById(Long id);
 }

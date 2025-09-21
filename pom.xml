@@ -22,6 +22,9 @@
 		<spring.doc.version>2.8.9</spring.doc.version>
 		<spring.thymeleaf.version>3.5.4</spring.thymeleaf.version>
 		<thymeleaf.layout.dilect.version>3.4.0</thymeleaf.layout.dilect.version>
+        <mockito.junit.jupiter>5.19.0</mockito.junit.jupiter>
+        <junit.jupiter.api>5.13.4</junit.jupiter.api>
+        <maven.surefire.plugin>3.5.4</maven.surefire.plugin>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -90,10 +93,7 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>${jwt.version}</version>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+
         <dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -113,7 +113,26 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.api}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.junit.jupiter}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+    </dependencies>
 
 	<build>
 		<finalName>application</finalName>
@@ -131,6 +150,14 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin}</version>
+                <configuration>
+                    <argLine>-javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</argLine>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
