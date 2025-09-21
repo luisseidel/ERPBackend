@@ -15,10 +15,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -26,20 +24,36 @@ import java.util.Optional;
 public class MenuService extends BaseService<Menu, MenuRepository> {
 
     @Cacheable(cacheNames = "menuHierarchy")
+    @Transactional(readOnly = true)
     public List<MenuDTO> findRootMenusWithChildren() {
-        return getSpecificRepository().findRootMenusWithChildren()
-                .stream()
+        // 1. Fetch all active menus in a flat list. The transaction ensures all entities are managed.
+        List<Menu> allMenus = getSpecificRepository().findAllActiveOrderByPosition();
+
+        // 2. Group menus by their parent's ID for easy lookup.
+        Map<Long, List<Menu>> menusByParentId = allMenus.stream()
+                .filter(m -> m.getParent() != null)
+                .collect(Collectors.groupingBy(m -> m.getParent().getId()));
+
+        // 3. Set the children for each menu entity from the map.
+        allMenus.forEach(menu -> menu.setChildren(menusByParentId.getOrDefault(menu.getId(), new ArrayList<>())));
+
+        // 4. Find the root menus (those without a parent).
+        List<Menu> rootMenus = allMenus.stream()
+                .filter(m -> m.getParent() == null)
+                .toList();
+
+        // 5. Map the fully-formed hierarchy to DTOs. This will no longer cause LazyInitializationException.
+        return rootMenus.stream()
                 .map(MenuMapper::toDTO)
                 .toList();
     }
 
-    @Cacheable(cacheNames = "menuItems")
+    @Cacheable(cacheNames = "homePageMenu")
     public Optional<MenuDTO> findHomePageMenu() {
         return getSpecificRepository().findHomePageMenu().map(MenuMapper::toDTO);
     }
 
     @Override
-    @Cacheable(cacheNames = "menuItems")
     public Collection<Menu> findAll(Sort sort) {
         return super.findAll(sort);
     }
@@ -85,12 +99,12 @@ public class MenuService extends BaseService<Menu, MenuRepository> {
 
     @Override
     @Transactional
-    @CacheEvict(value = {"menuItems", "menuHierarchy"}, allEntries = true)
+    @CacheEvict(cacheNames = {"menuHierarchy", "homePageMenu"}, allEntries = true)
     public Menu save(Menu menu) {
         return super.save(menu);
     }
 
-    @CacheEvict(value = {"menuItems", "menuHierarchy"}, allEntries = true)
+    @CacheEvict(cacheNames = {"menuHierarchy", "homePageMenu"}, allEntries = true)
     public void clearCache() {
         log.debug("Cache de menus limpo manualmente");
     }

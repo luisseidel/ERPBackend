@@ -1,5 +1,6 @@
 package com.seidelsoft.ERPBackend.menu.service;
 
+import com.seidelsoft.ERPBackend.authorization.entity.Permission;
 import com.seidelsoft.ERPBackend.menu.model.Menu;
 import com.seidelsoft.ERPBackend.menu.model.MenuDTO;
 
@@ -18,7 +19,16 @@ public class MenuMapper {
         dto.setActive(menu.getActive());
         dto.setHomePage(menu.getHomePage());
         dto.setOrderPosition(menu.getOrderPosition());
-        dto.setPermission(menu.getPermission());
+
+        // Resolvendo o proxy da Permissão
+        if (menu.getPermission() != null) {
+            Permission originalPermission = menu.getPermission();
+            // Cria uma nova instância "limpa" para o DTO, sem o proxy do Hibernate
+            Permission dtoPermission = new Permission();
+            dtoPermission.setId(originalPermission.getId());
+            dtoPermission.setName(originalPermission.getName());
+            dto.setPermission(dtoPermission);
+        }
 
         // Evita loop infinito: só copia ID e nome do parent
         if (menu.getParent() != null) {

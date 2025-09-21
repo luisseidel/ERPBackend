@@ -1,5 +1,6 @@
 package com.seidelsoft.ERPBackend.menu.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.seidelsoft.ERPBackend.authorization.entity.Permission;
 import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;
@@ -37,6 +38,7 @@ public class Menu extends BaseEntity {
     @OrderBy("orderPosition ASC")
     @Builder.Default
     @ToString.Exclude
+    @JsonIgnore
     private List<Menu> children = new ArrayList<>();
 
     @Column(name = "order_position")

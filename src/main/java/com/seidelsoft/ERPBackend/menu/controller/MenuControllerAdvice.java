@@ -4,13 +4,16 @@ import com.seidelsoft.ERPBackend.menu.model.MenuDTO;
 import com.seidelsoft.ERPBackend.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
 /**
- * ControllerAdvice que adiciona automaticamente os itens do menu 
+ * ControllerAdvice que adiciona automaticamente os itens do menu
  * a todas as páginas que usam o layout base.html
  */
 @Slf4j
@@ -29,6 +32,11 @@ public class MenuControllerAdvice {
      */
     @ModelAttribute("menuItems")
     public List<MenuDTO> addMenuItems() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+            return List.of();
+        }
+
         try {
             return menuService.findRootMenusWithChildrenByUser();
         } catch (Exception e) {
