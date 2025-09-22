@@ -1,0 +1,72 @@
+#General
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+
+# Postgres connection settings
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:1023/local_spring
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: example
+
+    # HikariCP settings
+    hikari:
+      minimumIdle: 5
+      maximumPoolSize: 20
+      idleTimeout: 30000
+      maxLifetime: 2000000
+      connectionTimeout: 30000
+      poolName: HikariPoolBooks
+
+    # Thymeleaf
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+
+  #Cache
+  cache:
+    type: redis
+    redis:
+      host: localhost
+      port: 6379
+      password: myStrongPassword
+      time-to-live: 10m
+
+  devtools:
+    restart:
+      enabled: false
+      exclude: redis/**
+
+# JPA settings
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: false
+          batch_size: 15
+      format_sql: true
+      order_inserts: true
+      generate_statistics: false
+  show-sql: false
+  ddl-auto: none
+  generate-ddl: false
+
+#apis
+api:
+  viacep:
+    enabled: true
+    url: https://viacep.com.br
+    endpoint: /ws/{cep}/json
+
+  brasilApi:
+    enabled: true
+    url: https://brasilapi.com.br
+    endpoint: /api/cep/v1/{cep}
