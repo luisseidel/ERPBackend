@@ -20,17 +20,14 @@ public class MenuMapper {
         dto.setHomePage(menu.getHomePage());
         dto.setOrderPosition(menu.getOrderPosition());
 
-        // Resolvendo o proxy da Permissão
         if (menu.getPermission() != null) {
             Permission originalPermission = menu.getPermission();
-            // Cria uma nova instância "limpa" para o DTO, sem o proxy do Hibernate
             Permission dtoPermission = new Permission();
             dtoPermission.setId(originalPermission.getId());
             dtoPermission.setName(originalPermission.getName());
             dto.setPermission(dtoPermission);
         }
 
-        // Evita loop infinito: só copia ID e nome do parent
         if (menu.getParent() != null) {
             dto.setParent(new MenuDTO(
                     menu.getParent().getId(),
@@ -40,7 +37,6 @@ public class MenuMapper {
             ));
         }
 
-        // Recursão para filhos
         if (menu.getChildren() != null) {
             dto.setChildren(
                     menu.getChildren().stream()
@@ -50,6 +46,48 @@ public class MenuMapper {
         }
 
         return dto;
+    }
+
+    public static Menu toMenu(MenuDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        Menu menu = new Menu();
+        menu.setId(dto.getId());
+        menu.setName(dto.getName());
+        menu.setUrl(dto.getUrl());
+        menu.setIcon(dto.getIcon());
+        menu.setActive(dto.getActive());
+        menu.setHomePage(dto.getHomePage());
+        menu.setOrderPosition(dto.getOrderPosition());
+
+        if (dto.getPermission() != null) {
+            Permission originalPermission = dto.getPermission();
+            Permission dtoPermission = new Permission();
+            dtoPermission.setId(originalPermission.getId());
+            dtoPermission.setName(originalPermission.getName());
+            menu.setPermission(dtoPermission);
+        }
+
+        if (dto.getParent() != null) {
+            menu.setParent(new Menu(
+                    dto.getParent().getId(),
+                    dto.getParent().getName(),
+                    null, null, null, null, null,
+                    null, null, null, null
+            ));
+        }
+
+        if (dto.getChildren() != null) {
+            menu.setChildren(
+                    dto.getChildren().stream()
+                            .map(MenuMapper::toMenu)
+                            .toList()
+            );
+        }
+
+        return menu;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.seidelsoft.ERPBackend.authorization.service;
 
+import com.seidelsoft.ERPBackend.authorization.entity.Permission;
 import com.seidelsoft.ERPBackend.authorization.entity.User;
 import com.seidelsoft.ERPBackend.authorization.repository.UserRepository;
 import com.seidelsoft.ERPBackend.system.service.BaseService;
@@ -41,6 +42,15 @@ public class UserService extends BaseService<User, UserRepository> implements Us
     @Override
     public void beforeSave(User item) {
         item.setPassword(passwordEncoder.encode(item.getPassword()));
+    }
+
+    public boolean usuarioTemAcesso(User usuario, Permission permission) {
+        return usuario.getRoles().stream()
+                .flatMap(role -> role.getRolePermissions().stream())
+                .anyMatch(rp ->
+                        rp.getPermission().equals(permission) &&
+                                (rp.isConsultar() || rp.isAdicionar() || rp.isEditar() || rp.isExcluir())
+                );
     }
 
 }

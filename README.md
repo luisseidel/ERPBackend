@@ -33,8 +33,8 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Criar CRUD Permissões
 - [x] Criar CRUD de Permissões que são aplicáveis para Roles
 - [x] Criar cache com Redis para itens comumente acessados, como menus
-- [] Criar tratamento de erros padrão
-- [] Criar exibição padrão de erros
+- [x] Criar tratamento de erros padrão
+- [x] Criar exibição padrão de erros
 - [] Criar Testes Unitários
 - [] Usar RabbitMQ ou kafka
 - [] Criar pipeline CI/CD
