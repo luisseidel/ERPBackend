@@ -30,37 +30,24 @@ public class PessoaRestController implements SecuredController {
     }
 
     @GetMapping("/dados")
-    public ResponseEntity getPessoaBy(@Valid @RequestBody PessoaFindDTO pessoaFind) {
-        try {
-            List<Pessoa> list = service.getPessoaBy(pessoaFind.getNome(), pessoaFind.getCpf());
-            if (list.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(list);
-
-        } catch (ValidacaoException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    public ResponseEntity getPessoaBy(@Valid @RequestBody PessoaFindDTO pessoaFind) throws ValidacaoException {
+        List<Pessoa> list = service.getPessoaBy(pessoaFind.getNome(), pessoaFind.getCpf());
+        if (list.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(list);
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody Pessoa dto) {
-        try {
-            Pessoa p = service.create(dto);
-            return ResponseEntity.ok(p);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity create(@RequestBody Pessoa dto) throws ValidacaoException {
+        Pessoa p = service.create(dto);
+        return ResponseEntity.ok(p);
     }
 
     @PutMapping("/{cpf}")
-    public ResponseEntity update(@PathVariable String cpf, @RequestBody Pessoa dto) {
-        try {
-            Pessoa p = service.update(cpf, dto);
-            return ResponseEntity.ok(p);
-        } catch (ValidacaoException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity update(@PathVariable String cpf, @RequestBody Pessoa dto) throws ValidacaoException {
+        Pessoa p = service.update(cpf, dto);
+        return ResponseEntity.ok(p);
     }
 
     @DeleteMapping("/{id}")

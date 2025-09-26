@@ -18,11 +18,7 @@ public class EnderecoRestController implements SecuredController {
 
 	@GetMapping("/id/{id}")
 	public ResponseEntity getEndereco(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(service.getById(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok(service.getById(id));
 	}
 
 	@GetMapping("/cep/{cep}")

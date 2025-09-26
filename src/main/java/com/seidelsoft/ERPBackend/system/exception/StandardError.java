@@ -1,7 +1,7 @@
 package com.seidelsoft.ERPBackend.system.exception;
 
 public record StandardError(
-        Long timestamp,
+        String formattedDate,
         Integer status,
         String error,
         String message
