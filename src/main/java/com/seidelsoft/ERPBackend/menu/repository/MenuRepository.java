@@ -3,7 +3,6 @@ package com.seidelsoft.ERPBackend.menu.repository;
 import com.seidelsoft.ERPBackend.menu.model.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,24 +22,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     @Query("""
         SELECT m
         FROM Menu m
-        WHERE m.parent IS NULL
-          AND m.active = true
-        ORDER BY m.orderPosition, m.name
-        """)
-    List<Menu> findRootMenusActive();
-
-    @Query("""
-        SELECT m
-        FROM Menu m
-        WHERE m.parent.id = :parentId
-          AND m.active = true
-        ORDER BY m.orderPosition, m.name
-        """)
-    List<Menu> findByParentIdAndActiveOrderByPosition(@Param("parentId") Long parentId);
-
-    @Query("""
-        SELECT m
-        FROM Menu m
         WHERE m.homePage = true
           AND m.active = true
         """)
@@ -55,9 +36,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
         ORDER BY m.orderPosition, m.name
         """)
     List<Menu> findRootMenusWithChildren();
-
-    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.children c WHERE m.parent IS NULL AND m.active = true ORDER BY m.orderPosition, m.name")
-    List<Menu> findAllRootMenusWithChildren();
 
     String findNameById(Long id);
 }

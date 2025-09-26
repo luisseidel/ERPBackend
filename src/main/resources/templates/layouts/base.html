@@ -27,7 +27,7 @@
             <h1>Sistema ERP</h1>
             <nav>
                 <!-- Menu dinâmico hierárquico carregado do banco de dados -->
-                <th:block th:each="menuItem, iterStat : ${menuItems}">
+                <th:block th:each="menuItem, iterStat : ${menuHierarchy}">
                     <!-- Menu sem filhos -->
                     <th:block th:if="!${menuItem.hasChildren()}">
                         <a th:href="@{${menuItem.url}}"
