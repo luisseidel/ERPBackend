@@ -1,4 +1,4 @@
-# COMMERCE ERP
+# ERPBackend
 
 * Sistema CRUD básico, feito com Spring e Thymeleaf
 * Permite o cadastro de Usuários e Endereços e acesso ao sistema.
