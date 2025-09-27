@@ -4,18 +4,18 @@ import com.seidelsoft.ERPBackend.authorization.entity.User;
 import com.seidelsoft.ERPBackend.authorization.service.RoleService;
 import com.seidelsoft.ERPBackend.authorization.service.UserService;
 import com.seidelsoft.ERPBackend.system.pages.BasePageController;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/pages/usuarios")
 public class UserPageController extends BasePageController<User, UserService> {
 
-    @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
 
     @Override
     public String showAddPage(Model model) {

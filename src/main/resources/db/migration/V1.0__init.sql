@@ -10,9 +10,9 @@ SET row_security = off;
 --ROLES
 create table if not exists public.role
 (
-    id   serial primary key,
-    name varchar(255) not null,
-    active boolean default true
+    id      serial primary key,
+    name    varchar(255) not null,
+    active  boolean default true
 );
 create sequence if not exists public.seq_role increment 1 start 1 owned by role.id;
 
@@ -46,20 +46,20 @@ create sequence if not exists public.seq_user_role increment 1 start 1 owned by 
 
 --PERMISSIONS
 create table if not exists public.permission(
-    id  bigserial primary key,
-    name varchar not null unique,
+    id          bigserial primary key,
+    name        varchar not null unique,
     description varchar(255) null
 );
 create sequence if not exists public.seq_permission increment 1 start 1 owned by permission.id;
 
 create table if not exists public.role_permission(
-    id  bigserial not null primary key,
-    role_id bigint not null references role(id),
-    permission_id bigint not null references permission(id),
-    consultar boolean default false,
-    adicionar boolean default false,
-    editar boolean default false,
-    excluir boolean default false
+    id              bigserial not null primary key,
+    role_id         bigint not null references role(id),
+    permission_id   bigint not null references permission(id),
+    consultar       boolean default false,
+    adicionar       boolean default false,
+    editar          boolean default false,
+    excluir         boolean default false
 );
 create sequence if not exists public.seq_role_permission increment 1 start 1 owned by role_permission.id;
 
@@ -70,7 +70,7 @@ create table if not exists public.pais
     id      serial primary key,
     nome    varchar(255) not null,
     nome_pt varchar(300) not null,
-    sigla varchar(2) null
+    sigla   varchar(2) null
 );
 create sequence if not exists public.seq_pais increment 1 start 1 owned by pais.id;
 
@@ -90,7 +90,7 @@ create table if not exists public.cidade
 (
     id        serial primary key,
     nome      varchar(255),
-    estado integer not null references public.estado (id),
+    estado    integer not null references public.estado (id),
     ibge      varchar(10) not null,
     latitude  double precision,
     longitude double precision
@@ -103,22 +103,22 @@ create table if not exists public.endereco
     id               serial primary key,
     cep              varchar(8)   not null,
     logradouro       varchar(200) not null,
-    numero varchar(10) null,
+    numero           varchar(10) null,
     bairro           varchar(200) null,
     complemento      varchar(200) null,
     ponto_referencia varchar(200) null,
-    cidade integer not null references public.cidade (id)
+    cidade           integer not null references public.cidade (id)
 );
 create sequence if not exists public.seq_endereco increment 1 start 1 owned by endereco.id;
 
 --PESSOAS
 create table if not exists public.pessoa
 (
-    id               serial primary key,
-    cpf_cnpj varchar(14) not null,
-    nome             varchar(255) not null,
-    sexo             integer      not null default 0,
-    email varchar(255) null,
-    id_endereco integer     null references public.endereco (id)
+    id          serial primary key,
+    cpf_cnpj    varchar(14) not null,
+    nome        varchar(255) not null,
+    sexo        integer      not null default 0,
+    email       varchar(255) null,
+    id_endereco integer null references public.endereco (id)
 );
 create sequence if not exists public.seq_pessoa increment 1 start 1 owned by pessoa.id;

@@ -4,18 +4,18 @@ import com.seidelsoft.ERPBackend.endereco.model.Estado;
 import com.seidelsoft.ERPBackend.endereco.service.EstadoService;
 import com.seidelsoft.ERPBackend.endereco.service.PaisService;
 import com.seidelsoft.ERPBackend.system.pages.BasePageController;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/pages/estados")
 public class EstadoPageController extends BasePageController<Estado, EstadoService> {
 
-    @Autowired
-    private PaisService paisService;
+    private final PaisService paisService;
 
     @Override
     public String showAddPage(Model model) {

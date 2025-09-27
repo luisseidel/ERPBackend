@@ -35,6 +35,9 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Criar cache com Redis para itens comumente acessados, como menus
 - [x] Criar tratamento de erros padrão
 - [x] Criar exibição padrão de erros
-- [] Criar Testes Unitários
-- [] Usar RabbitMQ ou kafka
+- [x] Criar Testes Unitários
+- [x] Criar serviço/processamento agendado que poderá ser cadastrado em banco de dados pelo usuário
+- [] Criar algum serviço/processamento que possa ser assíncrono
+- [] Usar RabbitMQ ou kafka para poder disparar algum serviço de maneira assíncrona
 - [] Criar pipeline CI/CD
+- [] Trocar autenticação para keycloak

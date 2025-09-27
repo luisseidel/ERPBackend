@@ -4,18 +4,18 @@ import com.seidelsoft.ERPBackend.endereco.model.Endereco;
 import com.seidelsoft.ERPBackend.endereco.service.CidadeService;
 import com.seidelsoft.ERPBackend.endereco.service.EnderecoService;
 import com.seidelsoft.ERPBackend.system.pages.BasePageController;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/pages/enderecos")
 public class EnderecoPageController extends BasePageController<Endereco, EnderecoService> {
 
-    @Autowired
-    private CidadeService cidadeService;
+    private final CidadeService cidadeService;
 
     @Override
     public String showAddPage(Model model) {
