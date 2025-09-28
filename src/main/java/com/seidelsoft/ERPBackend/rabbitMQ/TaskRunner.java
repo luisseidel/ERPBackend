@@ -12,8 +12,8 @@ public class TaskRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        producer.sendTask("EMAIL", "Email teste");
-        producer.sendTask("PDF", "PDF teste");
-        producer.sendTask("REPORT", "Relatório teste");
+        producer.sendEmailTask("Email teste");
+        producer.sendPdfTask("PDF teste");
+        producer.sendReportTask("Relatório teste");
     }
 }

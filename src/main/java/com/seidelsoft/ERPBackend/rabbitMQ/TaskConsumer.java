@@ -6,32 +6,37 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaskConsumer {
 
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
-    public void receiveTask(TaskMessage taskMessage) {
-        System.out.println("Received task: " + taskMessage.taskType() + " with payload: " + taskMessage.payload());
-        switch (taskMessage.taskType()) {
-            case "EMAIL" -> sendEmail(taskMessage.payload());
-            case "PDF" -> generatePDF(taskMessage.payload());
-            case "REPORT" -> generateReport(taskMessage.payload());
-            default -> System.out.println("Unkown task: " + taskMessage.taskType());
-        }
+    @RabbitListener(queues = RabbitMQConfig.EMAIL_QUEUE)
+    public void handleEmail(String payload) {
+        System.out.println("Processando email: " + payload);
+        // Lógica de envio de email
     }
 
-
-    private void sendEmail(String payload) {
-        // Simulação
-        System.out.println("Enviando email: " + payload);
-        // Aqui você integraria com JavaMailSender
-    }
-
-    private void generatePDF(String payload) {
+    @RabbitListener(queues = RabbitMQConfig.PDF_QUEUE)
+    public void handlePdf(String payload) {
         System.out.println("Gerando PDF: " + payload);
-        // Aqui você integraria com iText
+        // Lógica de geração de PDF
     }
 
-    private void generateReport(String payload) {
+    @RabbitListener(queues = RabbitMQConfig.REPORT_QUEUE)
+    public void handleReport(String payload) {
         System.out.println("Gerando relatório: " + payload);
-        // Aqui você faria a lógica de relatório
+        // Lógica de relatório
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.EMAIL_DLQ)
+    public void handleEmailDLQ(String payload) {
+        System.err.println("Falha no processamento do email: " + payload);
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.PDF_DLQ)
+    public void handlePdfDLQ(String payload) {
+        System.err.println("Falha no processamento do PDF: " + payload);
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.REPORT_DLQ)
+    public void handleReportDLQ(String payload) {
+        System.err.println("Falha no processamento do relatório: " + payload);
     }
 
 }
