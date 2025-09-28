@@ -23,6 +23,7 @@
 		<spring.thymeleaf.version>3.5.4</spring.thymeleaf.version>
 		<thymeleaf.layout.dilect.version>3.4.0</thymeleaf.layout.dilect.version>
         <maven.surefire.plugin>3.5.4</maven.surefire.plugin>
+        <itext.pdf.version>5.5.13.4</itext.pdf.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -114,6 +115,22 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>${itext.pdf.version}</version>
         </dependency>
 
         <dependency>

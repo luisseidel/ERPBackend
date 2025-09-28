@@ -16,7 +16,8 @@
 * Postgres SQL
 * Swagger UI
 * Thymeleaf
-
+* JUnit & Mockito
+* RabbitMQ 
 
 ## Swagger Docs:
 http://localhost:8080/swagger-ui/index.html
@@ -37,6 +38,7 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Criar exibição padrão de erros
 - [x] Criar Testes Unitários
 - [x] Criar serviço/processamento agendado que poderá ser cadastrado em banco de dados pelo usuário
+- [] Expandir o serviço/processamento para enviar e-mails de verdade
 - [] Criar algum serviço/processamento que possa ser assíncrono
 - [] Usar RabbitMQ ou kafka para poder disparar algum serviço de maneira assíncrona
 - [] Criar pipeline CI/CD
