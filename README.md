@@ -40,6 +40,7 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Criar serviço/processamento agendado que poderá ser cadastrado em banco de dados pelo usuário
 - [] Expandir o serviço/processamento para enviar e-mails de verdade
 - [] Criar algum serviço/processamento que possa ser assíncrono
-- [] Usar RabbitMQ ou kafka para poder disparar algum serviço de maneira assíncrona
+- [x] Usar RabbitMQ ou kafka para poder disparar algum serviço de maneira assíncrona
+- [] Monitoramento de filas
 - [] Criar pipeline CI/CD
 - [] Trocar autenticação para keycloak

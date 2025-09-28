@@ -64,6 +64,16 @@ spring:
   ddl-auto: none
   generate-ddl: false
 
+#Spring Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,beans
+  endpoint:
+    health:
+      show-details: always
+
 #apis
 api:
   viacep:

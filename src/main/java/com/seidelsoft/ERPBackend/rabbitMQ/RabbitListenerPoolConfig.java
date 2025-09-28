@@ -9,17 +9,18 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 @Configuration
-public class RabbitMQListenerConfig {
+public class RabbitListenerPoolConfig {
 
-    @Bean
-    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
+    private SimpleRabbitListenerContainerFactory createFactory(ConnectionFactory cf, int min, int max) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory);
+        factory.setConnectionFactory(cf);
+        factory.setConcurrentConsumers(min);
+        factory.setMaxConcurrentConsumers(max);
 
         // Retry template
         RetryTemplate retryTemplate = new RetryTemplate();
         SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
-        retryPolicy.setMaxAttempts(3); // 3 tentativas
+        retryPolicy.setMaxAttempts(3);
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
         backOffPolicy.setInitialInterval(1000);
         backOffPolicy.setMultiplier(2);
@@ -30,4 +31,18 @@ public class RabbitMQListenerConfig {
         return factory;
     }
 
+    @Bean(name = "emailListenerFactory")
+    public SimpleRabbitListenerContainerFactory emailListenerFactory(ConnectionFactory cf) {
+        return createFactory(cf, 2, 5);
+    }
+
+    @Bean(name = "pdfListenerFactory")
+    public SimpleRabbitListenerContainerFactory pdfListenerFactory(ConnectionFactory cf) {
+        return createFactory(cf, 1, 3);
+    }
+
+    @Bean(name = "reportListenerFactory")
+    public SimpleRabbitListenerContainerFactory reportListenerFactory(ConnectionFactory cf) {
+        return createFactory(cf, 1, 2);
+    }
 }

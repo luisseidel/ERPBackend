@@ -30,6 +30,7 @@ public class RabbitMQConfig {
     @Bean
     public Queue emailQueue() {
         return QueueBuilder.durable(EMAIL_QUEUE)
+                .withArgument("x-max-priority", 10)  // prioridade de 0 a 10
                 .withArgument("x-dead-letter-exchange", TASK_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", EMAIL_DLQ)
                 .build();
@@ -38,6 +39,7 @@ public class RabbitMQConfig {
     @Bean
     public Queue pdfQueue() {
         return QueueBuilder.durable(PDF_QUEUE)
+                .withArgument("x-max-priority", 10)  // prioridade de 0 a 10
                 .withArgument("x-dead-letter-exchange", TASK_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", PDF_DLQ)
                 .build();
@@ -46,6 +48,7 @@ public class RabbitMQConfig {
     @Bean
     public Queue reportQueue() {
         return QueueBuilder.durable(REPORT_QUEUE)
+                .withArgument("x-max-priority", 10)  // prioridade de 0 a 10
                 .withArgument("x-dead-letter-exchange", TASK_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", REPORT_DLQ)
                 .build();
