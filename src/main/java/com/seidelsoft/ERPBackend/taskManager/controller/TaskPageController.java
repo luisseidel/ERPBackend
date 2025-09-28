@@ -38,6 +38,14 @@ public class TaskPageController extends BasePageController<Task, TaskService> {
     }
 
     @Override
+    public String update(long id, Task item) {
+        super.update(id, item);
+        Optional<Task> task = getService().getById(id);
+        task.ifPresent(existingTask -> getService().updateTask(existingTask));
+        return getUrlPageConsulta();
+    }
+
+    @Override
     public String showAddPage(Model model) {
         model.addAttribute("taskTypes", taskTypeService.findAll(Sort.by("name")));
         return super.showAddPage(model);

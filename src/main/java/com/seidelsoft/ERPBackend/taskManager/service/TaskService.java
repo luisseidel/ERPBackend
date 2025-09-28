@@ -32,7 +32,14 @@ public class TaskService extends BaseService<Task, TaskRepository> {
         list.forEach(this::scheduleTask);
     }
 
+    public void updateTask(Task task) {
+        cancelTask(task.getId());
+        scheduleTask(task);
+    }
+
     private void scheduleTask(Task task) {
+        if (!task.getActive()) return;
+
         CronTrigger cronTrigger = new CronTrigger(task.getCronExpression(), ZoneId.systemDefault());
         log.info("Tarefa " + task.getName() + " agendada!");
         ScheduledFuture<?> future = scheduler.schedule(
@@ -59,7 +66,7 @@ public class TaskService extends BaseService<Task, TaskRepository> {
         }
     }
 
-    public void cancelarAgendamento(Long id) {
+    public void cancelTask(Long id) {
         ScheduledFuture<?> future = tarefasAgendadas.get(id);
         if (future != null) {
             future.cancel(false);

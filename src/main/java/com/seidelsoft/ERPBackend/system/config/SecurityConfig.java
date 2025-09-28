@@ -23,7 +23,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final PasswordEncoder passwordEncoder;
 
-    private final String[] WHITELIST = {"/swagger-ui/**", "/v3/api-docs/**", "/api-docs", "/api/v1/auth/**"};
+    private final String[] WHITELIST = {"/swagger-ui/**", "/v3/api-docs/**", "/api-docs", "/api/v1/auth/**", "/actuator/prometheus"};
     private final String[] RESOURCES = {"/auth/login", "/css/**", "/js/**"};
     private final String[] AUTHENTICATED = {"/pages/**"};
 

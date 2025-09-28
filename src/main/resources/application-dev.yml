@@ -1,6 +1,7 @@
 #General
 server:
   port: 8080
+  address: 0.0.0.0
   error:
     whitelabel:
       enabled: false
@@ -69,10 +70,18 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,beans
+        include: health,info,metrics,prometheus
   endpoint:
     health:
       show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    enable:
+      all: true
+    export:
+      prometheus:
+        enabled: true
 
 #apis
 api:

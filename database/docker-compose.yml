@@ -4,14 +4,43 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "5672:5672"   # AMQP
+      - "15672:15672" # Management UI
+      - "15692:15692" # Prometheus plugin
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbitmq_prometheus start"
     volumes:
         - rabbitmq_data:/var/lib/rabbitmq
         - rabbitmq_log:/var/log/rabbitmq
+    networks:
+      - monitoring_net
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - monitoring_net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring_net
 
   redis:
     image: redis:latest
@@ -72,6 +101,10 @@ volumes:
   redisinsight-data:
   rabbitmq_data:
   rabbitmq_log:
+
+networks:
+  monitoring_net:
+    driver: bridge
 
 #  adminer:
 #    image: adminer
