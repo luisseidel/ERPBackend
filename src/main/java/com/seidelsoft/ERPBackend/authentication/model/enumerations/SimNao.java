@@ -10,20 +10,14 @@ public enum SimNao implements IEnum {
     SIM(1L, "Sim");
 
     private final Long value;
-    private final String descricao;
+    private final String description;
 
-    @Override
     public SimNao valueOf(Long value) {
         for (SimNao tf : SimNao.values()) {
-            if (valueEquals(tf.getValue(), value)) {
+            if (IEnum.valueEquals(tf.getValue(), value)) {
                 return tf;
             }
         }
         return null;
-    }
-
-    @Override
-    public boolean valueEquals(Long l1, Long l2) {
-        return l1 != null && l2 != null && l1.compareTo(l2) == 0;
     }
 }

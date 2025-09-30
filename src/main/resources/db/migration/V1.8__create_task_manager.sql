@@ -13,20 +13,13 @@ INSERT INTO public.menu (id, name, url, parent_id, permission_id, order_position
     nextval('seq_menu'), 'Task Manager', '/pages/taskmanager/consulta', 2, 9, 8, TRUE, FALSE, NULL, 'Management of Tasks'
 );
 
---Task Type
-create table if not exists public.task_type(
-    id serial primary key not null,
-    name varchar(255) not null
-);
-create sequence if not exists public.seq_task_type increment 1 start 1 owned by task_type.id;
-
 --TASKS
 create table if not exists public.task(
     id serial primary key not null,
     name varchar(255) not null,
     description varchar(255) null,
     cron_expression varchar(20) not null,
-    task_type integer not null references task_type(id),
+    task_type integer not null,
     active boolean not null default false
 );
 create sequence if not exists public.seq_task increment 1 start 1 owned by task.id;

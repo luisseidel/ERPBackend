@@ -53,16 +53,15 @@ public class TaskService extends BaseService<Task, TaskRepository> {
         if (task.getActive()) {
             log.info("Tarefa " + task.getName() + " executada!");
             BaseTask btask = taskFactory.getTask(task);
-            btask.execute(task);
+            btask.prepareExecution(task);
         }
     }
-
 
     public void executeManually(Task task) {
         if (task.getActive()) {
             log.info("Task Executada manualmente");
             BaseTask btask = taskFactory.getTask(task);
-            btask.execute(task);
+            btask.prepareExecution(task);
         }
     }
 

@@ -65,6 +65,23 @@ spring:
   ddl-auto: none
   generate-ddl: false
 
+#Mail
+  mail:
+    host: localhost
+    port: 1025
+    username: test
+    password: test
+    default-encoding: UTF-8
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+
 #Spring Actuator
 management:
   endpoints:

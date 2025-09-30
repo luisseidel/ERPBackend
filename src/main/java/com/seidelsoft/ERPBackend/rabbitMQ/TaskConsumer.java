@@ -13,12 +13,15 @@ public class TaskConsumer {
     @RabbitListener(queues = RabbitMQConfig.EMAIL_QUEUE, containerFactory = "emailListenerFactory")
     public void handleEmail(String payload) {
         System.out.println("Processando email: " + payload);
+
         metrics.incrementEmail();
     }
 
     @RabbitListener(queues = RabbitMQConfig.PDF_QUEUE, containerFactory = "pdfListenerFactory")
     public void handlePdf(String payload) {
         System.out.println("Gerando PDF: " + payload);
+
+
         metrics.incrementPdf();
     }
 

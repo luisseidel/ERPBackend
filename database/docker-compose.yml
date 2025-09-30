@@ -95,6 +95,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  mailhog:
+      image: mailhog/mailhog
+      container_name: mailhog
+      ports:
+        - "1025:1025" # SMTP port
+        - "8025:8025" # Web interface port
+
 volumes:
   postgres_data:
   redis-data:

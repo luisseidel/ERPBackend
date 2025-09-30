@@ -91,6 +91,6 @@ public class BrasilApiService implements ICepService {
 
     @Override
     public boolean isEnabled() {
-        return StringUtils.isNotEmpty(enabled) && TrueFalse.TRUE.getDescricao().equalsIgnoreCase(enabled);
+        return StringUtils.isNotEmpty(enabled) && TrueFalse.TRUE.getDescription().equalsIgnoreCase(enabled);
     }
 }

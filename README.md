@@ -41,6 +41,6 @@ http://localhost:8080/swagger-ui/index.html
 - [] Expandir o serviço/processamento para enviar e-mails de verdade
 - [] Criar algum serviço/processamento que possa ser assíncrono
 - [x] Usar RabbitMQ ou kafka para poder disparar algum serviço de maneira assíncrona
-- [] Monitoramento de filas
+- [x] Prometheus e Grafana
 - [] Criar pipeline CI/CD
 - [] Trocar autenticação para keycloak

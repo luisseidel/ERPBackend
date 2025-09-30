@@ -28,9 +28,8 @@ public class Task extends BaseEntity {
     @Column(name = "cron_expression", length = 20, nullable = false)
     private String cronExpression;
 
-    @ManyToOne
-    @JoinColumn(name = "task_type", nullable = false, referencedColumnName = "id")
-    private TaskType taskType;
+    @Column(name = "task_type", nullable = false)
+    private Long taskType;
 
     @Column(name = "active", nullable = false)
     private Boolean active;

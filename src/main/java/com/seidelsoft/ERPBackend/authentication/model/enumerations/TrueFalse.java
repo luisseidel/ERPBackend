@@ -10,20 +10,15 @@ public enum TrueFalse implements IEnum {
     TRUE(1L, "True");
 
     private final Long value;
-    private final String descricao;
+    private final String description;
 
-    @Override
-    public TrueFalse valueOf(Long value) {
+    public static TrueFalse valueOf(Long value) {
         for (TrueFalse tf : TrueFalse.values()) {
-            if (valueEquals(tf.getValue(), value)) {
+            if (IEnum.valueEquals(tf.getValue(), value)) {
                 return tf;
             }
         }
         return null;
     }
 
-    @Override
-    public boolean valueEquals(Long l1, Long l2) {
-        return l1 != null && l2 != null && l1.compareTo(l2) == 0;
-    }
 }

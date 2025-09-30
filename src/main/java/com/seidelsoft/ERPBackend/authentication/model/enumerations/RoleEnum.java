@@ -10,20 +10,15 @@ public enum RoleEnum implements IEnum {
 	USER(2L, "Usuário");
 
     private final Long value;
-	private final String descricao;
+	private final String description;
 
-	@Override
     public RoleEnum valueOf(Long value) {
         for (RoleEnum r : RoleEnum.values()) {
-			if (valueEquals(r.getValue(), value)) {
+			if (IEnum.valueEquals(r.getValue(), value)) {
 				return r;
 			}
 		}
 		return null;
 	}
 
-	@Override
-	public boolean valueEquals(Long l1, Long l2) {
-		return l1 != null && l2 != null && l1.compareTo(l2) == 0;
-	}
 }

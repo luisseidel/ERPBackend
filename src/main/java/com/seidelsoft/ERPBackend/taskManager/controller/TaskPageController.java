@@ -2,10 +2,9 @@ package com.seidelsoft.ERPBackend.taskManager.controller;
 
 import com.seidelsoft.ERPBackend.system.pages.BasePageController;
 import com.seidelsoft.ERPBackend.taskManager.model.Task;
+import com.seidelsoft.ERPBackend.taskManager.model.TaskTypeEnum;
 import com.seidelsoft.ERPBackend.taskManager.service.TaskService;
-import com.seidelsoft.ERPBackend.taskManager.service.TaskTypeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/pages/taskmanager")
 public class TaskPageController extends BasePageController<Task, TaskService> {
-
-    private final TaskTypeService taskTypeService;
 
     @GetMapping(path = "/execute/{id}")
     public String execute(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
@@ -47,13 +46,19 @@ public class TaskPageController extends BasePageController<Task, TaskService> {
 
     @Override
     public String showAddPage(Model model) {
-        model.addAttribute("taskTypes", taskTypeService.findAll(Sort.by("name")));
+        model.addAttribute("taskTypes",
+                Arrays.stream(TaskTypeEnum.values())
+                        .sorted(Comparator.comparing(TaskTypeEnum::getDescription))
+        );
         return super.showAddPage(model);
     }
 
     @Override
     public String showEditPage(long id, Model model) {
-        model.addAttribute("taskTypes", taskTypeService.findAll(Sort.by("name")));
+        model.addAttribute("taskTypes",
+                Arrays.stream(TaskTypeEnum.values())
+                    .sorted(Comparator.comparing(TaskTypeEnum::getDescription))
+        );
         return super.showEditPage(id, model);
     }
 

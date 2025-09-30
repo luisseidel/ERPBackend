@@ -12,20 +12,15 @@ public enum Sexo implements IEnum {
     ;
 
     private final Long value;
-    private final String descricao;
+    private final String description;
 
-    @Override
     public Sexo valueOf(Long value) {
         for (Sexo s : Sexo.values()) {
-            if (valueEquals(s.getValue(), value)) {
+            if (IEnum.valueEquals(s.getValue(), value)) {
                 return s;
             }
         }
         return null;
     }
 
-    @Override
-    public boolean valueEquals(Long l1, Long l2) {
-        return l1 != null && l2 != null && l1.compareTo(l2) == 0;
-    }
 }
