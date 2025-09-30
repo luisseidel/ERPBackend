@@ -19,17 +19,13 @@ public class TaskConsumer {
 
     @RabbitListener(queues = RabbitMQConfig.EMAIL_QUEUE, containerFactory = "emailListenerFactory")
     public void handleEmail(String payload) {
-        try {
-            System.out.println("Processando email: " + payload);
-            EmailDTO dto = jsonConverter.convertJsonToDto(payload, EmailDTO.class);
+        System.out.println("Processando email: " + payload);
+        EmailDTO dto = jsonConverter.convertJsonToDto(payload, EmailDTO.class);
 
-            sendEmailTask.setEmailDTO(dto);
-            sendEmailTask.execute();
+        sendEmailTask.setEmailDTO(dto);
+        sendEmailTask.execute();
 
-            metrics.incrementEmail();
-        } catch (Exception e) {
-            log.error("não foi possível enviar o email: " + e);
-        }
+        metrics.incrementEmail();
     }
 
     @RabbitListener(queues = RabbitMQConfig.PDF_QUEUE, containerFactory = "pdfListenerFactory")

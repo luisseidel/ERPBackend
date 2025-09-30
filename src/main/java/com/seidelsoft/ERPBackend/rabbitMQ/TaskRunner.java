@@ -17,11 +17,11 @@ public class TaskRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         String jsonEmail = jsonConverter.convertDtoToJson(getEmailDTO());
 
-        producer.sendEmailTask(jsonEmail, 10);
         producer.sendEmailTask(jsonEmail, 5);
         producer.sendEmailTask(jsonEmail, 6);
         producer.sendEmailTask(jsonEmail, 7);
         producer.sendEmailTask(jsonEmail, 1);
+        producer.sendEmailTask(jsonEmail, 10);
 
         producer.sendPdfTask("PDF teste", 2);
         producer.sendPdfTask("PDF teste", 3);

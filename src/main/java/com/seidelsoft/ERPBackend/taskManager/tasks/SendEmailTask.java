@@ -3,13 +3,16 @@ package com.seidelsoft.ERPBackend.taskManager.tasks;
 import com.seidelsoft.ERPBackend.taskManager.model.TaskTypeEnum;
 import com.seidelsoft.ERPBackend.taskManager.model.dto.EmailDTO;
 import com.seidelsoft.ERPBackend.taskManager.service.BaseTask;
+import jakarta.mail.internet.MimeMessage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.mail.SimpleMailMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Getter
 @Setter
 @Component
@@ -26,12 +29,17 @@ public class SendEmailTask extends BaseTask {
 
     @Override
     public void execute() {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(emailDTO.from());
-        message.setTo(emailDTO.destination());
-        message.setSubject(emailDTO.subject());
-        message.setText(emailDTO.body());
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
 
-        mailSender.send(message);
+            helper.setTo(emailDTO.from());
+            helper.setSubject(emailDTO.subject());
+            helper.setText(emailDTO.body(), true);
+
+            mailSender.send(mimeMessage);
+        } catch (Exception e) {
+            log.error("Erro ao enviar mensagem: ", e);
+        }
     }
 }

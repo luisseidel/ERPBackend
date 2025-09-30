@@ -42,7 +42,8 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Criar algum serviço/processamento que possa ser assíncrono
 - [x] Usar RabbitMQ ou kafka para poder disparar algum serviço de maneira assíncrona
 - [x] Prometheus e Grafana
+- [] Criar gerador de pdf com itext
+- [] Gerar PDF de maneira assíncrona
+- [] Gerar Relatórios de maneira assíncrona
 - [] Criar pipeline CI/CD
 - [] Trocar autenticação para keycloak
-- [] Criar gerador de pdf com itext
-- [] criar relatórios
