@@ -1,4 +1,4 @@
-package com.seidelsoft.ERPBackend.taskManager.model;
+package com.seidelsoft.ERPBackend.taskManager.model.entity;
 
 import com.seidelsoft.ERPBackend.system.model.BaseEntity;
 import jakarta.persistence.*;

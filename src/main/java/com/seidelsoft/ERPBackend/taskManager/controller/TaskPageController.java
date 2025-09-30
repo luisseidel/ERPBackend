@@ -1,8 +1,8 @@
 package com.seidelsoft.ERPBackend.taskManager.controller;
 
 import com.seidelsoft.ERPBackend.system.pages.BasePageController;
-import com.seidelsoft.ERPBackend.taskManager.model.Task;
 import com.seidelsoft.ERPBackend.taskManager.model.TaskTypeEnum;
+import com.seidelsoft.ERPBackend.taskManager.model.entity.Task;
 import com.seidelsoft.ERPBackend.taskManager.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

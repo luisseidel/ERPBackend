@@ -1,7 +1,7 @@
 package com.seidelsoft.ERPBackend.taskManager.service;
 
-import com.seidelsoft.ERPBackend.taskManager.model.Task;
 import com.seidelsoft.ERPBackend.taskManager.model.TaskTypeEnum;
+import com.seidelsoft.ERPBackend.taskManager.model.entity.Task;
 
 public abstract class BaseTask {
 

@@ -1,7 +1,7 @@
 package com.seidelsoft.ERPBackend.taskManager.service;
 
 import com.seidelsoft.ERPBackend.system.service.BaseService;
-import com.seidelsoft.ERPBackend.taskManager.model.Task;
+import com.seidelsoft.ERPBackend.taskManager.model.entity.Task;
 import com.seidelsoft.ERPBackend.taskManager.repository.TaskRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

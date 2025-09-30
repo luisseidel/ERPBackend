@@ -38,9 +38,11 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Criar exibição padrão de erros
 - [x] Criar Testes Unitários
 - [x] Criar serviço/processamento agendado que poderá ser cadastrado em banco de dados pelo usuário
-- [] Expandir o serviço/processamento para enviar e-mails de verdade
-- [] Criar algum serviço/processamento que possa ser assíncrono
+- [x] Expandir o serviço/processamento para enviar e-mails de verdade
+- [x] Criar algum serviço/processamento que possa ser assíncrono
 - [x] Usar RabbitMQ ou kafka para poder disparar algum serviço de maneira assíncrona
 - [x] Prometheus e Grafana
 - [] Criar pipeline CI/CD
 - [] Trocar autenticação para keycloak
+- [] Criar gerador de pdf com itext
+- [] criar relatórios

@@ -1,7 +1,7 @@
 package com.seidelsoft.ERPBackend.taskManager.service;
 
-import com.seidelsoft.ERPBackend.taskManager.model.Task;
 import com.seidelsoft.ERPBackend.taskManager.model.TaskTypeEnum;
+import com.seidelsoft.ERPBackend.taskManager.model.entity.Task;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;
@@ -30,7 +30,6 @@ public class TaskFactory {
             throw new IllegalArgumentException("Tipo de tarefa inválido ou nulo: " + task.getTaskType());
         }
 
-        // Busca a implementação correta no mapa e lança uma exceção clara se não encontrar
         return Optional.ofNullable(tasks.get(type))
                 .orElseThrow(() -> new IllegalArgumentException("Nenhuma implementação encontrada para TaskType: " + type.getDescription()));
     }
