@@ -17,7 +17,7 @@
                     <option disabled selected value="">-- selecione --</option>
                     <option th:each="taskType : ${taskTypes}"
                             th:text="${taskType.name}"
-                            th:value="${taskType.id}">
+                            th:value="${taskType.value}">
                     </option>
                 </select>
             </div>

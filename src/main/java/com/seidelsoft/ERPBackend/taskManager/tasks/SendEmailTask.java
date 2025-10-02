@@ -30,14 +30,16 @@ public class SendEmailTask extends BaseTask {
     @Override
     public void execute() {
         try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+            if (emailDTO != null) {
+                MimeMessage mimeMessage = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+                helper.setTo(emailDTO.from());
 
-            helper.setTo(emailDTO.from());
-            helper.setSubject(emailDTO.subject());
-            helper.setText(emailDTO.body(), true);
+                helper.setSubject(emailDTO.subject());
+                helper.setText(emailDTO.body(), true);
 
-            mailSender.send(mimeMessage);
+                mailSender.send(mimeMessage);
+            }
         } catch (Exception e) {
             log.error("Erro ao enviar mensagem: ", e);
         }

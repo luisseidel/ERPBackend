@@ -2,9 +2,14 @@ package com.seidelsoft.ERPBackend.rabbitMQ;
 
 import com.seidelsoft.ERPBackend.system.service.JsonConverter;
 import com.seidelsoft.ERPBackend.taskManager.model.dto.EmailDTO;
+import com.seidelsoft.ERPBackend.taskManager.model.dto.PdfDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -16,18 +21,11 @@ public class TaskRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         String jsonEmail = jsonConverter.convertDtoToJson(getEmailDTO());
+        String jsonPDF = jsonConverter.convertDtoToJson(getPdfDTO());
 
-        producer.sendEmailTask(jsonEmail, 5);
-        producer.sendEmailTask(jsonEmail, 6);
-        producer.sendEmailTask(jsonEmail, 7);
-        producer.sendEmailTask(jsonEmail, 1);
         producer.sendEmailTask(jsonEmail, 10);
 
-        producer.sendPdfTask("PDF teste", 2);
-        producer.sendPdfTask("PDF teste", 3);
-        producer.sendPdfTask("PDF teste", 4);
-        producer.sendPdfTask("PDF teste", 10);
-        producer.sendPdfTask("PDF teste", 1);
+        producer.sendPdfTask(jsonPDF, 2);
 
         producer.sendReportTask("Relatório teste", 3);
     }
@@ -38,6 +36,17 @@ public class TaskRunner implements CommandLineRunner {
                 .destination("asd@asd.com")
                 .subject("Subject")
                 .body("body")
+                .build();
+    }
+
+    private PdfDTO getPdfDTO() {
+        Map<String, Object> dados = new HashMap<>();
+        dados.put("asd", getEmailDTO());
+
+        return PdfDTO.builder()
+                .titulo("ASD")
+                .cabecalhos(List.of("test", "tasd", "asd"))
+                .dados(List.of(dados))
                 .build();
     }
 }

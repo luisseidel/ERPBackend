@@ -80,7 +80,10 @@ spring:
           starttls:
             enable: true
 
-
+#PDF
+pdf:
+  output:
+    dir: "reports"
 
 #Spring Actuator
 management:

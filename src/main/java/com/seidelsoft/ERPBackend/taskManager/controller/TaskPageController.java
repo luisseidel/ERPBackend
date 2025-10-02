@@ -40,7 +40,7 @@ public class TaskPageController extends BasePageController<Task, TaskService> {
     public String update(long id, Task item) {
         super.update(id, item);
         Optional<Task> task = getService().getById(id);
-        task.ifPresent(existingTask -> getService().updateTask(existingTask));
+        task.ifPresent(existingTask -> getService().rescheduleTask(existingTask));
         return getUrlPageConsulta();
     }
 
