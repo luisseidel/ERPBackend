@@ -39,7 +39,7 @@ insert into public.role_permission(id, role_id, permission_id, consultar, adicio
 (nextval('seq_role_permission'), 1, 5, true, true, true, true),  -- ESTADO
 (nextval('seq_role_permission'), 1, 6, true, true, true, true),  -- ENDERECO
 (nextval('seq_role_permission'), 1, 7, true, true, true, true),  -- PERMISSION
-(nextval('seq_role_permission'), 1, 8, true, true, true, true)  -- ROLEPERMISSION
+(nextval('seq_role_permission'), 1, 8, true, true, true, true)   -- ROLEPERMISSION
 ;
 
 -- Usuário padrão (USER) com permissões apenas de consulta e edição em cidades e estados

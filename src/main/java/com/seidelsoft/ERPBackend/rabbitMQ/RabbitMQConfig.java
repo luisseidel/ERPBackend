@@ -2,6 +2,10 @@ package com.seidelsoft.ERPBackend.rabbitMQ;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,13 +15,13 @@ public class RabbitMQConfig {
 
     // Filas principais
     public static final String EMAIL_QUEUE = "email-queue";
-    public static final String PDF_QUEUE = "pdf-queue";
     public static final String REPORT_QUEUE = "report-queue";
+    public static final String GENERAL_QUEUE = "general-queue";
 
     // Dead Letter Queues
     public static final String EMAIL_DLQ = "email-dlq";
-    public static final String PDF_DLQ = "pdf-dlq";
     public static final String REPORT_DLQ = "report-dlq";
+    public static final String GENERAL_DLQ = "general-dlq";
 
     // Exchanges
     public static final String TASK_EXCHANGE = "task-exchange";
@@ -37,15 +41,6 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue pdfQueue() {
-        return QueueBuilder.durable(PDF_QUEUE)
-                .withArgument("x-max-priority", 10)  // prioridade de 0 a 10
-                .withArgument("x-dead-letter-exchange", TASK_EXCHANGE)
-                .withArgument("x-dead-letter-routing-key", PDF_DLQ)
-                .build();
-    }
-
-    @Bean
     public Queue reportQueue() {
         return QueueBuilder.durable(REPORT_QUEUE)
                 .withArgument("x-max-priority", 10)  // prioridade de 0 a 10
@@ -54,11 +49,32 @@ public class RabbitMQConfig {
                 .build();
     }
 
+    @Bean
+    public Queue generalQueue() {
+        return QueueBuilder.durable(GENERAL_QUEUE)
+                .withArgument("x-max-priority", 10)  // prioridade de 0 a 10
+                .withArgument("x-dead-letter-exchange", TASK_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", GENERAL_DLQ)
+                .build();
+    }
+
+    @Bean
+    public MessageConverter messageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(messageConverter());
+        return rabbitTemplate;
+    }
+
     // Dead Letter Queues
     @Bean
     public Queue emailDLQ() { return QueueBuilder.durable(EMAIL_DLQ).build(); }
     @Bean
-    public Queue pdfDLQ() { return QueueBuilder.durable(PDF_DLQ).build(); }
+    public Queue generalDLQ() { return QueueBuilder.durable(GENERAL_DLQ).build(); }
     @Bean
     public Queue reportDLQ() { return QueueBuilder.durable(REPORT_DLQ).build(); }
 
@@ -70,9 +86,9 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding pdfBinding() {
-        log.info("Ligando fila pdf");
-        return BindingBuilder.bind(pdfQueue()).to(taskExchange()).with(PDF_QUEUE);
+    public Binding generalBinding() {
+        log.info("Ligando fila de tarefas geral");
+        return BindingBuilder.bind(generalQueue()).to(taskExchange()).with(GENERAL_QUEUE);
     }
 
     @Bean
@@ -88,9 +104,9 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding pdfDLQBinding() {
-        log.info("Ligando DLQ pdf");
-        return BindingBuilder.bind(pdfDLQ()).to(taskExchange()).with(PDF_DLQ);
+    public Binding generalDLQBinding() {
+        log.info("Ligando DLQ geral");
+        return BindingBuilder.bind(generalDLQ()).to(taskExchange()).with(GENERAL_DLQ);
     }
 
     @Bean

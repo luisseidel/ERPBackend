@@ -6,4 +6,4 @@ VALUES
 (nextval('seq_menu'), 'Relatórios', '#', NULL, NULL, 2, TRUE, FALSE, NULL, 'Menu de relatórios')
 ;
 
-ALTER SEQUENCE seq_menu RESTART 3;
+ALTER SEQUENCE seq_menu RESTART 4;

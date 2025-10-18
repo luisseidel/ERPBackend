@@ -36,6 +36,12 @@ spring:
     username: guest
     password: guest
 
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
   #Cache
   cache:
     type: redis

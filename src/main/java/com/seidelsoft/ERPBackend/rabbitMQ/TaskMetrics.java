@@ -8,19 +8,19 @@ import org.springframework.stereotype.Component;
 public class TaskMetrics {
 
     private final Counter emailCounter;
-    private final Counter pdfCounter;
+    private final Counter generalTaskCounter;
     private final Counter reportCounter;
 
     private final Counter emailFailCounter;
-    private final Counter pdfFailCounter;
+    private final Counter generalTaskFailCounter;
     private final Counter reportFailCounter;
 
     public TaskMetrics(MeterRegistry registry) {
         this.emailCounter = Counter.builder("tasks.email.processed")
                 .description("Quantidade de emails processados")
                 .register(registry);
-        this.pdfCounter = Counter.builder("tasks.pdf.processed")
-                .description("Quantidade de PDFs processados")
+        this.generalTaskCounter = Counter.builder("tasks.general.processed")
+                .description("Quantidade de Tasks gerais processados")
                 .register(registry);
         this.reportCounter = Counter.builder("tasks.report.processed")
                 .description("Quantidade de relatórios processados")
@@ -29,8 +29,8 @@ public class TaskMetrics {
         this.emailFailCounter = Counter.builder("tasks.email.fail")
                 .description("Quantidade de e-mails com falha")
                 .register(registry);
-        this.pdfFailCounter = Counter.builder("tasks.pdf.fail")
-                .description("Quantidade de PDFs com falha")
+        this.generalTaskFailCounter = Counter.builder("tasks.general.fail")
+                .description("Quantidade de Task gerais com falha")
                 .register(registry);
         this.reportFailCounter = Counter.builder("tasks.report.fail")
                 .description("Quantidade de reports processados")
@@ -45,12 +45,12 @@ public class TaskMetrics {
         emailFailCounter.increment();
     }
 
-    public void incrementPdf() {
-        pdfCounter.increment();
+    public void incrementGeneralTask() {
+        generalTaskCounter.increment();
     }
 
-    public void incrementPdfFail() {
-        pdfFailCounter.increment();
+    public void incrementGeneralFail() {
+        generalTaskFailCounter.increment();
     }
 
     public void incrementReport() {

@@ -26,7 +26,7 @@ public class TaskProducer {
     }
 
     public void sendPdfTask(String payload, int priority) {
-        sendTask(RabbitMQConfig.PDF_QUEUE, payload, priority);
+        sendTask(RabbitMQConfig.GENERAL_QUEUE, payload, priority);
     }
 
     public void sendReportTask(String payload, int priority) {

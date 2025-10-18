@@ -1,4 +1,4 @@
-package com.seidelsoft.ERPBackend.taskManager.model.dto;
+package com.seidelsoft.ERPBackend.email.dto;
 
 import lombok.Builder;
 

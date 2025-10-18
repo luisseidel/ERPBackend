@@ -33,5 +33,8 @@ public class Task extends BaseEntity {
 
     @Column(name = "active", nullable = false)
     private Boolean active;
+
+    @Column(name = "register_job", nullable = false)
+    private Boolean registerJob;
 }
 

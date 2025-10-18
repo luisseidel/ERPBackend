@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 public enum TaskTypeEnum implements IEnum {
 
     GERAL(0L, "GERAL"),
-    EMAIL(1L, "EMAIL"),
-    PDF(2L, "PDF"),
-    REPORT(3L, "REPORT");
+    REPORT(1L, "REPORT");
 
     private final Long value;
     private final String description;
