@@ -27,7 +27,7 @@ public class DynamicJobService {
 
         Step step = new StepBuilder(jobName + "Step", jobRepository)
                 .tasklet((contribution, chunkContext) -> {
-                    task.execute();  // apenas chama a regra de negócio
+                    task.execute();
                     return RepeatStatus.FINISHED;
                 }, transactionManager)
                 .build();

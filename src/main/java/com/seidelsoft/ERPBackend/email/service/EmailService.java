@@ -17,7 +17,7 @@ public class EmailService {
     public void enfileirarEmail(EmailDTO email) {
         amqpTemplate.convertAndSend(
                 RabbitMQConfig.TASK_EXCHANGE,
-                RabbitMQConfig.EMAIL_DLQ,
+                RabbitMQConfig.EMAIL_ROUTING_KEY,
                 email
         );
         log.info("📤 Mensagem de e-mail enfileirada para: {}", email.destination());
