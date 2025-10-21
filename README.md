@@ -43,7 +43,7 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Usar RabbitMQ ou kafka para poder disparar algum serviço de maneira assíncrona
 - [x] Prometheus e Grafana
 - [] Criar gerador de pdf com itext
-- [] Gerar PDF de maneira assíncrona
-- [] Gerar Relatórios de maneira assíncrona
+- [] Gerar PDF/Relatorios de maneira assíncrona usando as filas
+- [] Enviar o pdf/relatorios por e-mail após conclusão da task assíncrona
 - [] Criar pipeline CI/CD
 - [] Trocar autenticação para keycloak
