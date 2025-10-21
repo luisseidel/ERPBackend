@@ -1,6 +1,7 @@
 package com.seidelsoft.ERPBackend.email.service;
 
 import com.seidelsoft.ERPBackend.email.dto.EmailDTO;
+import com.seidelsoft.ERPBackend.rabbitMQ.QueueConsumer;
 import com.seidelsoft.ERPBackend.rabbitMQ.RabbitMQConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +13,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class EmailConsumer {
+public class EmailConsumer implements QueueConsumer<EmailDTO> {
 
     private final JavaMailSender mailSender;
 
+    @Override
     @RabbitListener(queues = RabbitMQConfig.EMAIL_QUEUE)
-    public void consumirMensagem(EmailDTO email) {
+    public void consumir(EmailDTO email) {
         log.info("📩 Consumindo mensagem de e-mail para: {}", email.destination());
         try {
             SimpleMailMessage message = new SimpleMailMessage();

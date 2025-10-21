@@ -16,8 +16,8 @@ public class TaskPublisher {
 
     public void enfileirarTask(Task task) {
         amqpTemplate.convertAndSend(
-                RabbitMQConfig.GENERAL_QUEUE,
-                RabbitMQConfig.GENERAL_DLQ,
+                RabbitMQConfig.TASK_EXCHANGE,
+                RabbitMQConfig.GENERAL_ROUTING_KEY,
                 task
         );
         log.info("📤 Tarefa enfileirada para execução: {}", task.getName());

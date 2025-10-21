@@ -1,5 +1,6 @@
 package com.seidelsoft.ERPBackend.taskManager.service;
 
+import com.seidelsoft.ERPBackend.rabbitMQ.QueueConsumer;
 import com.seidelsoft.ERPBackend.rabbitMQ.RabbitMQConfig;
 import com.seidelsoft.ERPBackend.taskManager.model.entity.Task;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +16,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TaskConsumer {
+public class TaskConsumer implements QueueConsumer<Task> {
 
     private final JobLauncher jobLauncher;
     private final JobLocator jobLocator;
 
+    @Override
     @RabbitListener(queues = RabbitMQConfig.GENERAL_QUEUE)
-    public void consumirTask(Task task) {
+    public void consumir(Task task) {
         log.info("📥 Recebida task da fila: {}", task.getName());
 
         try {

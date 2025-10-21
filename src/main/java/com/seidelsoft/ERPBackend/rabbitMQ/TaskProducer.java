@@ -22,15 +22,15 @@ public class TaskProducer {
 
 
     public void sendEmailTask(String payload, int priority) {
-        sendTask(RabbitMQConfig.EMAIL_QUEUE, payload, priority);
+        sendTask(RabbitMQConfig.EMAIL_ROUTING_KEY, payload, priority);
     }
 
     public void sendPdfTask(String payload, int priority) {
-        sendTask(RabbitMQConfig.GENERAL_QUEUE, payload, priority);
+        sendTask(RabbitMQConfig.GENERAL_ROUTING_KEY, payload, priority);
     }
 
     public void sendReportTask(String payload, int priority) {
-        sendTask(RabbitMQConfig.REPORT_QUEUE, payload, priority);
+        sendTask(RabbitMQConfig.REPORT_ROUTING_KEY, payload, priority);
     }
 
 }
