@@ -1,7 +1,10 @@
 package com.seidelsoft.ERPBackend.authorization.entity;
 
 import com.seidelsoft.ERPBackend.system.model.BaseEntity;
+import com.seidelsoft.ERPBackend.system.model.annotations.Password;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,12 +27,15 @@ public class User extends BaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_generator")
     private Long id;
 
+    @NotEmpty
+    @Email(message = "Email inválido")
 	@Column(name = "email", length = 255, nullable = false)
     private String email;
 
 	@Column(name = "name", length = 255, nullable = false)
     private String name;
 
+    @Password
 	@Column(name = "password", length = 255, nullable = false)
 	private String password;
 
