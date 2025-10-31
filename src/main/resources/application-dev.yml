@@ -24,11 +24,16 @@ spring:
       connectionTimeout: 30000
       poolName: HikariPoolBooks
 
-    # Thymeleaf
+  # Thymeleaf
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+    mode: HTML
     cache: false
+  resources: # Static resources
+    static-locations: file:src/main/resources/static/
+    cache:
+      period: 0
 
   rabbitmq:
     host: localhost
@@ -42,19 +47,9 @@ spring:
     job:
       enabled: false
 
-  #Cache
-  cache:
-    type: redis
-    redis:
-      host: localhost
-      port: 6379
-      password: myStrongPassword
-      time-to-live: 10m
-
   devtools:
     restart:
       enabled: false
-      exclude: redis/**
 
 # JPA settings
   jpa:

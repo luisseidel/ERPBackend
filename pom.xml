@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.5</version>
+		<version>3.5.7</version>
 		<relativePath/>
 	</parent>
 	<groupId>com.seidelsoft</groupId>
@@ -16,12 +16,10 @@
 	<description>Projeto de WebApp para ERP</description>
 
 	<properties>
-		<java.version>24</java.version>
+		<java.version>25</java.version>
 		<jwt.version>0.12.6</jwt.version>
 		<lombok.version>1.18.38</lombok.version>
 		<spring.doc.version>2.8.9</spring.doc.version>
-		<spring.thymeleaf.version>3.5.4</spring.thymeleaf.version>
-		<thymeleaf.layout.dilect.version>3.4.0</thymeleaf.layout.dilect.version>
         <maven.surefire.plugin>3.5.4</maven.surefire.plugin>
         <itext.pdf.version>5.5.13.4</itext.pdf.version>
         <jackson.databind.version>2.20.0</jackson.databind.version>
@@ -102,16 +100,6 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${spring.doc.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-			<version>${spring.thymeleaf.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>nz.net.ultraq.thymeleaf</groupId>
-			<artifactId>thymeleaf-layout-dialect</artifactId>
-			<version>${thymeleaf.layout.dilect.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
