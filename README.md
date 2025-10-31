@@ -1,13 +1,12 @@
 # ERPBackend
 
-* Sistema CRUD básico, feito com Spring e Thymeleaf
-* Permite o cadastro de Usuários e Endereços e acesso ao sistema.
-* Também possui uma API Restful, com os métodos GET, POST, PUT e DELETE.
+* Backend de um Sistema para cruds, feito com Spring
+* Possui uma API Restful, com os métodos GET, POST, PUT e DELETE.
 
 
 ## Tecnologias utilizadas
 
-* Java 24
+* Java 25 LTS
 * Spring Web
 * Spring Data
 * Spring Security
@@ -15,7 +14,6 @@
 * Flyway
 * Postgres SQL
 * Swagger UI
-* Thymeleaf
 * JUnit & Mockito
 * RabbitMQ 
 * Redis

@@ -1,4 +1,4 @@
-package com.seidelsoft.ERPBackend.authentication.controller.api;
+package com.seidelsoft.ERPBackend.authentication.controller;
 
 import com.seidelsoft.ERPBackend.authentication.model.dto.AuthenticationRequestDTO;
 import com.seidelsoft.ERPBackend.authentication.model.dto.AuthenticationResponseDTO;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuthenticationRestController {
+public class AuthenticationController {
 
     @Autowired
     private AuthenticationService service;

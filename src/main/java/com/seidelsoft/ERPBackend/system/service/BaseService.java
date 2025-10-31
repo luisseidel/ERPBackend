@@ -3,6 +3,10 @@ package com.seidelsoft.ERPBackend.system.service;
 import com.seidelsoft.ERPBackend.authorization.entity.User;
 import com.seidelsoft.ERPBackend.authorization.repository.UserRepository;
 import com.seidelsoft.ERPBackend.system.model.BaseEntity;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,8 +16,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<T, Long>> implements IService<T> {
 
@@ -24,6 +30,9 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     protected R specificRepository;
     @Autowired
     private UserRepository userRepository;
+
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
 
     @Override
     public Optional<T> getById(Long id) {
@@ -66,8 +75,21 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
 
     public void beforeSave(T item) {
         StringBuilder msgValidacao = new StringBuilder();
+
+        validarConstraints(item, msgValidacao);
+
         if (!validar(item, msgValidacao)) {
             throw new IllegalArgumentException("Dados inválidos! " + msgValidacao);
+        }
+    }
+
+    public void validarConstraints(T entity, StringBuilder sb) {
+        Set<ConstraintViolation<T>> violationsPessoa = validator.validate(entity);
+        if (!violationsPessoa.isEmpty()) {
+            for (ConstraintViolation<T> violation : violationsPessoa) {
+                sb.append(violation.getMessage());
+                sb.append(System.lineSeparator());
+            }
         }
     }
 
@@ -84,4 +106,44 @@ public abstract class BaseService<T extends BaseEntity, R extends JpaRepository<
     public void afterSave(T savedItem) {}
     public void beforeDelete(Optional<T> item) {}
     public void afterDelete() {}
+
+
+    protected String getResourceName() {
+        ParameterizedType superclass = (ParameterizedType) getClass().getGenericSuperclass();
+        Class<?> entityClass = (Class<?>) superclass.getActualTypeArguments()[0];
+        return entityClass.getSimpleName().toUpperCase();
+    }
+
+    protected boolean canConsultar(String resourceName) {
+        return hasPermission(resourceName, "consultar");
+    }
+
+    protected boolean canAdicionar(String resourceName) {
+        return hasPermission(resourceName, "adicionar");
+    }
+
+    protected boolean canEditar(String resourceName) {
+        return hasPermission(resourceName, "editar");
+    }
+
+    protected boolean canExcluir(String resourceName) {
+        return hasPermission(resourceName, "excluir");
+    }
+
+    private boolean hasPermission(String resourceName, String action) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof User user)) return false;
+
+        return user.getRoles().stream()
+                .flatMap(role -> role.getRolePermissions().stream())
+                .filter(rp -> rp.getPermission().getName().equalsIgnoreCase(resourceName))
+                .anyMatch(rp ->
+                        switch (action.toLowerCase()) {
+                            case "consultar" -> rp.isConsultar();
+                            case "adicionar" -> rp.isAdicionar();
+                            case "editar" -> rp.isEditar();
+                            case "excluir" -> rp.isExcluir();
+                            default -> false;
+                        });
+    }
 }
