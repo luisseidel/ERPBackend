@@ -4,37 +4,35 @@ import com.seidelsoft.ERPBackend.authorization.entity.RolePermission;
 import com.seidelsoft.ERPBackend.authorization.service.RolePermissionService;
 import com.seidelsoft.ERPBackend.system.controller.BaseRestController;
 import com.seidelsoft.ERPBackend.system.exception.ValidacaoException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/rolepermission")
 public class RolePermissionController extends BaseRestController<RolePermission, RolePermissionService> {
+
     @Override
-    public ResponseEntity list(int page, int size) {
-        return null;
+    @PostMapping
+    public ResponseEntity create(@Valid @RequestBody RolePermission dto) throws ValidacaoException {
+        RolePermission rolePermission = getService().save(dto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(rolePermission.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(rolePermission);
     }
 
     @Override
-    public ResponseEntity get(Long id) {
-        return null;
+    @PutMapping
+    public ResponseEntity update(@Valid @RequestBody RolePermission dto) throws ValidacaoException {
+        return ResponseEntity.ok(getService().save(dto));
     }
 
-    @Override
-    public ResponseEntity create(RolePermission dto) throws ValidacaoException {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity update(RolePermission dto) throws ValidacaoException {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<String> delete(Long id) {
-        return null;
-    }
 }

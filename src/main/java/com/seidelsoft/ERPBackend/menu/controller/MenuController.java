@@ -4,37 +4,41 @@ import com.seidelsoft.ERPBackend.menu.model.Menu;
 import com.seidelsoft.ERPBackend.menu.service.MenuService;
 import com.seidelsoft.ERPBackend.system.controller.BaseRestController;
 import com.seidelsoft.ERPBackend.system.exception.ValidacaoException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/menu")
 public class MenuController extends BaseRestController<Menu, MenuService> {
+
     @Override
+    @GetMapping("/list")
     public ResponseEntity list(int page, int size) {
-        return null;
+        return ResponseEntity.ok(getService().findRootMenusWithChildrenByUser());
     }
 
     @Override
-    public ResponseEntity get(Long id) {
-        return null;
+    public ResponseEntity create(@Valid @RequestBody Menu dto) throws ValidacaoException {
+        Menu menu = getService().save(dto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(menu.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(menu);
     }
 
     @Override
-    public ResponseEntity create(Menu dto) throws ValidacaoException {
-        return null;
+    @PutMapping
+    public ResponseEntity update(@Valid @RequestBody Menu dto) throws ValidacaoException {
+        return ResponseEntity.ok(getService().save(dto));
     }
 
-    @Override
-    public ResponseEntity update(Menu dto) throws ValidacaoException {
-        return null;
-    }
 
-    @Override
-    public ResponseEntity<String> delete(Long id) {
-        return null;
-    }
 }

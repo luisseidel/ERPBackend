@@ -4,10 +4,13 @@ import com.seidelsoft.ERPBackend.endereco.model.Endereco;
 import com.seidelsoft.ERPBackend.endereco.service.EnderecoService;
 import com.seidelsoft.ERPBackend.system.controller.BaseRestController;
 import com.seidelsoft.ERPBackend.system.exception.ValidacaoException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,27 +18,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class EnderecoRestController extends BaseRestController<Endereco, EnderecoService> {
 
     @Override
-    public ResponseEntity list(int page, int size) {
-        return null;
+    @PostMapping
+    public ResponseEntity create(@Valid @RequestBody Endereco dto) throws ValidacaoException {
+        Endereco endereco = getService().save(dto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(endereco.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(endereco);
     }
 
     @Override
-    public ResponseEntity get(Long id) {
-        return null;
+    @PutMapping
+    public ResponseEntity update(@Valid @RequestBody Endereco dto) throws ValidacaoException {
+        return ResponseEntity.ok(getService().save(dto));
     }
 
-    @Override
-    public ResponseEntity create(Endereco dto) throws ValidacaoException {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity update(Endereco dto) throws ValidacaoException {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<String> delete(Long id) {
-        return null;
-    }
 }
