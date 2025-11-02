@@ -10,6 +10,7 @@ import com.seidelsoft.ERPBackend.pessoa.model.Pessoa;
 import com.seidelsoft.ERPBackend.pessoa.service.PessoaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,12 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = PessoaController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -65,64 +66,171 @@ class PessoaControllerTest {
         pessoaMock.setSexo(1L);
     }
 
-    @Test
-    @DisplayName("Deve retornar lista de pessoas com sucesso")
-    void list_withValidRequest_returnsPagedList() throws Exception {
-        Mockito.when(pessoaService.findAllPaged(any(Pageable.class)))
-                .thenReturn(new PageImpl<>(List.of(pessoaMock)));
+    @Nested
+    @DisplayName("GET /api/v1/pessoa/list")
+    class ListTest {
+        @Test
+        @DisplayName("Deve retornar lista de pessoas com sucesso")
+        void list_withValidRequest_returnsPagedList() throws Exception {
+            Mockito.when(pessoaService.findAllPaged(any(Pageable.class)))
+                    .thenReturn(new PageImpl<>(List.of(pessoaMock)));
 
-        mockMvc.perform(get("/api/v1/pessoa/list")
-                        .param("page", "0")
-                        .param("size", "10")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.content[0].id").value(1))
-                .andExpect(jsonPath("$.content[0].nome").value("Luis"));
+            mockMvc.perform(get("/api/v1/pessoa/list")
+                            .param("page", "0")
+                            .param("size", "10")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.content").isArray())
+                    .andExpect(jsonPath("$.content[0].id").value(1))
+                    .andExpect(jsonPath("$.content[0].nome").value("Luis"));
 
-        Mockito.verify(pessoaService).findAllPaged(any(Pageable.class));
+            Mockito.verify(pessoaService).findAllPaged(any(Pageable.class));
+        }
+
+        @Test
+        @DisplayName("Deve retornar lista vazia quando não há pessoas cadastradas")
+        void list_withNoData_returnsEmptyPage() throws Exception {
+            Mockito.when(pessoaService.findAllPaged(any(Pageable.class)))
+                    .thenReturn(new PageImpl<>(List.of()));
+
+            mockMvc.perform(get("/api/v1/pessoa/list")
+                            .param("page", "0")
+                            .param("size", "10")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.content").isEmpty());
+        }
+
+        @Test
+        @DisplayName("Deve retornar uma lista com os valores default, de page (0) e pageSize (10)")
+        void list_whenMissingParams_returnsPagedList() throws Exception {
+            Mockito.when(pessoaService.findAllPaged(any(Pageable.class)))
+                    .thenReturn(new PageImpl<>(List.of(pessoaMock)));
+
+            mockMvc.perform(get("/api/v1/pessoa/list")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.content").isNotEmpty());
+        }
     }
 
-    @Test
-    @DisplayName("Deve retornar lista vazia quando não há pessoas cadastradas")
-    void list_withNoData_returnsEmptyPage() throws Exception {
-        Mockito.when(pessoaService.findAllPaged(any(Pageable.class)))
-                .thenReturn(new PageImpl<>(List.of()));
+    @Nested
+    @DisplayName("GET /api/v1/pessoa/id/{id}")
+    class GetByIdTest {
 
-        mockMvc.perform(get("/api/v1/pessoa/list")
-                .param("page", "0")
-                .param("size", "10")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isEmpty());
+        @Test
+        @DisplayName("Deve retornar uma pessoa")
+        void getById_should_return_pessoa() throws Exception {
+            Mockito.when(pessoaService.getById(any(Long.class))).thenReturn(Optional.of(pessoaMock));
+
+            mockMvc.perform(get("/api/v1/pessoa/id/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+
+            Mockito.verify(pessoaService).getById(1L);
+        }
+
+        @Test
+        @DisplayName("Deve retonar 404 - not found")
+        void getById_whenWrongEndpoint_returnsNotFound() throws Exception {
+            mockMvc.perform(get("/api/v1/pessoa/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isNotFound());
+        }
+
+        @Test
+        @DisplayName("Deve retornar 204 - no content")
+        void getById_whenMissingDatabseObject_returnsNoContent() throws Exception {
+            Mockito.when(pessoaService.getById(any(Long.class))).thenReturn(java.util.Optional.empty());
+
+            mockMvc.perform(get("/api/v1/pessoa/id/22222")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isNoContent());
+
+            Mockito.verify(pessoaService).getById(22222L);
+        }
     }
 
-    @Test
-    @DisplayName("Deve deletar uma pessoa com sucesso")
-    void delete_success_returnsNoContent() throws Exception {
-        Mockito.doNothing().when(pessoaService).delete(any(Long.class));
+    @Nested
+    @DisplayName("POST /api/v1/pessoa")
+    class CreateTest {
+        @Test
+        @DisplayName("Deve criar uma pessoa com sucesso")
+        void create_success_returnsPessoa() throws Exception {
+            Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
 
-        mockMvc.perform(delete("/api/v1/pessoa/id/1")
-                .header("Authorization", "Bearer " + token))
-                .andExpect(status().isNoContent());
-
-        Mockito.verify(pessoaService).delete(1L);
+            mockMvc.perform(post("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token)
+                            .content(objectMapper.writeValueAsString(pessoaMock)))
+                    .andExpect(status().isCreated())
+                    .andExpect(header().exists("Location"))
+                    .andExpect(header().string("Location", containsString("/api/v1/pessoa/1")));
+            ;
+        }
     }
 
-    @Test
-    @DisplayName("Deve retornar 400 Bad Request quando o ID for nulo ou não existir")
-    void delete_success_returnsNoContent() throws Exception {
-        Mockito.doNothing().when(pessoaService).delete(any(Long.class));
+    @Nested
+    @DisplayName("PUT /api/v1/pessoa")
+    class UpdateTest {
+        @Test
+        @DisplayName("Deve atualizar uma pessoa com sucesso")
+        void update_sucess_returnsPessoa() throws Exception {
+            Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
 
-        mockMvc.perform(delete("/api/v1/pessoa/id/1")
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isNoContent());
-
-        Mockito.verify(pessoaService).delete(1L);
+            mockMvc.perform(put("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token)
+                            .content(objectMapper.writeValueAsString(pessoaMock)))
+                    .andExpect(status().isOk())
+            ;
+        }
     }
 
+
+    @Nested
+    @DisplayName("DELETE /api/v1/pessoa/id/{id}")
+    class DeleteTest {
+        @Test
+        @DisplayName("Deve deletar uma pessoa com sucesso")
+        void delete_success_returnsNoContent() throws Exception {
+            Mockito.doNothing().when(pessoaService).delete(any(Long.class));
+
+            mockMvc.perform(delete("/api/v1/pessoa/id/1")
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isNoContent());
+
+            Mockito.verify(pessoaService).delete(1L);
+        }
+
+        @Test
+        @DisplayName("Não deve fazer nada caso a pessoa não exista no banco, retornando 204 - sem conteúdo.")
+        void delete_whenMissingDatabseObject_returnsNoContent() throws Exception {
+            Mockito.doNothing().when(pessoaService).delete(any(Long.class));
+
+            mockMvc.perform(delete("/api/v1/pessoa/id/9999")
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isNoContent());
+
+            Mockito.verify(pessoaService).delete(9999L);
+        }
+
+        @Test
+        @DisplayName("Deve retornar 404 - not found, caso não encontre o endpoint")
+        void delete_onWrongEndpoint_returnsBadRequest() throws Exception {
+            mockMvc.perform(delete("/api/v1/pessoa/9999")
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isNotFound());
+        }
+    }
 
 }

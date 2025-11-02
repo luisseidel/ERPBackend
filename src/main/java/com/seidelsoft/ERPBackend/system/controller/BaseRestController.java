@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Getter
 @Setter
 @RestController
@@ -32,7 +34,11 @@ public abstract class BaseRestController<T, K extends BaseService> implements Se
 
     @GetMapping("/id/{id}")
     public ResponseEntity get(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(getService().getById(id));
+        Optional<T> item = getService().getById(id);
+        if (item.isPresent())
+            return ResponseEntity.ok(item.get());
+        else
+            return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/id/{id}")
