@@ -31,9 +31,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = PessoaController.class)
-@AutoConfigureMockMvc(addFilters = false)
 @Import(SecurityTestConfig.class)
+@AutoConfigureMockMvc(addFilters = false)
+@WebMvcTest(controllers = PessoaController.class)
 class PessoaControllerTest {
 
     @Autowired
@@ -105,7 +105,7 @@ class PessoaControllerTest {
         }
 
         @Test
-        @DisplayName("Deve retornar uma lista com os valores default, de page (0) e pageSize (10)")
+        @DisplayName("Ao não informar parâmetros na consulta, deve retornar uma lista com os valores default, de page (0) e pageSize (10)")
         void list_whenMissingParams_returnsPagedList() throws Exception {
             Mockito.when(pessoaService.findAllPaged(any(Pageable.class)))
                     .thenReturn(new PageImpl<>(List.of(pessoaMock)));
@@ -174,6 +174,20 @@ class PessoaControllerTest {
                     .andExpect(status().isCreated())
                     .andExpect(header().exists("Location"))
                     .andExpect(header().string("Location", containsString("/api/v1/pessoa/1")));
+            ;
+        }
+
+        @Test
+        @DisplayName("Ao não informar o objeto, deve retornar 400 - bad request")
+        void create_whenMissingObject_returnsBadRequest() throws Exception {
+            Mockito.when(pessoaService.createUpdate(any(null))).thenReturn(pessoaMock);
+
+            mockMvc.perform(post("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token)
+                    )
+                    .andExpect(status().isBadRequest())
             ;
         }
     }
