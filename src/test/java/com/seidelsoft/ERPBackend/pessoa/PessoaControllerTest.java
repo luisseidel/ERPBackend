@@ -116,6 +116,39 @@ class PessoaControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content").isNotEmpty());
         }
+
+        @Test
+        @DisplayName("Deve retornar 500 quando ocorre erro no serviço")
+        void list_whenServiceThrowsException_returnsInternalServerError() throws Exception {
+            Mockito.when(pessoaService.findAllPaged(any(Pageable.class)))
+                    .thenThrow(new RuntimeException("Erro ao buscar pessoas"));
+
+            mockMvc.perform(get("/api/v1/pessoa/list")
+                            .param("page", "0")
+                            .param("size", "10")
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isInternalServerError());
+        }
+
+        @Test
+        @DisplayName("Deve retornar 400 quando page é negativo")
+        void list_whenNegativePage_returnsBadRequest() throws Exception {
+            mockMvc.perform(get("/api/v1/pessoa/list")
+                            .param("page", "-1")
+                            .param("size", "10")
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isBadRequest());
+        }
+
+        @Test
+        @DisplayName("Deve retornar 400 quando size é zero ou negativo")
+        void list_whenInvalidSize_returnsBadRequest() throws Exception {
+            mockMvc.perform(get("/api/v1/pessoa/list")
+                            .param("page", "0")
+                            .param("size", "0")
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isBadRequest());
+        }
     }
 
     @Nested
@@ -136,17 +169,18 @@ class PessoaControllerTest {
         }
 
         @Test
-        @DisplayName("Deve retonar 404 - not found")
+        @DisplayName("Deve retornar 404 - not found")
         void getById_whenWrongEndpoint_returnsNotFound() throws Exception {
             mockMvc.perform(get("/api/v1/pessoa/1")
                             .contentType(MediaType.APPLICATION_JSON)
                             .header("Authorization", "Bearer " + token))
-                    .andExpect(status().isNotFound());
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.status").value(404));
         }
 
         @Test
         @DisplayName("Deve retornar 204 - no content")
-        void getById_whenMissingDatabseObject_returnsNoContent() throws Exception {
+        void getById_whenMissingDatabaseObject_returnsNoContent() throws Exception {
             Mockito.when(pessoaService.getById(any(Long.class))).thenReturn(java.util.Optional.empty());
 
             mockMvc.perform(get("/api/v1/pessoa/id/22222")
@@ -162,6 +196,17 @@ class PessoaControllerTest {
     @DisplayName("POST /api/v1/pessoa")
     class CreateTest {
         @Test
+        @DisplayName("Deve retornar 404 - not found, caso não encontre o endpoint")
+        void create_onWrongEndpoint_returnsNotFound() throws Exception {
+            mockMvc.perform(post("/api/v1/pessoa/9999")
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.status").value(404))
+                    .andExpect(jsonPath("$.error").value("Recurso não encontrado"))
+                    .andExpect(jsonPath("$.message").value("A URL solicitada não existe"));
+        }
+
+        @Test
         @DisplayName("Deve criar uma pessoa com sucesso")
         void create_success_returnsPessoa() throws Exception {
             Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
@@ -175,18 +220,79 @@ class PessoaControllerTest {
                     .andExpect(header().exists("Location"))
                     .andExpect(header().string("Location", containsString("/api/v1/pessoa/1")));
             ;
+
+            Mockito.verify(pessoaService).createUpdate(pessoaMock);
         }
 
         @Test
         @DisplayName("Ao não informar o objeto, deve retornar 400 - bad request")
         void create_whenMissingObject_returnsBadRequest() throws Exception {
-            Mockito.when(pessoaService.createUpdate(any(null))).thenReturn(pessoaMock);
+            mockMvc.perform(post("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.status").value(400))
+                    .andExpect(jsonPath("$.error").value("Requisição inválida"))
+                    .andExpect(jsonPath("$.message").value("Corpo da requisição é obrigatório"));
+        }
+
+        @Test
+        @DisplayName("Ao não informar o cpf deve retornar 400 - bad request")
+        void create_whenMissingCPF_returnsBadRequest() throws Exception {
+            pessoaMock.setCpfCnpj(null);
+            Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
 
             mockMvc.perform(post("/api/v1/pessoa")
                             .accept(MediaType.APPLICATION_JSON)
                             .contentType(MediaType.APPLICATION_JSON)
                             .header("Authorization", "Bearer " + token)
-                    )
+                            .content(objectMapper.writeValueAsString(pessoaMock)))
+                    .andExpect(status().isBadRequest())
+            ;
+        }
+
+        @Test
+        @DisplayName("Ao não informar o sexo deve retornar 400 - bad request")
+        void create_whenMissingSexo_returnsBadRequest() throws Exception {
+            pessoaMock.setSexo(null);
+            Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
+
+            mockMvc.perform(post("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token)
+                            .content(objectMapper.writeValueAsString(pessoaMock)))
+                    .andExpect(status().isBadRequest())
+            ;
+        }
+
+        @Test
+        @DisplayName("Ao não informar o NOME deve retornar 400 - bad request")
+        void create_whenMissingName_returnsBadRequest() throws Exception {
+            pessoaMock.setNome(null);
+            Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
+
+            mockMvc.perform(post("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token)
+                            .content(objectMapper.writeValueAsString(pessoaMock)))
+                    .andExpect(status().isBadRequest())
+            ;
+        }
+
+        @Test
+        @DisplayName("Ao informar email inválido deve retornar 400 - bad request")
+        void create_whenWrongEmail_returnsBadRequest() throws Exception {
+            pessoaMock.setEmail("asd.com");
+            Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
+
+            mockMvc.perform(post("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token)
+                            .content(objectMapper.writeValueAsString(pessoaMock)))
                     .andExpect(status().isBadRequest())
             ;
         }
@@ -195,6 +301,16 @@ class PessoaControllerTest {
     @Nested
     @DisplayName("PUT /api/v1/pessoa")
     class UpdateTest {
+
+        @Test
+        @DisplayName("Deve retornar 404 - not found, caso não encontre o endpoint")
+        void update_onWrongEndpoint_returnsNotFound() throws Exception {
+            mockMvc.perform(put("/api/v1/pessoa/9999")
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.status").value(404));
+        }
+
         @Test
         @DisplayName("Deve atualizar uma pessoa com sucesso")
         void update_sucess_returnsPessoa() throws Exception {
@@ -206,6 +322,77 @@ class PessoaControllerTest {
                             .header("Authorization", "Bearer " + token)
                             .content(objectMapper.writeValueAsString(pessoaMock)))
                     .andExpect(status().isOk())
+            ;
+        }
+
+        @Test
+        @DisplayName("Ao não informar o objeto, deve retornar 400 - bad request")
+        void update_whenMissingObject_returnsBadRequest() throws Exception {
+            mockMvc.perform(put("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.status").value(400));
+        }
+
+        @Test
+        @DisplayName("Ao não informar o cpf deve retornar 400 - bad request")
+        void update_whenMissingCPF_returnsBadRequest() throws Exception {
+            pessoaMock.setCpfCnpj(null);
+            Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
+
+            mockMvc.perform(put("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token)
+                            .content(objectMapper.writeValueAsString(pessoaMock)))
+                    .andExpect(status().isBadRequest())
+            ;
+        }
+
+        @Test
+        @DisplayName("Ao não informar o sexo deve retornar 400 - bad request")
+        void update_whenMissingSexo_returnsBadRequest() throws Exception {
+            pessoaMock.setSexo(null);
+            Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
+
+            mockMvc.perform(put("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token)
+                            .content(objectMapper.writeValueAsString(pessoaMock)))
+                    .andExpect(status().isBadRequest())
+            ;
+        }
+
+        @Test
+        @DisplayName("Ao não informar o NOME deve retornar 400 - bad request")
+        void update_whenMissingName_returnsBadRequest() throws Exception {
+            pessoaMock.setNome(null);
+            Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
+
+            mockMvc.perform(put("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token)
+                            .content(objectMapper.writeValueAsString(pessoaMock)))
+                    .andExpect(status().isBadRequest())
+            ;
+        }
+
+        @Test
+        @DisplayName("Ao informar email inválido deve retornar 400 - bad request")
+        void update_whenWrongEmail_returnsBadRequest() throws Exception {
+            pessoaMock.setEmail("asd.com");
+            Mockito.when(pessoaService.createUpdate(any(Pessoa.class))).thenReturn(pessoaMock);
+
+            mockMvc.perform(put("/api/v1/pessoa")
+                            .accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer " + token)
+                            .content(objectMapper.writeValueAsString(pessoaMock)))
+                    .andExpect(status().isBadRequest())
             ;
         }
     }
@@ -228,7 +415,7 @@ class PessoaControllerTest {
 
         @Test
         @DisplayName("Não deve fazer nada caso a pessoa não exista no banco, retornando 204 - sem conteúdo.")
-        void delete_whenMissingDatabseObject_returnsNoContent() throws Exception {
+        void delete_whenMissingDatabaseObject_returnsNoContent() throws Exception {
             Mockito.doNothing().when(pessoaService).delete(any(Long.class));
 
             mockMvc.perform(delete("/api/v1/pessoa/id/9999")
@@ -240,10 +427,11 @@ class PessoaControllerTest {
 
         @Test
         @DisplayName("Deve retornar 404 - not found, caso não encontre o endpoint")
-        void delete_onWrongEndpoint_returnsBadRequest() throws Exception {
+        void delete_onWrongEndpoint_returnsNotFound() throws Exception {
             mockMvc.perform(delete("/api/v1/pessoa/9999")
                             .header("Authorization", "Bearer " + token))
-                    .andExpect(status().isNotFound());
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.status").value(404));
         }
     }
 
